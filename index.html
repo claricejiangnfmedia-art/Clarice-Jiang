@@ -840,19 +840,23 @@
             };
             fortuneImg.style.display = 'block';
             
-            // 显示祝福语
-            document.getElementById('fortuneText').textContent = fortune.text[game.language];
-            
-            // 如果是中文版，显示英文翻译
-            const englishEl = document.getElementById('fortuneEnglish');
-            if (game.language === 'zh') {
-                englishEl.textContent = fortune.text.en;
-                englishEl.style.display = 'block';
-            } else {
-                englishEl.style.display = 'none';
-            }
-        }
-
+             // 显示祝福语
+    const fortuneText = document.getElementById('fortuneText');
+    const englishEl = document.getElementById('fortuneEnglish');
+    
+    // 清空并隐藏英文部分（确保没有残留）
+    englishEl.textContent = '';
+    englishEl.style.display = 'none';
+    
+    // 根据语言显示
+    if (game.language === 'zh') {
+        // 中文版：只显示中文
+        fortuneText.textContent = fortune.text.zh;
+    } else {
+        // 英文版：显示英文
+        fortuneText.textContent = fortune.text.en;
+    }
+}
         // ==================== 分享功能 ====================
         function shareFortune() {
             const fortuneText = document.getElementById('fortuneText').textContent;
@@ -890,6 +894,7 @@
     </script>
 </body>
 </html>
+
 
 
 
