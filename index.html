@@ -840,13 +840,12 @@
             };
             fortuneImg.style.display = 'block';
             
-           // 只在中文版时显示英文翻译
+           // 如果是中文版，显示英文翻译
             const englishEl = document.getElementById('fortuneEnglish');
             if (game.language === 'zh') {
                 englishEl.textContent = fortune.text.en;
                 englishEl.style.display = 'block';
             } else {
-                englishEl.textContent = '';
                 englishEl.style.display = 'none';
             }
         }
@@ -889,5 +888,6 @@
 </body>
 
 </html>
+
 
 
