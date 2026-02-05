@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>广府年味之旅 | Guangdong New Year Journey</title>
+    <style>
+        /* 基础样式 - 完全不变 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(180deg, #ff6b6b 0%, #ffd93d 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .game-container {
+            width: 100%;
+            max-width: 400px;
+            height: 85vh;
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .page {
+            width: 100%;
+            height: 100%;
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* ============ 只修改开屏页面的排版和颜色 ============ */
+        #languagePage {
+            position: relative;
+            background: linear-gradient(135deg, #c1272d 0%, #ff6b6b 100%);
+        }
+        
+        #bgImage {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(1) !important;
+            opacity: 1 !important;
+        }
+        
+        .language-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            text-align: center;
+            background: linear-gradient(
+                180deg, 
+                rgba(255, 215, 0, 0.3) 0%, 
+                rgba(255, 107, 107, 0.2) 50%,
+                rgba(193, 39, 45, 0.3) 100%
+            );
+        }
+        
+        /* 修复1：优化主标题排版和颜色 */
+        .language-title {
+            color: #ffd700 !important;  /* 金色 */
+            font-size: 36px;  /* 稍微调小一点 */
+            margin-bottom: 15px;  /* 增加下边距 */
+            text-shadow: 3px 3px 0 rgba(193, 39, 45, 0.9);
+            font-weight: bold;
+            line-height: 1.2;  /* 优化行高 */
+            padding: 0 20px;  /* 两侧留白 */
+        }
+        
+        .language-title span {
+            display: block;
+            font-size: 24px;  /* 英文小一点 */
+            margin-top: 10px;
+            color: white;  /* 英文用白色 */
+            text-shadow: 2px 2px 0 rgba(193, 39, 45, 0.8);
+            font-weight: 600;
+        }
+        
+        /* 修复2：优化副标题排版 */
+        .language-subtitle {
+            color: white !important;
+            font-size: 18px;
+            margin-bottom: 50px;
+            text-shadow: 1px 1px 2px rgba(193, 39, 45, 0.9);
+            background: rgba(193, 39, 45, 0.7);
+            padding: 12px 25px;
+            border-radius: 20px;
+            line-height: 1.5;  /* 优化行高 */
+            max-width: 320px;  /* 限制最大宽度 */
+        }
+        
+        /* 修复3：优化按钮区域间距 */
+        .language-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 280px;
+            margin-bottom: 40px;  /* 增加下边距 */
+        }
+        
+        /* 修复4：按钮文字颜色用important */
+        .language-btn {
+            padding: 20px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #c1272d !important;  /* 重要！红色文字 */
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 10px 25px rgba(193, 39, 45, 0.4);
+        }
+        
+        .language-btn:active {
+            transform: scale(0.95);
+            background: white;
+        }
+        
+        /* 修复5：优化底部提示排版 */
+        .language-hint {
+            margin-top: 20px;  /* 减少上边距 */
+            color: #ffd700;
+            font-size: 18px;  /* 加大一点 */
+            text-shadow: 1px 1px 0 #c1272d;
+            background: rgba(193, 39, 45, 0.6);  /* 加背景 */
+            padding: 12px 20px;
+            border-radius: 15px;
+            border: 2px solid #ffd700;
+            max-width: 300px;
+        }
+        
+        .language-hint p {
+            margin: 0 0 8px 0;
+            font-weight: bold;
+        }
+        
+        .language-hint span {
+            display: block;
+            font-size: 14px;
+            color: white;
+            opacity: 0.95;
+            line-height: 1.4;
+        }
+        
+        /* ============ 以下所有CSS保持原样，完全不变 ============ */
+        #gamePage {
+            background: #fffaf0;
+        }
+        
+        .scene-area {
+            height: 60%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #sceneImage {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .scene-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            color: white;
+            padding: 20px;
+            min-height: 150px;
+        }
+        
+        #sceneTitle {
+            color: #ffd700;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+        
+        #sceneText {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        #cantoneseText {
+            font-style: italic;
+            color: #a8e6cf;
+            border-left: 3px solid #a8e6cf;
+            padding-left: 10px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .options-area {
+            height: 30%;
+            padding: 15px;
+            overflow-y: auto;
+            background: #fff9e6;
+        }
+        
+        .option-btn {
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .option-btn:active {
+            transform: translateY(3px);
+        }
+        
+        .status-bar {
+            height: 10%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 2px solid #ff9a9e;
+            padding: 0 10px;
+        }
+        
+        .status-item {
+            text-align: center;
+        }
+        
+        .status-value {
+            font-size: 1.2rem;
+            color: #c1272d;
+            font-weight: bold;
+        }
+        
+        .status-label {
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        #fortunePage {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            padding: 20px;
+            text-align: center;
+            overflow-y: auto;
+        }
+        
+        #fortuneTitle {
+            color: #c1272d;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        #fortuneImage {
+            width: 100%;
+            max-width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 5px solid #ffd700;
+            margin: 0 auto 20px;
+            display: block;
+        }
+        
+        .fortune-text {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 0 auto 20px;
+            max-width: 350px;
+            font-size: 1.1rem;
+            color: #333;
+        }
+        
+        .action-btn {
+            width: 200px;
+            padding: 15px;
+            margin: 8px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        #shareBtn {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+        }
+        
+        #retryBtn {
+            background: linear-gradient(135deg, #2196F3, #0D47A1);
+            color: white;
+        }
+        
+        #homeBtn {
+            background: linear-gradient(135deg, #9C27B0, #6A1B9A);
+            color: white;
+        }
+        
+        .qrcode-section {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 20px;
+            max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        #qrcodeImg {
+            width: 150px;
+            height: 150px;
+            margin: 10px auto;
+            display: block;
+            border: 2px solid #ff9a9e;
+        }
+        
+        #message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            display: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 消息提示 -->
+    <div id="message"></div>
+    
+    <!-- 游戏容器 -->
+    <div class="game-container">
+        <!-- 语言选择页面 - 修改HTML结构 -->
+        <div id="languagePage" class="page active">
+            <img id="bgImage" alt="新春背景图">
+            <div class="language-content">
+                <!-- 优化排版结构 -->
+                <div style="margin-bottom: 30px;">
+                    <h1 class="language-title">
+                        广府年味之旅
+                        <span>Guangdong New Year Journey</span>
+                    </h1>
+                </div>
+                
+                <p class="language-subtitle">
+                    体验广东春节传统习俗<br>
+                    Experience Cantonese New Year Traditions
+                </p>
+                
+                <div class="language-buttons">
+                    <button id="chineseBtn" class="language-btn">🇨🇳 中文版</button>
+                    <button id="englishBtn" class="language-btn">🌏 English Version</button>
+                </div>
+                
+   <div class="language-hint">
+                    <p>🐴 马年特别版 🎉</p>
+                    <span>从年廿八到元宵节，体验完整广东年俗</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 以下所有HTML保持原样，完全不变 -->
+        <div id="gamePage" class="page">
+            <div class="scene-area">
+                <img id="sceneImage" alt="场景图">
+                <div class="scene-overlay">
+                    <h3 id="sceneTitle">场景标题</h3>
+                    <p id="sceneText">场景描述内容...</p>
+                    <div id="cantoneseText"></div>
+                </div>
+            </div>
+            <div class="options-area" id="optionsArea"></div>
+            <div class="status-bar">
+                <div class="status-item">
+                    <div class="status-value" id="currentDay">年廿八</div>
+                    <div class="status-label" id="dayLabel">当前日期</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-value" id="luckValue">88</div>
+                    <div class="status-label" id="luckLabel">好运值</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-value" id="moneyValue">¥0</div>
+                    <div class="status-label" id="moneyLabel">利是钱</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="fortunePage" class="page">
+            <h2 id="fortuneTitle">马年好运签</h2>
+            <img id="fortuneImage" alt="好运签图片">
+            <div class="fortune-text">
+                <p id="fortuneText">正在抽取您的新年好运签...</p>
+                <p id="fortuneEnglish"></p>
+            </div>
+            <button id="shareBtn" class="action-btn">分享好运</button>
+            <button id="retryBtn" class="action-btn">再抽一次</button>
+            <button id="homeBtn" class="action-btn">返回首页</button>
+            <div class="qrcode-section">
+                <h4 id="qrcodeTitle">📱 分享游戏给朋友</h4>
+                <img id="qrcodeImg" alt="二维码">
+                <p id="qrcodeHint">扫码一起体验广府年味！</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== 游戏配置 ====================
+        const game = {
+            language: 'zh',
+            currentScene: 0,
+            luck: 88,
+            money: 0,
+            happiness: 100
+        };
+
+        // ==================== 图片配置 ====================
+        const gameImages = {
+            languageBg: "images/开屏图去水印 (1).png",
+            scenes: [
+                "images/年28打扫图去水印.png",
+                "images/年30行花街图去水印 (1).png", 
+                "images/年初一团年饭图去水印.png",
+                "images/元宵节逗利是图去水印.png"
+            ],
+            fortunes: [
+                {
+                    image: "images/新年签马到成功图去水印.png",
+                    text: {
+                        zh: "马到成功，事业腾飞！新一年如骏马奔腾，勇往直前，所有目标都能顺利达成！",
+                    }
+                },
+                {
+                    image: "images/新年签财运亨通图去水印 (1).png",
+                    text: {
+                        zh: "财运亨通，利是多多！正财偏财一齐来，银行存款节节高！",
+                    }
+                },
+                {
+                    image: "images/新年签桃花盛开图去水印.png",
+                    text: {
+                        zh: "桃花盛开，姻缘美满！单身遇良缘，有情人终成眷属！",
+                    }
+                },
+                {
+                    image: "images/新年签家庭和睦图去水印.png",
+                    text: {
+                        zh: "家庭和睦，幸福安康！家人健康快乐，团圆美满！",
+                    }
+                }
+            ],
+            qrcode: "images/分享二维码.png"
+        };
+
+        // ==================== 游戏数据 ====================
+        const gameData = {
+            zh: {
+                languageTitle: "广府年味之旅",
+                languageSubtitle: "体验广东春节传统习俗",
+                days: ["年廿八", "年三十", "年初一", "元宵节"],
+                dayLabel: "当前日期",
+                luckLabel: "好运值", 
+                moneyLabel: "利是钱",
+                fortuneTitle: "马年好运签",
+                shareText: "分享好运",
+                retryText: "再抽一次",
+                homeText: "返回首页",
+                qrcodeTitle: "📱 分享游戏给朋友",
+                qrcodeHint: "扫码一起体验广府年味！",
+                scenes: [
+                    {
+                        title: "🧹 洗邋遢迎新春",
+                        text: "年廿八的阳光透过满洲窗，洒在西关大屋的青砖墙上。今天是'洗邋遢'的日子，要把家里打扫得干干净净迎新年。",
+                        cantonese: "阿妈话：'年廿八，洗邋遢，洗埋衰气好运来！'",
+                        options: [
+                            { text: "🧹 帮忙打扫神台", result: "认真擦拭祖先牌位，获得长辈赞赏", luck: 10, happiness: 5 },
+                            { text: "🍃 用柚叶水抹门窗", result: "柚叶清香满屋，驱除霉运", luck: 15 },
+                            { text: "🎍 整理年花摆设", result: "将年桔、桃花摆到合适位置，家里焕然一新", happiness: 10 }
+                        ]
+                    },
+                    {
+                        title: "🏮 行花街买年花",
+                        text: "傍晚的花市人潮涌动，霓虹灯映照着各色年花。空气中弥漫着桃花香和年桔的清新气息。",
+                        cantonese: "行花街，转大运！买支桃花旺姻缘！",
+                        options: [
+                            { text: "🌸 买一株桃花", result: "花农说：'后生仔，今年行桃花运啦！'", luck: 20, money: -50 },
+                            { text: "🍊 买盆年桔", result: "金桔满枝头，寓意大吉大利", luck: 15, money: -30 },
+                            { text: "🚶 只看不买，感受气氛", result: "在花市里闲逛，欣赏各种年花和创意产品", happiness: 10 }
+                        ]
+                    },
+                    {
+                        title: "🥘 团年饭盛宴",
+                        text: "全家人围坐一堂，桌上摆满了广府特色年菜：白切鸡、烧鹅、发菜蚝豉、清蒸鱼...阿嫲正在盛老火靓汤。",
+                        cantonese: "阿嫲话：'饮啖汤先，好足料嘎！'",
+                        options: [
+                            { text: "🥢 帮忙摆碗筷", result: "按照长幼顺序摆好碗筷，阿公点头赞许", luck: 5, happiness: 8 },
+                            { text: "🎁 学包油角", result: "阿妈教你包油角，虽然形状不太好看，但很有年味", happiness: 15 },
+                            { text: "🍲 帮忙准备盆菜", result: "将鲍鱼、鹅掌、花菇等食材一层层铺好", luck: 10 }
+                        ]
+                    },
+                    {
+                        title: "🧧 拜年逗利是",
+                        text: "穿上全新的唐装衫裤，准备出门拜年。阿爸递给你一叠利是封：'见到长辈要讲恭喜发财啊！'",
+                        cantonese: "细路仔最开心就系逗利是啦！",
+                        options: [
+                            { text: "🏡 去阿公阿嫲家拜年", result: "阿公给你大利是，还准备了瓜子糖果", money: 200, happiness: 10 },
+                            { text: "🏮 跟爸妈去茶楼", result: "茶楼人声鼎沸，一盅两件，恭喜声不绝", money: 100, happiness: 15 },
+                            { text: "🦁 看舞狮表演", result: "锣鼓喧天，醒狮采青，热闹非凡", luck: 20, happiness: 20 }
+                        ]
+                    }
+                ]
+            },
+            en: {
+                languageTitle: "Guangdong New Year Journey",
+                languageSubtitle: "Experience Cantonese New Year Traditions",
+                days: ["Day 28", "New Year's Eve", "Day 1", "Lantern Festival"],
+                dayLabel: "Current Day",
+                luckLabel: "Luck Points", 
+                moneyLabel: "Red Packets",
+                fortuneTitle: "Year of the Horse Fortune",
+                shareText: "Share Fortune",
+                retryText: "Draw Again",
+                homeText: "Back to Home",
+                qrcodeTitle: "📱 Share with Friends",
+                qrcodeHint: "Scan QR code to play together!",
+                scenes: [
+                    {
+                        title: "🧹 Spring Cleaning Day",
+                        text: "Morning sunlight shines through the traditional windows. It's time for thorough cleaning to welcome the New Year!",
+                        cantonese: "",
+                        options: [
+                            { text: "🧹 Clean the altar", result: "Earn praise from elders for cleaning carefully", luck: 10, happiness: 5 },
+                            { text: "🍃 Wipe with pomelo leaves", result: "Fresh scent fills the room, driving away bad luck", luck: 15 },
+                            { text: "🎍 Arrange New Year plants", result: "Place mandarin orange tree and peach blossoms beautifully", happiness: 10 }
+                        ]
+                    },
+                    {
+                        title: "🏮 Flower Market Visit",
+                        text: "The flower market is bustling with people under neon lights. Scents of peach blossoms fill the air.",
+                        cantonese: "",
+                        options: [
+                            { text: "🌸 Buy peach blossoms", result: "The florist smiles: 'Good luck in love this year!'", luck: 20, money: -50 },
+                            { text: "🍊 Buy kumquat tree", result: "Golden fruits symbolize prosperity and good fortune", luck: 15, money: -30 },
+                            { text: "🚶 Just enjoy the atmosphere", result: "Wander through the market, enjoying festive vibes", happiness: 10 }
+                        ]
+                    },
+                    {
+                        title: "🥘 Reunion Dinner Feast",
+                        text: "The whole family gathers around a table filled with Cantonese New Year dishes... Grandma serves hot soup.",
+                        cantonese: "",
+                        options: [
+                            { text: "🥢 Set the table", result: "Arrange dishes properly, earning approval from elders", luck: 5, happiness: 8 },
+                            { text: "🎁 Learn to make dumplings", result: "Mom teaches you traditional recipes", happiness: 15 },
+                            { text: "🍲 Prepare Poon Choi", result: "Layer abalone, mushrooms and other ingredients", luck: 10 }
+                        ]
+                    },
+                    {
+                        title: "🧧 Red Packets Day",
+                        text: "Dressed in new traditional clothes, ready for visiting. Red packets (lai see) await!",
+                        cantonese: "",
+                        options: [
+                            { text: "🏡 Visit grandparents", result: "Receive big red packets with blessings", money: 200, happiness: 10 },
+                            { text: "🏮 Go to tea house", result: "Experience festive atmosphere with family", money: 100, happiness: 15 },
+                            { text: "🦁 Watch lion dance", result: "Exciting performance with drums and colors", luck: 20, happiness: 20 }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // ==================== 初始化 ====================
+        function init() {
+            console.log("游戏初始化...");
+            
+            // 加载背景图
+            const bgImg = document.getElementById('bgImage');
+            bgImg.src = gameImages.languageBg;
+            bgImg.onerror = function() {
+                console.log("背景图加载失败，使用喜庆背景");
+                document.getElementById('languagePage').style.background = 'linear-gradient(135deg, #c1272d 0%, #ff6b6b 100%)';
+                bgImg.style.display = 'none';
+            };
+            
+            // 加载二维码
+            const qrImg = document.getElementById('qrcodeImg');
+            qrImg.src = gameImages.qrcode;
+            qrImg.onerror = function() {
+                console.log("二维码加载失败");
+                qrImg.parentNode.innerHTML = '<div style="font-size: 60px; color: #c1272d; text-align:center;">📱</div>';
+            };
+            
+            // 绑定按钮事件
+            document.getElementById('chineseBtn').addEventListener('click', function() {
+                startGame('zh');
+            });
+            
+            document.getElementById('englishBtn').addEventListener('click', function() {
+                startGame('en');
+            });
+            
+            document.getElementById('shareBtn').addEventListener('click', shareFortune);
+            document.getElementById('retryBtn').addEventListener('click', drawFortune);
+            document.getElementById('homeBtn').addEventListener('click', backToHome);
+            
+            console.log("初始化完成");
+        }
+
+        // ==================== 开始游戏 ====================
+        function startGame(lang) {
+            console.log("开始游戏，语言:", lang);
+            
+            game.language = lang;
+            game.currentScene = 0;
+            game.luck = 88;
+            game.money = 0;
+            game.happiness = 100;
+            
+            // 更新界面语言 - 修复：不覆盖开屏标题颜色
+            updateLanguageUI();
+            
+            // 切换页面
+            document.getElementById('languagePage').classList.remove('active');
+            document.getElementById('gamePage').classList.add('active');
+            document.getElementById('fortunePage').classList.remove('active');
+            
+            // 加载第一个场景
+            loadScene();
+        }
+
+        // ==================== 更新界面语言 ====================
+        function updateLanguageUI() {
+            const langData = gameData[game.language];
+            
+            // 重要：不再动态更新开屏标题，因为已经在HTML里写好了
+            // 只更新游戏内的文本
+            
+            // 更新状态栏
+            document.getElementById('dayLabel').textContent = langData.dayLabel;
+            document.getElementById('luckLabel').textContent = langData.luckLabel;
+            document.getElementById('moneyLabel').textContent = langData.moneyLabel;
+            
+            // 更新新年签页面
+            document.getElementById('fortuneTitle').textContent = langData.fortuneTitle;
+            document.getElementById('shareBtn').textContent = langData.shareText;
+            document.getElementById('retryBtn').textContent = langData.retryText;
+            document.getElementById('homeBtn').textContent = langData.homeText;
+            document.getElementById('qrcodeTitle').textContent = langData.qrcodeTitle;
+            document.getElementById('qrcodeHint').textContent = langData.qrcodeHint;
+            
+            // 根据语言更新开屏按钮文本
+            const chineseBtn = document.getElementById('chineseBtn');
+            const englishBtn = document.getElementById('englishBtn');
+            
+            if (game.language === 'zh') {
+                // 中文版：按钮保持中文
+                chineseBtn.textContent = '🇨🇳 中文版';
+                englishBtn.textContent = '🌏 English Version';
+            } else {
+                // 英文版：按钮显示英文
+                chineseBtn.textContent = '🇨🇳 Chinese';
+                englishBtn.textContent = '🌏 English';
+            }
+        }
+
+        // ==================== 加载场景 ====================
+        function loadScene() {
+            const langData = gameData[game.language];
+            const scenes = langData.scenes;
+            
+            if (game.currentScene >= scenes.length) {
+                showFortunePage();
+                return;
+            }
+            
+            const scene = scenes[game.currentScene];
+            
+            // 更新场景内容
+            document.getElementById('sceneTitle').textContent = scene.title;
+            document.getElementById('sceneText').textContent = scene.text;
+            document.getElementById('currentDay').textContent = langData.days[game.currentScene];
+            
+            // 更新粤语文本
+            const cantoneseEl = document.getElementById('cantoneseText');
+            if (scene.cantonese) {
+                cantoneseEl.textContent = scene.cantonese;
+                cantoneseEl.style.display = 'block';
+            } else {
+                cantoneseEl.style.display = 'none';
+            }
+            
+            // 加载场景图片
+            const sceneImg = document.getElementById('sceneImage');
+            if (game.currentScene < gameImages.scenes.length) {
+                sceneImg.src = gameImages.scenes[game.currentScene];
+                sceneImg.onerror = function() {
+                    console.log("场景图加载失败");
+                    sceneImg.style.display = 'none';
+                };
+                sceneImg.style.display = 'block';
+            }
+            
+            // 创建选项按钮
+            const optionsArea = document.getElementById('optionsArea');
+            optionsArea.innerHTML = '';
+            
+            scene.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.innerHTML = option.text;
+                
+                button.addEventListener('click', function() {
+                    showMessage(option.result);
+                    
+                    // 更新游戏状态
+                    if (option.luck) game.luck += option.luck;
+                    if (option.money) game.money += option.money;
+                    if (option.happiness) game.happiness += option.happiness;
+                    
+                    // 确保数值不为负
+                    game.luck = Math.max(0, game.luck);
+                    game.money = Math.max(0, game.money);
+                    game.happiness = Math.max(0, game.happiness);
+                    
+                    updateStatus();
+                    
+                    // 振动反馈
+                    if (navigator.vibrate) {
+                        navigator.vibrate(50);
+                    }
+                    
+                    // 进入下一个场景
+                    setTimeout(() => {
+                        game.currentScene++;
+                        if (game.currentScene < scenes.length) {
+                            loadScene();
+                        } else {
+                            showFortunePage();
+                        }
+                    }, 1000);
+                });
+                
+                optionsArea.appendChild(button);
+            });
+            
+            updateStatus();
+        }
+
+        // ==================== 显示消息 ====================
+        function showMessage(text) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.style.display = 'block';
+            
+            setTimeout(() => {
+                msg.style.display = 'none';
+            }, 1500);
+        }
+
+        // ==================== 更新状态 ====================
+        function updateStatus() {
+            document.getElementById('luckValue').textContent = game.luck;
+            if (game.language === 'zh') {
+                document.getElementById('moneyValue').textContent = `¥${game.money}`;
+            } else {
+                document.getElementById('moneyValue').textContent = `$${game.money}`;
+            }
+        }
+
+        // ==================== 显示新年签页面 ====================
+        function showFortunePage() {
+            document.getElementById('gamePage').classList.remove('active');
+            document.getElementById('fortunePage').classList.add('active');
+            
+            drawFortune();
+        }
+
+        // ==================== 抽取新年签 ====================
+        function drawFortune() {
+            const fortunes = gameImages.fortunes;
+            const randomIndex = Math.floor(Math.random() * fortunes.length);
+            const fortune = fortunes[randomIndex];
+            
+            // 加载新年签图片
+            const fortuneImg = document.getElementById('fortuneImage');
+            fortuneImg.src = fortune.image;
+            fortuneImg.onerror = function() {
+                console.log("新年签图片加载失败");
+                fortuneImg.style.display = 'none';
+            };
+            fortuneImg.style.display = 'block';
+            
+            // 显示祝福语
+            document.getElementById('fortuneText').textContent = fortune.text[game.language];
+            
+            // 如果是中文版，显示英文翻译
+            const englishEl = document.getElementById('fortuneEnglish');
+            if (game.language === 'zh') {
+                englishEl.textContent = fortune.text.en;
+                englishEl.style.display = 'block';
+            } else {
+                englishEl.style.display = 'none';
+            }
+        }
+
+        // ==================== 分享功能 ====================
+        function shareFortune() {
+            const fortuneText = document.getElementById('fortuneText').textContent;
+            const shareMsg = game.language === 'zh' 
+                ? `🐴 我在《广府年味之旅》抽到马年好运签：${fortuneText}\n\n快来扫码一起体验广东春节习俗吧！`
+                : `🐎 My Year of the Horse fortune: "${fortuneText}"\n\nScan to play Guangdong New Year Journey!`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: game.language === 'zh' ? '广府年味之旅' : 'Guangdong New Year Journey',
+                    text: shareMsg
+                });
+            } else {
+                // 复制到剪贴板
+                navigator.clipboard.writeText(shareMsg).then(() => {
+                    showMessage(game.language === 'zh' ? '已复制到剪贴板' : 'Copied to clipboard');
+                });
+            }
+        }
+
+        // ==================== 返回首页 ====================
+        function backToHome() {
+            document.getElementById('fortunePage').classList.remove('active');
+            document.getElementById('languagePage').classList.add('active');
+            
+            // 重置游戏
+            game.currentScene = 0;
+            game.luck = 88;
+            game.money = 0;
+            game.happiness = 100;
+        }
+
+        // ==================== 页面加载完成后启动 ====================
+        window.onload = init;
+    </script>
+</body>
+</html>
