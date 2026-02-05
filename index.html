@@ -475,24 +475,28 @@
                     image: "images/新年签马到成功图去水印.png",
                     text: {
                         zh: "马到成功，事业腾飞！新一年如骏马奔腾，勇往直前，所有目标都能顺利达成！",
+                        en: "Galloping success! May your career soar like a swift horse, achieving all goals with speed and grace!"
                     }
                 },
                 {
                     image: "images/新年签财运亨通图去水印 (1).png",
                     text: {
                         zh: "财运亨通，利是多多！正财偏财一齐来，银行存款节节高！",
+                        en: "Wealth flows abundantly! May prosperity find you from every direction, filling your life with abundance!"
                     }
                 },
                 {
                     image: "images/新年签桃花盛开图去水印.png",
                     text: {
                         zh: "桃花盛开，姻缘美满！单身遇良缘，有情人终成眷属！",
+                        en: "Love blossoms beautifully! May your heart find its perfect match, creating lasting bonds of happiness!"
                     }
                 },
                 {
                     image: "images/新年签家庭和睦图去水印.png",
                     text: {
                         zh: "家庭和睦，幸福安康！家人健康快乐，团圆美满！",
+                         en: "Family harmony brings joy! May your home overflow with health, laughter and warm togetherness!"
                     }
                 }
             ],
@@ -838,14 +842,6 @@
             
             // 显示祝福语
             document.getElementById('fortuneText').textContent = fortune.text[game.language];
-            
-            // 如果是中文版，显示英文翻译
-            const englishEl = document.getElementById('fortuneEnglish');
-            if (game.language === 'zh') {
-                englishEl.textContent = fortune.text.en;
-                englishEl.style.display = 'block';
-            } else {
-                englishEl.style.display = 'none';
             }
         }
 
@@ -885,4 +881,5 @@
         window.onload = init;
     </script>
 </body>
+
 </html>
