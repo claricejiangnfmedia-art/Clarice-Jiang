@@ -979,14 +979,44 @@
                         ]
                     }
                 ],
-                // 成就系统
+                // 成就系统 - 简化版，玩一遍就能达成
                 achievements: [
-                    { id: 1, name: "🧹 清洁达人", desc: "完成所有清洁任务", condition: (game) => game.collectedItems.filter(item => item.includes("打扫") || item.includes("清洁")).length >= 2 },
-                    { id: 2, name: "🌸 花市常客", desc: "收集所有花市物品", condition: (game) => game.collectedItems.filter(item => item.includes("花") || item.includes("桔")).length >= 2 },
-                    { id: 3, name: "🍲 美食专家", desc: "参与所有美食制作", condition: (game) => game.collectedItems.filter(item => item.includes("食品") || item.includes("美食")).length >= 2 },
-                    { id: 4, name: "🧧 利是富翁", desc: "获得超过500利是钱", condition: (game) => game.money >= 500 },
-                    { id: 5, name: "✨ 好运之星", desc: "好运值达到150以上", condition: (game) => game.luck >= 150 },
-                    { id: 6, name: "🎯 完美春节", desc: "达成所有其他成就", condition: (game) => game.achievements.length >= 5 }
+                    { 
+                        id: 1, 
+                        name: "🧹 春节参与者", 
+                        desc: "完成4个春节场景体验",
+                        condition: (game) => game.currentScene >= 4 // 完成所有场景
+                    },
+                    { 
+                        id: 2, 
+                        name: "🎁 物品收集者", 
+                        desc: "收集至少3件春节物品",
+                        condition: (game) => game.collectedItems.length >= 3
+                    },
+                    { 
+                        id: 3, 
+                        name: "✨ 好运收藏家", 
+                        desc: "好运值达到100以上",
+                        condition: (game) => game.luck >= 100
+                    },
+                    { 
+                        id: 4, 
+                        name: "💰 利是小富翁", 
+                        desc: "获得至少150元利是钱",
+                        condition: (game) => game.money >= 150
+                    },
+                    { 
+                        id: 5, 
+                        name: "🎉 幸福满满", 
+                        desc: "幸福度达到120以上",
+                        condition: (game) => game.happiness >= 120
+                    },
+                    { 
+                        id: 6, 
+                        name: "🌟 春节达人", 
+                        desc: "达成3个以上其他成就",
+                        condition: (game) => game.achievements.length >= 4 // 因为有6个成就，达成3个其他成就就是总成就数>=4
+                    }
                 ]
             },
             en: {
@@ -1112,14 +1142,44 @@
                         ]
                     }
                 ],
-                // 成就系统
+                // 成就系统 - 简化版
                 achievements: [
-                    { id: 1, name: "🧹 Cleaning Expert", desc: "Complete all cleaning tasks", condition: (game) => game.collectedItems.length >= 2 && game.collectedItems.some(item => item.includes("Clean")) },
-                    { id: 2, name: "🌸 Flower Market Regular", desc: "Collect all flower market items", condition: (game) => game.collectedItems.filter(item => item.includes("Flower") || item.includes("Tree")).length >= 2 },
-                    { id: 3, name: "🍲 Food Master", desc: "Participate in all food preparations", condition: (game) => game.collectedItems.filter(item => item.includes("Food") || item.includes("Cooking")).length >= 2 },
-                    { id: 4, name: "🧧 Red Packet Millionaire", desc: "Get over 500 red packet money", condition: (game) => game.money >= 500 },
-                    { id: 5, name: "✨ Lucky Star", desc: "Luck points reach 150+", condition: (game) => game.luck >= 150 },
-                    { id: 6, name: "🎯 Perfect New Year", desc: "Achieve all other achievements", condition: (game) => game.achievements.length >= 5 }
+                    { 
+                        id: 1, 
+                        name: "🧹 New Year Participant", 
+                        desc: "Complete all 4 festival scenes",
+                        condition: (game) => game.currentScene >= 4
+                    },
+                    { 
+                        id: 2, 
+                        name: "🎁 Item Collector", 
+                        desc: "Collect at least 3 festival items",
+                        condition: (game) => game.collectedItems.length >= 3
+                    },
+                    { 
+                        id: 3, 
+                        name: "✨ Luck Collector", 
+                        desc: "Reach 100+ luck points",
+                        condition: (game) => game.luck >= 100
+                    },
+                    { 
+                        id: 4, 
+                        name: "💰 Red Packet Rich", 
+                        desc: "Get at least $150 red packets",
+                        condition: (game) => game.money >= 150
+                    },
+                    { 
+                        id: 5, 
+                        name: "🎉 Happiness Full", 
+                        desc: "Reach 120+ happiness",
+                        condition: (game) => game.happiness >= 120
+                    },
+                    { 
+                        id: 6, 
+                        name: "🌟 Festival Master", 
+                        desc: "Achieve 3+ other achievements",
+                        condition: (game) => game.achievements.length >= 4
+                    }
                 ]
             }
         };
@@ -1398,7 +1458,7 @@
             // 计算成就
             calculateAchievements();
             
-            // 确定结局类型
+            // 确定结局类型 - 简化版，根据成就数量决定
             const endingType = determineEndingType();
             
             // 设置结局图片
@@ -1410,16 +1470,16 @@
             // 设置结局文本
             const endings = {
                 zh: [
-                    { title: "平稳春节", text: "您度过了一个传统而平稳的春节，虽然没有太多惊喜，但感受到了浓浓的年味和家人的温暖。" },
-                    { title: "幸运春节", text: "您的春节充满了好运！各种好事接踵而来，新的一年必将一帆风顺，马到成功！" },
-                    { title: "财富春节", text: "恭喜发财！您的春节财运亨通，利是多多，新的一年定能财源广进，富贵吉祥！" },
-                    { title: "完美春节", text: "完美的春节体验！您不仅收集了所有传统物品，还获得了家人满满的赞赏，新的一年必将万事如意！" }
+                    { title: "春节初体验", text: "您体验了完整的春节习俗，虽然成就有限，但感受到了浓浓的年味和传统魅力。" },
+                    { title: "春节小达人", text: "不错的春节体验！您收集了不少物品，获得了家人赞赏，新的一年将有好运相伴！" },
+                    { title: "春节收藏家", text: "精彩的春节旅程！您收集了大量传统物品，获得了丰富的红包，新年必是财源广进！" },
+                    { title: "春节大师", text: "完美的春节体验！您几乎达成了所有成就，深入了解了广府年俗，新的一年必将万事如意！" }
                 ],
                 en: [
-                    { title: "Traditional Celebration", text: "You experienced a traditional and peaceful New Year, feeling the warm atmosphere of family gatherings." },
-                    { title: "Lucky Celebration", text: "Your New Year is filled with good luck! Many blessings came your way for a smooth year ahead!" },
-                    { title: "Prosperous Celebration", text: "Congratulations and prosperity! Your New Year brought financial blessings for wealth in the coming year!" },
-                    { title: "Perfect Celebration", text: "Perfect New Year experience! You collected all traditions and earned family praise for a wonderful year ahead!" }
+                    { title: "New Year Beginner", text: "You experienced complete New Year traditions, feeling the charm of traditional celebrations." },
+                    { title: "New Year Expert", text: "Great New Year experience! You collected many items and earned family praise for good luck ahead!" },
+                    { title: "New Year Collector", text: "Wonderful journey! You collected many traditional items and received generous red packets for prosperity!" },
+                    { title: "New Year Master", text: "Perfect New Year experience! You achieved most achievements, deeply understanding traditions for a wonderful year!" }
                 ]
             };
             
@@ -1464,8 +1524,8 @@
             // 设置结论文本
             document.getElementById('endingConclusion').textContent = 
                 game.language === 'zh' 
-                    ? '点击下方按钮抽取您的新年好运签！' 
-                    : 'Click below to draw your New Year fortune!';
+                    ? `您共获得了 ${game.achievements.length} 个成就！点击下方按钮抽取您的新年好运签！` 
+                    : `You earned ${game.achievements.length} achievements! Click below to draw your New Year fortune!`;
         }
 
         // ==================== 计算成就 ====================
@@ -1485,14 +1545,11 @@
         // ==================== 确定结局类型 ====================
         function determineEndingType() {
             const unlockedCount = game.achievements.length;
-            const hasPerfect = game.achievements.includes(6);
-            const hasMoney = game.money >= 500;
-            const hasLuck = game.luck >= 150;
             
-            if (hasPerfect) return 3; // 完美结局
-            if (hasMoney && !hasLuck) return 2; // 财富结局
-            if (hasLuck && !hasMoney) return 1; // 好运结局
-            return 0; // 普通结局
+            if (unlockedCount >= 5) return 3; // 解锁5-6个成就：大师
+            if (unlockedCount >= 4) return 2; // 解锁4个成就：收藏家
+            if (unlockedCount >= 3) return 1; // 解锁3个成就：小达人
+            return 0; // 解锁0-2个成就：初体验
         }
 
         // ==================== 更新状态 ====================
@@ -1516,16 +1573,18 @@
         // ==================== 抽取新年签 ====================
         function drawFortune() {
             const fortunes = gameImages.fortunes;
-            // 好运值影响抽签结果
+            // 根据成就数量决定好运签质量
             let randomIndex;
-            if (game.luck >= 150) {
-                // 高好运值：只抽好签
+            const achievementCount = game.achievements.length;
+            
+            if (achievementCount >= 5) {
+                // 高成就：只抽最好的签
+                randomIndex = Math.floor(Math.random() * 2); // 前两个最好的签
+            } else if (achievementCount >= 3) {
+                // 中等成就
                 randomIndex = Math.floor(Math.random() * fortunes.length);
-            } else if (game.luck >= 100) {
-                // 中等好运值
-                randomIndex = Math.min(fortunes.length - 1, Math.floor(Math.random() * (fortunes.length + 1)));
             } else {
-                // 低好运值：随机抽
+                // 低成就
                 randomIndex = Math.floor(Math.random() * fortunes.length);
             }
             
