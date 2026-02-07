@@ -543,6 +543,19 @@
             border-left-color: #ccc;
         }
         
+        .achievement-badge {
+            width: 24px;
+            height: 24px;
+            background: #ffd700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #c1272d;
+        }
+        
         .ending-action-btn {
             width: 200px;
             padding: 15px;
@@ -679,7 +692,7 @@
                     <p class="rules-text">✨ <strong>好运值</strong>：影响新年签的质量</p>
                     <p class="rules-text">💰 <strong>利是钱</strong>：春节收到的红包金额</p>
                     <p class="rules-text">🎁 <strong>收集物品</strong>：解锁特殊成就</p>
-                    <p class="rules-text">做出选择后，您将看到拍立得样式的反馈，展示您的收获。</p>
+                    <p class="rules-text">不同的选择组合会解锁不同的成就，需要多次游玩才能集齐所有成就！</p>
                     <p class="rules-text">所有场景完成后，将根据您的表现解锁不同的结局成就。</p>
                     <p class="rules-text">最后，您将抽取专属的新年好运签！</p>
                     
@@ -689,7 +702,7 @@
                     <p class="rules-text english">✨ <strong>Luck Points</strong>: Affect fortune quality</p>
                     <p class="rules-text english">💰 <strong>Red Packets</strong>: Money received during New Year</p>
                     <p class="rules-text english">🎁 <strong>Collected Items</strong>: Unlock special achievements</p>
-                    <p class="rules-text english">After each choice, see polaroid-style feedback showing your rewards.</p>
+                    <p class="rules-text english">Different choice combinations unlock different achievements. Replay to collect them all!</p>
                     <p class="rules-text english">Complete all scenes to unlock different ending achievements.</p>
                     <p class="rules-text english">Finally, draw your unique New Year fortune!</p>
                     
@@ -795,7 +808,8 @@
             happiness: 100,
             collectedItems: [],
             achievements: [],
-            lastOptionResult: null
+            lastOptionResult: null,
+            selectedOptions: [] // 记录所有选择的选项
         };
 
         // ==================== 图片配置 ====================
@@ -881,19 +895,22 @@
                                 result: "认真擦拭祖先牌位，获得长辈赞赏",
                                 luck: 10, 
                                 happiness: 5,
-                                collect: "🧧 长辈的赞赏"
+                                collect: "🧧 长辈的赞赏",
+                                type: "传统"
                             },
                             { 
                                 text: "🍃 用柚叶水抹门窗", 
                                 result: "柚叶清香满屋，驱除霉运",
                                 luck: 15,
-                                collect: "🍃 吉祥柚叶"
+                                collect: "🍃 吉祥柚叶",
+                                type: "传统"
                             },
                             { 
                                 text: "🎍 整理年花摆设", 
                                 result: "将年桔、桃花摆到合适位置，家里焕然一新",
                                 happiness: 10,
-                                collect: "🎍 新年装饰"
+                                collect: "🎍 新年装饰",
+                                type: "装饰"
                             }
                         ]
                     },
@@ -907,20 +924,23 @@
                                 result: "花农说：'后生仔，今年行桃花运啦！'",
                                 luck: 20, 
                                 money: -50,
-                                collect: "🌸 桃花枝"
+                                collect: "🌸 桃花枝",
+                                type: "浪漫"
                             },
                             { 
                                 text: "🍊 买盆年桔", 
                                 result: "金桔满枝头，寓意大吉大利",
                                 luck: 15, 
                                 money: -30,
-                                collect: "🍊 金桔树"
+                                collect: "🍊 金桔树",
+                                type: "财富"
                             },
                             { 
                                 text: "🚶 只看不买，感受气氛", 
                                 result: "在花市里闲逛，欣赏各种年花和创意产品",
                                 happiness: 10,
-                                collect: "📸 花市回忆"
+                                collect: "📸 花市回忆",
+                                type: "体验"
                             }
                         ]
                     },
@@ -934,19 +954,22 @@
                                 result: "按照长幼顺序摆好碗筷，阿公点头赞许",
                                 luck: 5, 
                                 happiness: 8,
-                                collect: "🥢 传统餐具"
+                                collect: "🥢 传统餐具",
+                                type: "传统"
                             },
                             { 
                                 text: "🎁 学包油角", 
                                 result: "阿妈教你包油角，虽然形状不太好看，但很有年味",
                                 happiness: 15,
-                                collect: "🥟 自制油角"
+                                collect: "🥟 自制油角",
+                                type: "美食"
                             },
                             { 
                                 text: "🍲 帮忙准备盆菜", 
                                 result: "将鲍鱼、鹅掌、花菇等食材一层层铺好",
                                 luck: 10,
-                                collect: "🍲 盆菜制作经验"
+                                collect: "🍲 盆菜制作经验",
+                                type: "美食"
                             }
                         ]
                     },
@@ -960,62 +983,112 @@
                                 result: "阿公给你大利是，还准备了瓜子糖果",
                                 money: 200, 
                                 happiness: 10,
-                                collect: "🧧 大红包"
+                                collect: "🧧 大红包",
+                                type: "家庭"
                             },
                             { 
                                 text: "🏮 跟爸妈去茶楼", 
                                 result: "茶楼人声鼎沸，一盅两件，恭喜声不绝",
                                 money: 100, 
                                 happiness: 15,
-                                collect: "🍵 茶楼点心券"
+                                collect: "🍵 茶楼点心券",
+                                type: "社交"
                             },
                             { 
                                 text: "🦁 看舞狮表演", 
                                 result: "锣鼓喧天，醒狮采青，热闹非凡",
                                 luck: 20, 
                                 happiness: 20,
-                                collect: "🦁 舞狮纪念章"
+                                collect: "🦁 舞狮纪念章",
+                                type: "文化"
                             }
                         ]
                     }
                 ],
-                // 成就系统 - 简化版，玩一遍就能达成
+                // 成就系统 - 优化版，需要2-3次游玩才能集齐
                 achievements: [
                     { 
                         id: 1, 
-                        name: "🧹 春节参与者", 
-                        desc: "完成4个春节场景体验",
-                        condition: (game) => game.currentScene >= 4 // 完成所有场景
+                        name: "🧹 传统守护者", 
+                        desc: "在所有场景中选择传统类选项",
+                        type: "路径",
+                        condition: (game) => {
+                            const traditionalChoices = ['打扫神台', '柚叶水抹门窗', '帮忙摆碗筷', '去阿公阿嫲家拜年'];
+                            return game.selectedOptions.every(opt => traditionalChoices.includes(opt));
+                        }
                     },
                     { 
                         id: 2, 
-                        name: "🎁 物品收集者", 
-                        desc: "收集至少3件春节物品",
-                        condition: (game) => game.collectedItems.length >= 3
+                        name: "🌸 浪漫主义者", 
+                        desc: "在花街选择桃花并追求幸福类选项",
+                        type: "路径",
+                        condition: (game) => {
+                            return game.selectedOptions.includes('买一株桃花') && 
+                                   game.happiness >= 130;
+                        }
                     },
                     { 
                         id: 3, 
-                        name: "✨ 好运收藏家", 
-                        desc: "好运值达到100以上",
-                        condition: (game) => game.luck >= 100
+                        name: "💰 财富追求者", 
+                        desc: "获得200元以上利是钱且选择财富类选项",
+                        type: "路径",
+                        condition: (game) => {
+                            return game.money >= 200 && 
+                                   game.selectedOptions.includes('买盆年桔');
+                        }
                     },
                     { 
                         id: 4, 
-                        name: "💰 利是小富翁", 
-                        desc: "获得至少150元利是钱",
-                        condition: (game) => game.money >= 150
+                        name: "🎯 全能体验家", 
+                        desc: "每个场景选择不同类型的选项",
+                        type: "收集",
+                        condition: (game) => {
+                            const optionTypes = game.selectedOptions.map(opt => {
+                                const scene = game.selectedOptions.indexOf(opt);
+                                const optionIndex = gameData.zh.scenes[scene]?.options.findIndex(o => o.text.includes(opt));
+                                return gameData.zh.scenes[scene]?.options[optionIndex]?.type;
+                            });
+                            const uniqueTypes = [...new Set(optionTypes.filter(t => t))];
+                            return uniqueTypes.length >= 4;
+                        }
                     },
                     { 
                         id: 5, 
-                        name: "🎉 幸福满满", 
-                        desc: "幸福度达到120以上",
-                        condition: (game) => game.happiness >= 120
+                        name: "✨ 好运之星", 
+                        desc: "好运值达到140以上",
+                        type: "数值",
+                        condition: (game) => game.luck >= 140
                     },
                     { 
                         id: 6, 
-                        name: "🌟 春节达人", 
-                        desc: "达成3个以上其他成就",
-                        condition: (game) => game.achievements.length >= 4 // 因为有6个成就，达成3个其他成就就是总成就数>=4
+                        name: "🎉 幸福达人", 
+                        desc: "幸福度达到140以上",
+                        type: "数值",
+                        condition: (game) => game.happiness >= 140
+                    },
+                    { 
+                        id: 7, 
+                        name: "🍲 美食鉴赏家", 
+                        desc: "收集所有美食类物品",
+                        type: "收集",
+                        condition: (game) => {
+                            const foodItems = ['自制油角', '盆菜制作经验', '茶楼点心券'];
+                            return foodItems.every(item => game.collectedItems.includes(item));
+                        }
+                    },
+                    { 
+                        id: 8, 
+                        name: "🎊 文化传承者", 
+                        desc: "收集至少5种不同类型物品",
+                        type: "收集",
+                        condition: (game) => game.collectedItems.length >= 5
+                    },
+                    { 
+                        id: 9, 
+                        name: "🌟 完美春节", 
+                        desc: "一次性达成5个以上其他成就",
+                        type: "综合",
+                        condition: (game) => game.achievements.length >= 6
                     }
                 ]
             },
@@ -1044,19 +1117,22 @@
                                 result: "Earn praise from elders for cleaning carefully",
                                 luck: 10, 
                                 happiness: 5,
-                                collect: "🧧 Elders' Praise"
+                                collect: "🧧 Elders' Praise",
+                                type: "traditional"
                             },
                             { 
                                 text: "🍃 Wipe with pomelo leaves", 
                                 result: "Fresh scent fills the room, driving away bad luck",
                                 luck: 15,
-                                collect: "🍃 Lucky Pomelo Leaves"
+                                collect: "🍃 Lucky Pomelo Leaves",
+                                type: "traditional"
                             },
                             { 
                                 text: "🎍 Arrange New Year plants", 
                                 result: "Place mandarin orange tree and peach blossoms beautifully",
                                 happiness: 10,
-                                collect: "🎍 New Year Decorations"
+                                collect: "🎍 New Year Decorations",
+                                type: "decoration"
                             }
                         ]
                     },
@@ -1070,20 +1146,23 @@
                                 result: "The florist smiles: 'Good luck in love this year!'",
                                 luck: 20, 
                                 money: -50,
-                                collect: "🌸 Peach Blossom Branch"
+                                collect: "🌸 Peach Blossom Branch",
+                                type: "romantic"
                             },
                             { 
                                 text: "🍊 Buy kumquat tree", 
                                 result: "Golden fruits symbolize prosperity and good fortune",
                                 luck: 15, 
                                 money: -30,
-                                collect: "🍊 Kumquat Tree"
+                                collect: "🍊 Kumquat Tree",
+                                type: "wealth"
                             },
                             { 
                                 text: "🚶 Just enjoy the atmosphere", 
                                 result: "Wander through the market, enjoying festive vibes",
                                 happiness: 10,
-                                collect: "📸 Market Memories"
+                                collect: "📸 Market Memories",
+                                type: "experience"
                             }
                         ]
                     },
@@ -1097,19 +1176,22 @@
                                 result: "Arrange dishes properly, earning approval from elders",
                                 luck: 5, 
                                 happiness: 8,
-                                collect: "🥢 Traditional Tableware"
+                                collect: "🥢 Traditional Tableware",
+                                type: "traditional"
                             },
                             { 
                                 text: "🎁 Learn to make dumplings", 
                                 result: "Mom teaches you traditional recipes",
                                 happiness: 15,
-                                collect: "🥟 Homemade Dumplings"
+                                collect: "🥟 Homemade Dumplings",
+                                type: "food"
                             },
                             { 
                                 text: "🍲 Prepare Poon Choi", 
                                 result: "Layer abalone, mushrooms and other ingredients",
                                 luck: 10,
-                                collect: "🍲 Poon Choi Experience"
+                                collect: "🍲 Poon Choi Experience",
+                                type: "food"
                             }
                         ]
                     },
@@ -1123,62 +1205,112 @@
                                 result: "Receive big red packets with blessings",
                                 money: 200, 
                                 happiness: 10,
-                                collect: "🧧 Big Red Packet"
+                                collect: "🧧 Big Red Packet",
+                                type: "family"
                             },
                             { 
                                 text: "🏮 Go to tea house", 
                                 result: "Experience festive atmosphere with family",
                                 money: 100, 
                                 happiness: 15,
-                                collect: "🍵 Tea House Voucher"
+                                collect: "🍵 Tea House Voucher",
+                                type: "social"
                             },
                             { 
                                 text: "🦁 Watch lion dance", 
                                 result: "Exciting performance with drums and colors",
                                 luck: 20, 
                                 happiness: 20,
-                                collect: "🦁 Lion Dance Badge"
+                                collect: "🦁 Lion Dance Badge",
+                                type: "cultural"
                             }
                         ]
                     }
                 ],
-                // 成就系统 - 简化版
+                // 成就系统 - 优化版
                 achievements: [
                     { 
                         id: 1, 
-                        name: "🧹 New Year Participant", 
-                        desc: "Complete all 4 festival scenes",
-                        condition: (game) => game.currentScene >= 4
+                        name: "🧹 Tradition Keeper", 
+                        desc: "Choose traditional options in all scenes",
+                        type: "path",
+                        condition: (game) => {
+                            const traditionalChoices = ['Clean the altar', 'Wipe with pomelo leaves', 'Set the table', 'Visit grandparents'];
+                            return game.selectedOptions.every(opt => traditionalChoices.includes(opt));
+                        }
                     },
                     { 
                         id: 2, 
-                        name: "🎁 Item Collector", 
-                        desc: "Collect at least 3 festival items",
-                        condition: (game) => game.collectedItems.length >= 3
+                        name: "🌸 Romantic Soul", 
+                        desc: "Buy peach blossoms and pursue happiness",
+                        type: "path",
+                        condition: (game) => {
+                            return game.selectedOptions.includes('Buy peach blossoms') && 
+                                   game.happiness >= 130;
+                        }
                     },
                     { 
                         id: 3, 
-                        name: "✨ Luck Collector", 
-                        desc: "Reach 100+ luck points",
-                        condition: (game) => game.luck >= 100
+                        name: "💰 Wealth Seeker", 
+                        desc: "Get $200+ red packets and choose wealth options",
+                        type: "path",
+                        condition: (game) => {
+                            return game.money >= 200 && 
+                                   game.selectedOptions.includes('Buy kumquat tree');
+                        }
                     },
                     { 
                         id: 4, 
-                        name: "💰 Red Packet Rich", 
-                        desc: "Get at least $150 red packets",
-                        condition: (game) => game.money >= 150
+                        name: "🎯 All-Round Experiencer", 
+                        desc: "Choose different option types in each scene",
+                        type: "collection",
+                        condition: (game) => {
+                            const optionTypes = game.selectedOptions.map(opt => {
+                                const scene = game.selectedOptions.indexOf(opt);
+                                const optionIndex = gameData.en.scenes[scene]?.options.findIndex(o => o.text.includes(opt));
+                                return gameData.en.scenes[scene]?.options[optionIndex]?.type;
+                            });
+                            const uniqueTypes = [...new Set(optionTypes.filter(t => t))];
+                            return uniqueTypes.length >= 4;
+                        }
                     },
                     { 
                         id: 5, 
-                        name: "🎉 Happiness Full", 
-                        desc: "Reach 120+ happiness",
-                        condition: (game) => game.happiness >= 120
+                        name: "✨ Lucky Star", 
+                        desc: "Reach 140+ luck points",
+                        type: "value",
+                        condition: (game) => game.luck >= 140
                     },
                     { 
                         id: 6, 
-                        name: "🌟 Festival Master", 
-                        desc: "Achieve 3+ other achievements",
-                        condition: (game) => game.achievements.length >= 4
+                        name: "🎉 Happiness Master", 
+                        desc: "Reach 140+ happiness",
+                        type: "value",
+                        condition: (game) => game.happiness >= 140
+                    },
+                    { 
+                        id: 7, 
+                        name: "🍲 Food Connoisseur", 
+                        desc: "Collect all food items",
+                        type: "collection",
+                        condition: (game) => {
+                            const foodItems = ['Homemade Dumplings', 'Poon Choi Experience', 'Tea House Voucher'];
+                            return foodItems.every(item => game.collectedItems.includes(item));
+                        }
+                    },
+                    { 
+                        id: 8, 
+                        name: "🎊 Culture Inheritor", 
+                        desc: "Collect 5+ different items",
+                        type: "collection",
+                        condition: (game) => game.collectedItems.length >= 5
+                    },
+                    { 
+                        id: 9, 
+                        name: "🌟 Perfect Celebration", 
+                        desc: "Achieve 5+ other achievements in one play",
+                        type: "comprehensive",
+                        condition: (game) => game.achievements.length >= 6
                     }
                 ]
             }
@@ -1248,6 +1380,7 @@
             game.happiness = 100;
             game.collectedItems = [];
             game.achievements = [];
+            game.selectedOptions = [];
             
             // 更新界面语言
             updateLanguageUI();
@@ -1348,6 +1481,9 @@
                 button.addEventListener('click', function() {
                     // 保存选项结果
                     game.lastOptionResult = option;
+                    // 记录选择的选项文本
+                    const optionText = option.text.replace(/[🧹🍃🎍🌸🍊🚶🥢🎁🍲🏡🏮🦁]/g, '').trim();
+                    game.selectedOptions.push(optionText);
                     
                     // 显示拍立得弹窗
                     showPolaroidModal(option);
@@ -1458,7 +1594,7 @@
             // 计算成就
             calculateAchievements();
             
-            // 确定结局类型 - 简化版，根据成就数量决定
+            // 确定结局类型
             const endingType = determineEndingType();
             
             // 设置结局图片
@@ -1470,16 +1606,16 @@
             // 设置结局文本
             const endings = {
                 zh: [
-                    { title: "春节初体验", text: "您体验了完整的春节习俗，虽然成就有限，但感受到了浓浓的年味和传统魅力。" },
-                    { title: "春节小达人", text: "不错的春节体验！您收集了不少物品，获得了家人赞赏，新的一年将有好运相伴！" },
-                    { title: "春节收藏家", text: "精彩的春节旅程！您收集了大量传统物品，获得了丰富的红包，新年必是财源广进！" },
-                    { title: "春节大师", text: "完美的春节体验！您几乎达成了所有成就，深入了解了广府年俗，新的一年必将万事如意！" }
+                    { title: "春节初体验", text: "您体验了完整的春节习俗，感受到传统魅力。继续探索不同选项，解锁更多成就吧！" },
+                    { title: "春节探索者", text: "不错的春节体验！您解锁了一些成就，但还有更多精彩等待发现！" },
+                    { title: "春节达人", text: "精彩的春节旅程！您解锁了多个成就，深入了解了广府年俗！" },
+                    { title: "春节大师", text: "完美的春节体验！您几乎达成了所有成就，展现了出色的选择智慧！" }
                 ],
                 en: [
-                    { title: "New Year Beginner", text: "You experienced complete New Year traditions, feeling the charm of traditional celebrations." },
-                    { title: "New Year Expert", text: "Great New Year experience! You collected many items and earned family praise for good luck ahead!" },
-                    { title: "New Year Collector", text: "Wonderful journey! You collected many traditional items and received generous red packets for prosperity!" },
-                    { title: "New Year Master", text: "Perfect New Year experience! You achieved most achievements, deeply understanding traditions for a wonderful year!" }
+                    { title: "New Year Beginner", text: "You experienced complete traditions. Explore different choices to unlock more achievements!" },
+                    { title: "New Year Explorer", text: "Great New Year experience! You unlocked some achievements, more await discovery!" },
+                    { title: "New Year Expert", text: "Wonderful journey! You unlocked multiple achievements, deeply understanding traditions!" },
+                    { title: "New Year Master", text: "Perfect experience! You achieved most achievements with excellent choices!" }
                 ]
             };
             
@@ -1506,13 +1642,18 @@
             
             // 显示成就
             const achievementList = document.getElementById('achievementList');
-            let achievementsHTML = `<h4>${game.language === 'zh' ? '🎖️ 获得的成就' : '🎖️ Achievements'}</h4>`;
+            let achievementsHTML = `<h4>${game.language === 'zh' ? '🎖️ 获得的成就' : '🎖️ Achievements'} (${game.achievements.length}/9)</h4>`;
             
             const allAchievements = langData.achievements;
-            allAchievements.forEach(ach => {
+            allAchievements.forEach((ach, index) => {
                 const isUnlocked = game.achievements.includes(ach.id);
+                const badgeType = ach.type === 'path' ? '🛤️' : 
+                                 ach.type === 'value' ? '✨' : 
+                                 ach.type === 'collection' ? '🎁' : '🌟';
+                
                 achievementsHTML += `
                     <div class="achievement-item ${isUnlocked ? '' : 'locked'}">
+                        <div class="achievement-badge">${badgeType}</div>
                         ${isUnlocked ? '✅' : '🔒'} ${ach.name}
                         <span style="font-size: 12px; color: #666; margin-left: auto;">${ach.desc}</span>
                     </div>
@@ -1522,10 +1663,12 @@
             achievementList.innerHTML = achievementsHTML;
             
             // 设置结论文本
-            document.getElementById('endingConclusion').textContent = 
-                game.language === 'zh' 
-                    ? `您共获得了 ${game.achievements.length} 个成就！点击下方按钮抽取您的新年好运签！` 
-                    : `You earned ${game.achievements.length} achievements! Click below to draw your New Year fortune!`;
+            const totalAchievements = game.achievements.length;
+            const conclusionText = game.language === 'zh' 
+                ? `您共获得了 ${totalAchievements} 个成就！需要玩2-3次才能集齐所有9个成就。点击下方按钮抽取您的新年好运签！` 
+                : `You earned ${totalAchievements} achievements! Play 2-3 times to collect all 9 achievements. Click below to draw your New Year fortune!`;
+            
+            document.getElementById('endingConclusion').textContent = conclusionText;
         }
 
         // ==================== 计算成就 ====================
@@ -1546,9 +1689,9 @@
         function determineEndingType() {
             const unlockedCount = game.achievements.length;
             
-            if (unlockedCount >= 5) return 3; // 解锁5-6个成就：大师
-            if (unlockedCount >= 4) return 2; // 解锁4个成就：收藏家
-            if (unlockedCount >= 3) return 1; // 解锁3个成就：小达人
+            if (unlockedCount >= 7) return 3; // 解锁7-9个成就：大师
+            if (unlockedCount >= 5) return 2; // 解锁5-6个成就：达人
+            if (unlockedCount >= 3) return 1; // 解锁3-4个成就：探索者
             return 0; // 解锁0-2个成就：初体验
         }
 
@@ -1574,14 +1717,17 @@
         function drawFortune() {
             const fortunes = gameImages.fortunes;
             // 根据成就数量决定好运签质量
-            let randomIndex;
             const achievementCount = game.achievements.length;
             
-            if (achievementCount >= 5) {
-                // 高成就：只抽最好的签
-                randomIndex = Math.floor(Math.random() * 2); // 前两个最好的签
-            } else if (achievementCount >= 3) {
+            let randomIndex;
+            if (achievementCount >= 7) {
+                // 高成就：高质量签
+                randomIndex = Math.floor(Math.random() * Math.min(2, fortunes.length));
+            } else if (achievementCount >= 5) {
                 // 中等成就
+                randomIndex = Math.floor(Math.random() * Math.min(3, fortunes.length));
+            } else if (achievementCount >= 3) {
+                // 一般成就
                 randomIndex = Math.floor(Math.random() * fortunes.length);
             } else {
                 // 低成就
@@ -1661,6 +1807,7 @@
             game.happiness = 100;
             game.collectedItems = [];
             game.achievements = [];
+            game.selectedOptions = [];
         }
 
         // ==================== 页面加载完成后启动 ====================
@@ -1668,9 +1815,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
