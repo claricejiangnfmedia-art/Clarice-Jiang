@@ -569,6 +569,27 @@
             margin: 20px 0;
         }
         
+        .ending-type {
+            background: linear-gradient(135deg, #ffd93d 0%, #ff9a9e 100%);
+            padding: 15px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 3px solid #ffd700;
+        }
+        
+        .ending-type-title {
+            color: #c1272d;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .ending-type-desc {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
         .ending-action-btn {
             width: 200px;
             padding: 15px;
@@ -769,7 +790,7 @@
                     <div class="status-label" id="luckLabel">好运值</div>
                 </div>
                 <div class="status-item">
-                    <div class="status-value" id="moneyValue">¥0</div>
+                    <div class="status-value" id="moneyValue">¥100</div>
                     <div class="status-label" id="moneyLabel">利是钱</div>
                 </div>
             </div>
@@ -784,6 +805,11 @@
                 <p id="endingResultText">根据您的选择，获得了以下成就...</p>
                 
                 <div class="ending-stats" id="endingStats"></div>
+                
+                <div class="ending-type" id="endingTypeSection">
+                    <div class="ending-type-title" id="endingTypeTitle">春节类型</div>
+                    <div class="ending-type-desc" id="endingTypeDesc">根据您的选择确定的春节类型</div>
+                </div>
                 
                 <div class="achievement-list" id="achievementList"></div>
                 
@@ -817,12 +843,18 @@
             language: 'zh',
             currentScene: 0,
             luck: 88,
-            money: 0,
+            money: 100, // 初始给予100元
             happiness: 100,
             collectedItems: [],
             achievements: [],
             lastOptionResult: null,
-            selectedOptions: []
+            selectedOptions: [],
+            choiceTypes: {
+                traditional: 0, // 传统型选择数量
+                modern: 0,      // 现代型选择数量
+                family: 0,      // 家庭型选择数量
+                social: 0       // 社交型选择数量
+            }
         };
 
         // ==================== 图片配置 ====================
@@ -900,30 +932,36 @@
                 scenes: [
                     {
                         title: "🧹 洗邋遢迎新春",
-                        text: "年廿八的阳光透过满洲窗，洒在西关大屋的青砖墙上。今天是'洗邋遢'的日子，要把家里打扫得干干净净迎新年。",
+                        text: "年廿八的阳光透过满洲窗，洒在西关大屋的青砖墙上。今天是'洗邋遢'的日子，要把家里打扫得干干净净迎新年。妈妈给了你100元零花钱。",
                         cantonese: "阿妈话：'年廿八，洗邋遢，洗埋衰气好运来！'",
                         options: [
                             { 
                                 text: "🧹 帮忙打扫神台", 
-                                result: "认真擦拭祖先牌位，获得长辈赞赏",
+                                result: "认真擦拭祖先牌位，爸爸赞赏给了20元利是",
                                 luck: 10, 
                                 happiness: 5,
+                                money: 20,
                                 collect: "🧧 长辈的赞赏",
-                                type: "传统"
+                                type: "traditional",
+                                choiceType: "traditional"
                             },
                             { 
                                 text: "🍃 用柚叶水抹门窗", 
-                                result: "柚叶清香满屋，驱除霉运",
+                                result: "柚叶清香满屋，驱除霉运，亲戚给了30元利是",
                                 luck: 15,
+                                money: 30,
                                 collect: "🍃 吉祥柚叶",
-                                type: "传统"
+                                type: "traditional",
+                                choiceType: "traditional"
                             },
                             { 
                                 text: "🎍 整理年花摆设", 
-                                result: "将年桔、桃花摆到合适位置，家里焕然一新",
+                                result: "将年桔、桃花摆到合适位置，邻居给了10元小红包",
                                 happiness: 10,
+                                money: 10,
                                 collect: "🎍 新年装饰",
-                                type: "装饰"
+                                type: "decoration",
+                                choiceType: "family"
                             }
                         ]
                     },
@@ -933,27 +971,33 @@
                         cantonese: "行花街，转大运！买支桃花旺姻缘！",
                         options: [
                             { 
-                                text: "🌸 买一株桃花", 
-                                result: "花农说：'后生仔，今年行桃花运啦！'",
+                                text: "🌸 买一株桃花 (¥50)", 
+                                result: "花农说：'后生仔，今年行桃花运啦！' 还给了你一个小红包",
                                 luck: 20, 
-                                money: -50,
+                                money: -30, // 实际花50，但得20红包
+                                happiness: 10,
                                 collect: "🌸 桃花枝",
-                                type: "浪漫"
+                                type: "romantic",
+                                choiceType: "modern"
                             },
                             { 
-                                text: "🍊 买盆年桔", 
-                                result: "金桔满枝头，寓意大吉大利",
+                                text: "🍊 买盆年桔 (¥30)", 
+                                result: "金桔满枝头，寓意大吉大利，老板给了15元回礼",
                                 luck: 15, 
-                                money: -30,
+                                money: -15, // 实际花30，但得15回礼
+                                happiness: 5,
                                 collect: "🍊 金桔树",
-                                type: "财富"
+                                type: "wealth",
+                                choiceType: "traditional"
                             },
                             { 
                                 text: "🚶 只看不买，感受气氛", 
-                                result: "在花市里闲逛，欣赏各种年花和创意产品",
+                                result: "在花市里闲逛，遇见邻居给了你一个小红包",
                                 happiness: 10,
+                                money: 15,
                                 collect: "📸 花市回忆",
-                                type: "体验"
+                                type: "experience",
+                                choiceType: "social"
                             }
                         ]
                     },
@@ -964,25 +1008,31 @@
                         options: [
                             { 
                                 text: "🥢 帮忙摆碗筷", 
-                                result: "按照长幼顺序摆好碗筷，阿公点头赞许",
+                                result: "按照长幼顺序摆好碗筷，阿公点头赞许给了利是",
                                 luck: 5, 
                                 happiness: 8,
+                                money: 50,
                                 collect: "🥢 传统餐具",
-                                type: "传统"
+                                type: "traditional",
+                                choiceType: "family"
                             },
                             { 
                                 text: "🎁 学包油角", 
-                                result: "阿妈教你包油角，虽然形状不太好看，但很有年味",
+                                result: "阿妈教你包油角，还给了零花钱",
                                 happiness: 15,
+                                money: 30,
                                 collect: "🥟 自制油角",
-                                type: "美食"
+                                type: "food",
+                                choiceType: "family"
                             },
                             { 
                                 text: "🍲 帮忙准备盆菜", 
-                                result: "将鲍鱼、鹅掌、花菇等食材一层层铺好",
+                                result: "将鲍鱼、鹅掌、花菇等食材一层层铺好，亲戚给了赞赏红包",
                                 luck: 10,
+                                money: 40,
                                 collect: "🍲 盆菜制作经验",
-                                type: "美食"
+                                type: "food",
+                                choiceType: "traditional"
                             }
                         ]
                     },
@@ -997,79 +1047,110 @@
                                 money: 200, 
                                 happiness: 10,
                                 collect: "🧧 大红包",
-                                type: "家庭"
+                                type: "family",
+                                choiceType: "family"
                             },
                             { 
                                 text: "🏮 跟爸妈去茶楼", 
-                                result: "茶楼人声鼎沸，一盅两件，恭喜声不绝",
+                                result: "茶楼人声鼎沸，一盅两件，遇到亲戚给了利是",
                                 money: 100, 
                                 happiness: 15,
                                 collect: "🍵 茶楼点心券",
-                                type: "社交"
+                                type: "social",
+                                choiceType: "social"
                             },
                             { 
                                 text: "🦁 看舞狮表演", 
-                                result: "锣鼓喧天，醒狮采青，热闹非凡",
+                                result: "锣鼓喧天，醒狮采青，表演者给了小红包",
                                 luck: 20, 
                                 happiness: 20,
+                                money: 80,
                                 collect: "🦁 舞狮纪念章",
-                                type: "文化"
+                                type: "cultural",
+                                choiceType: "social"
                             }
                         ]
                     }
                 ],
-                // 成就系统 - 简化显示，只展示本次获得的
+                // 结局类型（不再与成就挂钩，根据选择和数值）
+                endings: [
+                    {
+                        title: "🏮 传统温馨型",
+                        desc: "您选择了传统的春节习俗，注重家庭团聚和传统仪式。您的春节充满了温馨的家庭氛围和浓郁的传统气息。",
+                        condition: (game) => game.choiceTypes.traditional >= 2 && game.choiceTypes.family >= 2
+                    },
+                    {
+                        title: "💰 财运亨通型",
+                        desc: "您的春节财运亨通！不仅收到了丰厚的利是钱，还做出了明智的选择。新的一年必将财源广进！",
+                        condition: (game) => game.money >= 300
+                    },
+                    {
+                        title: "✨ 好运连连型",
+                        desc: "好运伴随您的整个春节！您的选择带来了满满的好运值，新的一年必将一帆风顺，心想事成！",
+                        condition: (game) => game.luck >= 140
+                    },
+                    {
+                        title: "🎉 社交达人型",
+                        desc: "您积极参与各种社交活动，体验了丰富多彩的春节氛围。您的春节充满了欢乐和人气！",
+                        condition: (game) => game.choiceTypes.social >= 2
+                    },
+                    {
+                        title: "😊 幸福美满型",
+                        desc: "您的春节幸福度爆棚！家人团聚、美食相伴、快乐无限，这是最完美的春节体验！",
+                        condition: (game) => game.happiness >= 140
+                    },
+                    {
+                        title: "🎨 多样体验型",
+                        desc: "您尝试了各种不同的春节体验，既有传统习俗，又有现代元素。您的春节丰富多彩！",
+                        condition: (game) => {
+                            const types = Object.values(game.choiceTypes).filter(count => count > 0);
+                            return types.length >= 3;
+                        }
+                    }
+                ],
+                // 成就系统
                 achievements: [
                     { 
                         id: 1, 
                         name: "🧹 传统守护者", 
-                        desc: "您恪守传统，选择了所有传统习俗",
+                        desc: "您恪守传统，选择了多个传统习俗",
                         icon: "🏮",
-                        condition: (game) => {
-                            const traditionalChoices = ['打扫神台', '柚叶水抹门窗', '帮忙摆碗筷', '去阿公阿嫲家拜年'];
-                            return game.selectedOptions.filter(opt => traditionalChoices.includes(opt)).length >= 3;
-                        }
+                        condition: (game) => game.choiceTypes.traditional >= 2
                     },
                     { 
                         id: 2, 
                         name: "🌸 浪漫主义者", 
                         desc: "您选择了桃花，期待美好姻缘",
                         icon: "💕",
-                        condition: (game) => {
-                            return game.selectedOptions.includes('买一株桃花') && game.happiness >= 120;
-                        }
+                        condition: (game) => game.selectedOptions.includes('买一株桃花')
                     },
                     { 
                         id: 3, 
                         name: "💰 财富追求者", 
                         desc: "您获得了丰厚利是，财运亨通",
                         icon: "💰",
-                        condition: (game) => {
-                            return game.money >= 150;
-                        }
+                        condition: (game) => game.money >= 250
                     },
                     { 
                         id: 4, 
                         name: "🎯 全能体验家", 
                         desc: "您尝试了多种不同的春节体验",
                         icon: "🎨",
-                        condition: (game) => {
-                            return game.collectedItems.length >= 4;
-                        }
+                        condition: (game) => game.collectedItems.length >= 4
                     },
                     { 
                         id: 5, 
                         name: "✨ 好运之星", 
                         desc: "您的好运值爆棚，新年必定顺利",
                         icon: "⭐",
-                        condition: (game) => game.luck >= 120
+                        condition: (game) => game.luck >= 130
                     },
                     { 
                         id: 6, 
                         name: "🎉 幸福达人", 
                         desc: "您的幸福度满满，春节快乐无比",
                         icon: "😊",
-                        condition: (game) => game.happiness >= 120
+                        condition: (game) => game.happiness >= 130
                     },
                     { 
                         id: 7, 
@@ -1083,17 +1164,17 @@
                     },
                     { 
                         id: 8, 
-                        name: "🌟 完美春节", 
-                        desc: "您达成了多项成就，春节体验完美",
-                        icon: "🏆",
-                        condition: (game) => game.achievements.length >= 4
+                        name: "🏡 家庭温馨型", 
+                        desc: "您注重家庭团聚，享受天伦之乐",
+                        icon: "👨‍👩‍👧‍👦",
+                        condition: (game) => game.choiceTypes.family >= 2
                     }
                 ]
             },
             en: {
                 languageTitle: "Guangdong New Year Journey",
                 languageSubtitle: "Experience Cantonese New Year Traditions",
-                days: ["Day 28", "New Year's Eve", "Day 1", "Lantern Festival"],
+                days: ["28th day before New Year", "New Year's Eve", "New Year's Day", "Lantern Festival"],
                 dayLabel: "Current Day",
                 luckLabel: "Luck Points", 
                 moneyLabel: "Red Packets",
@@ -1107,30 +1188,36 @@
                 scenes: [
                     {
                         title: "🧹 Spring Cleaning Day",
-                        text: "Morning sunlight shines through the traditional windows. It's time for thorough cleaning to welcome the New Year!",
+                        text: "Morning sunlight shines through the traditional windows. It's time for thorough cleaning to welcome the New Year! Mom gives you ¥100 pocket money.",
                         cantonese: "",
                         options: [
                             { 
                                 text: "🧹 Clean the altar", 
-                                result: "Earn praise from elders for cleaning carefully",
+                                result: "Earn praise from elders for cleaning carefully, dad gives ¥20 red packet",
                                 luck: 10, 
                                 happiness: 5,
+                                money: 20,
                                 collect: "🧧 Elders' Praise",
-                                type: "traditional"
+                                type: "traditional",
+                                choiceType: "traditional"
                             },
                             { 
                                 text: "🍃 Wipe with pomelo leaves", 
-                                result: "Fresh scent fills the room, driving away bad luck",
+                                result: "Fresh scent fills the room, driving away bad luck, relative gives ¥30 red packet",
                                 luck: 15,
+                                money: 30,
                                 collect: "🍃 Lucky Pomelo Leaves",
-                                type: "traditional"
+                                type: "traditional",
+                                choiceType: "traditional"
                             },
                             { 
                                 text: "🎍 Arrange New Year plants", 
-                                result: "Place mandarin orange tree and peach blossoms beautifully",
+                                result: "Place mandarin orange tree and peach blossoms beautifully, neighbor gives ¥10 small red packet",
                                 happiness: 10,
+                                money: 10,
                                 collect: "🎍 New Year Decorations",
-                                type: "decoration"
+                                type: "decoration",
+                                choiceType: "family"
                             }
                         ]
                     },
@@ -1140,27 +1227,33 @@
                         cantonese: "",
                         options: [
                             { 
-                                text: "🌸 Buy peach blossoms", 
-                                result: "The florist smiles: 'Good luck in love this year!'",
+                                text: "🌸 Buy peach blossoms (¥50)", 
+                                result: "The florist smiles: 'Good luck in love this year!' Also gives you small red packet",
                                 luck: 20, 
-                                money: -50,
+                                money: -30,
+                                happiness: 10,
                                 collect: "🌸 Peach Blossom Branch",
-                                type: "romantic"
+                                type: "romantic",
+                                choiceType: "modern"
                             },
                             { 
-                                text: "🍊 Buy kumquat tree", 
-                                result: "Golden fruits symbolize prosperity and good fortune",
+                                text: "🍊 Buy kumquat tree (¥30)", 
+                                result: "Golden fruits symbolize prosperity and good fortune, vendor gives ¥15 gift",
                                 luck: 15, 
-                                money: -30,
+                                money: -15,
+                                happiness: 5,
                                 collect: "🍊 Kumquat Tree",
-                                type: "wealth"
+                                type: "wealth",
+                                choiceType: "traditional"
                             },
                             { 
                                 text: "🚶 Just enjoy the atmosphere", 
-                                result: "Wander through the market, enjoying festive vibes",
+                                result: "Wander through the market, meeting neighbor who gives small red packet",
                                 happiness: 10,
+                                money: 15,
                                 collect: "📸 Market Memories",
-                                type: "experience"
+                                type: "experience",
+                                choiceType: "social"
                             }
                         ]
                     },
@@ -1171,25 +1264,31 @@
                         options: [
                             { 
                                 text: "🥢 Set the table", 
-                                result: "Arrange dishes properly, earning approval from elders",
+                                result: "Arrange dishes properly, earning approval from elders who give red packet",
                                 luck: 5, 
                                 happiness: 8,
+                                money: 50,
                                 collect: "🥢 Traditional Tableware",
-                                type: "traditional"
+                                type: "traditional",
+                                choiceType: "family"
                             },
                             { 
                                 text: "🎁 Learn to make dumplings", 
-                                result: "Mom teaches you traditional recipes",
+                                result: "Mom teaches you traditional recipes and gives pocket money",
                                 happiness: 15,
+                                money: 30,
                                 collect: "🥟 Homemade Dumplings",
-                                type: "food"
+                                type: "food",
+                                choiceType: "family"
                             },
                             { 
                                 text: "🍲 Prepare Poon Choi", 
-                                result: "Layer abalone, mushrooms and other ingredients",
+                                result: "Layer abalone, mushrooms and other ingredients, relative gives appreciation red packet",
                                 luck: 10,
+                                money: 40,
                                 collect: "🍲 Poon Choi Experience",
-                                type: "food"
+                                type: "food",
+                                choiceType: "traditional"
                             }
                         ]
                     },
@@ -1204,79 +1303,110 @@
                                 money: 200, 
                                 happiness: 10,
                                 collect: "🧧 Big Red Packet",
-                                type: "family"
+                                type: "family",
+                                choiceType: "family"
                             },
                             { 
                                 text: "🏮 Go to tea house", 
-                                result: "Experience festive atmosphere with family",
+                                result: "Experience festive atmosphere with family, meet relatives who give red packets",
                                 money: 100, 
                                 happiness: 15,
                                 collect: "🍵 Tea House Voucher",
-                                type: "social"
+                                type: "social",
+                                choiceType: "social"
                             },
                             { 
                                 text: "🦁 Watch lion dance", 
-                                result: "Exciting performance with drums and colors",
+                                result: "Exciting performance with drums and colors, performers give small red packet",
                                 luck: 20, 
                                 happiness: 20,
+                                money: 80,
                                 collect: "🦁 Lion Dance Badge",
-                                type: "cultural"
+                                type: "cultural",
+                                choiceType: "social"
                             }
                         ]
                     }
                 ],
-                // 成就系统 - 简化显示
+                // 结局类型
+                endings: [
+                    {
+                        title: "🏮 Traditional & Warm",
+                        desc: "You followed traditional New Year customs, focusing on family reunions. Your celebration was filled with warmth and tradition.",
+                        condition: (game) => game.choiceTypes.traditional >= 2 && game.choiceTypes.family >= 2
+                    },
+                    {
+                        title: "💰 Wealth & Prosperity",
+                        desc: "Your New Year brought great wealth! You received generous red packets and made wise choices. Prosperity awaits!",
+                        condition: (game) => game.money >= 300
+                    },
+                    {
+                        title: "✨ Lucky & Fortunate",
+                        desc: "Good luck accompanied your whole celebration! Your choices brought high luck points for a smooth year ahead.",
+                        condition: (game) => game.luck >= 140
+                    },
+                    {
+                        title: "🎉 Social Butterfly",
+                        desc: "You actively participated in social activities, experiencing diverse festive atmosphere. Your New Year was joyful!",
+                        condition: (game) => game.choiceTypes.social >= 2
+                    },
+                    {
+                        title: "😊 Happiness & Joy",
+                        desc: "Your happiness overflowed! Family gatherings, delicious food, and endless joy made a perfect celebration.",
+                        condition: (game) => game.happiness >= 140
+                    },
+                    {
+                        title: "🎨 Diverse Experience",
+                        desc: "You tried various New Year experiences, blending tradition with modernity. Your celebration was rich and colorful!",
+                        condition: (game) => {
+                            const types = Object.values(game.choiceTypes).filter(count => count > 0);
+                            return types.length >= 3;
+                        }
+                    }
+                ],
+                // 成就系统
                 achievements: [
                     { 
                         id: 1, 
                         name: "🧹 Tradition Keeper", 
-                        desc: "You followed traditional customs",
+                        desc: "You followed multiple traditional customs",
                         icon: "🏮",
-                        condition: (game) => {
-                            const traditionalChoices = ['Clean the altar', 'Wipe with pomelo leaves', 'Set the table', 'Visit grandparents'];
-                            return game.selectedOptions.filter(opt => traditionalChoices.includes(opt)).length >= 3;
-                        }
+                        condition: (game) => game.choiceTypes.traditional >= 2
                     },
                     { 
                         id: 2, 
                         name: "🌸 Romantic Soul", 
                         desc: "You chose peach blossoms for love luck",
                         icon: "💕",
-                        condition: (game) => {
-                            return game.selectedOptions.includes('Buy peach blossoms') && game.happiness >= 120;
-                        }
+                        condition: (game) => game.selectedOptions.includes('Buy peach blossoms')
                     },
                     { 
                         id: 3, 
                         name: "💰 Wealth Seeker", 
                         desc: "You received generous red packets",
                         icon: "💰",
-                        condition: (game) => {
-                            return game.money >= 150;
-                        }
+                        condition: (game) => game.money >= 250
                     },
                     { 
                         id: 4, 
                         name: "🎯 All-Round Experiencer", 
                         desc: "You tried various New Year experiences",
                         icon: "🎨",
-                        condition: (game) => {
-                            return game.collectedItems.length >= 4;
-                        }
+                        condition: (game) => game.collectedItems.length >= 4
                     },
                     { 
                         id: 5, 
                         name: "✨ Lucky Star", 
                         desc: "You have exceptional luck for the new year",
                         icon: "⭐",
-                        condition: (game) => game.luck >= 120
+                        condition: (game) => game.luck >= 130
                     },
                     { 
                         id: 6, 
                         name: "🎉 Happiness Master", 
                         desc: "You experienced great joy this New Year",
                         icon: "😊",
-                        condition: (game) => game.happiness >= 120
+                        condition: (game) => game.happiness >= 130
                     },
                     { 
                         id: 7, 
@@ -1290,10 +1420,10 @@
                     },
                     { 
                         id: 8, 
-                        name: "🌟 Perfect Celebration", 
-                        desc: "You achieved multiple accomplishments",
-                        icon: "🏆",
-                        condition: (game) => game.achievements.length >= 4
+                        name: "🏡 Family Oriented", 
+                        desc: "You focused on family gatherings and bonding",
+                        icon: "👨‍👩‍👧‍👦",
+                        condition: (game) => game.choiceTypes.family >= 2
                     }
                 ]
             }
@@ -1359,11 +1489,17 @@
             game.language = lang;
             game.currentScene = 0;
             game.luck = 88;
-            game.money = 0;
+            game.money = 100; // 初始给予100元
             game.happiness = 100;
             game.collectedItems = [];
             game.achievements = [];
             game.selectedOptions = [];
+            game.choiceTypes = {
+                traditional: 0,
+                modern: 0,
+                family: 0,
+                social: 0
+            };
             
             // 更新界面语言
             updateLanguageUI();
@@ -1469,6 +1605,11 @@
                     const optionText = option.text.replace(/[🧹🍃🎍🌸🍊🚶🥢🎁🍲🏡🏮🦁]/g, '').trim();
                     game.selectedOptions.push(optionText);
                     
+                    // 记录选择类型
+                    if (option.choiceType && game.choiceTypes[option.choiceType] !== undefined) {
+                        game.choiceTypes[option.choiceType]++;
+                    }
+                    
                     // 显示拍立得弹窗
                     showPolaroidModal(option);
                     
@@ -1478,7 +1619,7 @@
                     if (option.happiness) game.happiness += option.happiness;
                     if (option.collect) game.collectedItems.push(option.collect);
                     
-                    // 确保数值不为负
+                    // 确保数值不为负（由于初始有100元，不会为负）
                     game.luck = Math.max(0, game.luck);
                     game.money = Math.max(0, game.money);
                     game.happiness = Math.max(0, game.happiness);
@@ -1579,33 +1720,28 @@
             calculateAchievements();
             
             // 确定结局类型
-            const endingType = determineEndingType();
+            const ending = determineEndingType();
             
-            // 设置结局图片
+            // 设置结局图片（根据结局类型选择图片）
             const endingImg = document.getElementById('endingImage');
-            if (endingType < gameImages.endings.length) {
-                endingImg.src = gameImages.endings[endingType];
+            let endingImageIndex = 0; // 默认普通结局
+            
+            if (ending.title.includes('财运') || ending.title.includes('Wealth')) endingImageIndex = 2;
+            else if (ending.title.includes('好运') || ending.title.includes('Lucky')) endingImageIndex = 1;
+            else if (ending.title.includes('幸福') || ending.title.includes('Happiness') || 
+                     ending.title.includes('完美') || ending.title.includes('Perfect')) endingImageIndex = 3;
+            
+            if (endingImageIndex < gameImages.endings.length) {
+                endingImg.src = gameImages.endings[endingImageIndex];
             }
             
             // 设置结局文本
-            const endings = {
-                zh: [
-                    { title: "春节初体验", text: "您体验了完整的春节习俗，感受到了传统魅力。" },
-                    { title: "春节探索者", text: "不错的春节体验！您解锁了一些特别的成就。" },
-                    { title: "春节达人", text: "精彩的春节旅程！您获得了多项成就。" },
-                    { title: "春节大师", text: "完美的春节体验！您展现了出色的选择智慧！" }
-                ],
-                en: [
-                    { title: "New Year Beginner", text: "You experienced complete traditions, feeling their charm." },
-                    { title: "New Year Explorer", text: "Great New Year experience! You unlocked special achievements." },
-                    { title: "New Year Expert", text: "Wonderful journey! You earned multiple achievements." },
-                    { title: "New Year Master", text: "Perfect experience! You showed excellent choices!" }
-                ]
-            };
+            document.getElementById('endingResultTitle').textContent = game.language === 'zh' ? '您的春节类型' : 'Your New Year Type';
+            document.getElementById('endingResultText').textContent = game.language === 'zh' ? '根据您的选择和表现，您的春节属于：' : 'Based on your choices, your New Year celebration is:';
             
-            const endingTexts = endings[game.language];
-            document.getElementById('endingResultTitle').textContent = endingTexts[endingType].title;
-            document.getElementById('endingResultText').textContent = endingTexts[endingType].text;
+            // 显示结局类型
+            document.getElementById('endingTypeTitle').textContent = ending.title;
+            document.getElementById('endingTypeDesc').textContent = ending.desc;
             
             // 显示统计数据
             const endingStats = document.getElementById('endingStats');
@@ -1619,8 +1755,8 @@
                     <div class="ending-stat-label">${langData.moneyLabel}</div>
                 </div>
                 <div class="ending-stat-item">
-                    <div class="ending-stat-value">${game.collectedItems.length}</div>
-                    <div class="ending-stat-label">${game.language === 'zh' ? '收集物品' : 'Items'}</div>
+                    <div class="ending-stat-value">${game.happiness}</div>
+                    <div class="ending-stat-label">${game.language === 'zh' ? '幸福度' : 'Happiness'}</div>
                 </div>
             `;
             
@@ -1689,12 +1825,18 @@
 
         // ==================== 确定结局类型 ====================
         function determineEndingType() {
-            const unlockedCount = game.achievements.length;
+            const langData = gameData[game.language];
+            const endings = langData.endings;
             
-            if (unlockedCount >= 5) return 3; // 解锁5个以上成就：大师
-            if (unlockedCount >= 3) return 2; // 解锁3-4个成就：达人
-            if (unlockedCount >= 1) return 1; // 解锁1-2个成就：探索者
-            return 0; // 没有成就：初体验
+            // 按优先级检查每个结局条件
+            for (let ending of endings) {
+                if (ending.condition(game)) {
+                    return ending;
+                }
+            }
+            
+            // 如果没有匹配，返回默认结局
+            return endings[0];
         }
 
         // ==================== 更新状态 ====================
@@ -1718,18 +1860,17 @@
         // ==================== 抽取新年签 ====================
         function drawFortune() {
             const fortunes = gameImages.fortunes;
-            // 根据成就数量决定好运签质量
-            const achievementCount = game.achievements.length;
-            
+            // 根据数值决定好运签质量
             let randomIndex;
-            if (achievementCount >= 5) {
-                // 高成就：高质量签
+            
+            if (game.luck >= 140) {
+                // 高好运值：高质量签
                 randomIndex = Math.floor(Math.random() * 2); // 前两个最好的签
-            } else if (achievementCount >= 3) {
-                // 中等成就
+            } else if (game.luck >= 120) {
+                // 中等好运值
                 randomIndex = Math.floor(Math.random() * 3); // 前三个
             } else {
-                // 一般或低成就
+                // 一般或低好运值
                 randomIndex = Math.floor(Math.random() * fortunes.length);
             }
             
@@ -1802,11 +1943,17 @@
             // 重置游戏
             game.currentScene = 0;
             game.luck = 88;
-            game.money = 0;
+            game.money = 100; // 重置为100元
             game.happiness = 100;
             game.collectedItems = [];
             game.achievements = [];
             game.selectedOptions = [];
+            game.choiceTypes = {
+                traditional: 0,
+                modern: 0,
+                family: 0,
+                social: 0
+            };
         }
 
         // ==================== 页面加载完成后启动 ====================
