@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>广府年味之旅 | Guangdong New Year Journey</title>
     <style>
-        /* 基础样式 - 完全不变 */
+        /* 基础样式 */
         * {
             margin: 0;
             padding: 0;
@@ -168,27 +168,25 @@
             width: 100%;
         }
         
-        /* 修复1：优化主标题排版和颜色 */
         .language-title {
-            color: #ffd700 !important;  /* 金色 */
-            font-size: 36px;  /* 稍微调小一点 */
-            margin-bottom: 15px;  /* 增加下边距 */
+            color: #ffd700 !important;
+            font-size: 36px;
+            margin-bottom: 15px;
             text-shadow: 3px 3px 0 rgba(193, 39, 45, 0.9);
             font-weight: bold;
-            line-height: 1.2;  /* 优化行高 */
-            padding: 0 20px;  /* 两侧留白 */
+            line-height: 1.2;
+            padding: 0 20px;
         }
         
         .language-title span {
             display: block;
-            font-size: 24px;  /* 英文小一点 */
+            font-size: 24px;
             margin-top: 10px;
-            color: white;  /* 英文用白色 */
+            color: white;
             text-shadow: 2px 2px 0 rgba(193, 39, 45, 0.8);
             font-weight: 600;
         }
         
-        /* 修复2：优化副标题排版 */
         .language-subtitle {
             color: white !important;
             font-size: 18px;
@@ -197,28 +195,26 @@
             background: rgba(193, 39, 45, 0.7);
             padding: 12px 25px;
             border-radius: 20px;
-            line-height: 1.5;  /* 优化行高 */
-            max-width: 320px;  /* 限制最大宽度 */
+            line-height: 1.5;
+            max-width: 320px;
         }
         
-        /* 修复3：优化按钮区域间距 */
         .language-buttons {
             display: flex;
             flex-direction: column;
             gap: 20px;
             width: 100%;
             max-width: 280px;
-            margin-bottom: 40px;  /* 增加下边距 */
+            margin-bottom: 40px;
         }
         
-        /* 修复4：按钮文字颜色用important */
         .language-btn {
             padding: 20px;
             font-size: 1.2rem;
             border: none;
             border-radius: 50px;
             background: rgba(255, 255, 255, 0.95);
-            color: #c1272d !important;  /* 重要！红色文字 */
+            color: #c1272d !important;
             cursor: pointer;
             transition: all 0.3s;
             font-weight: bold;
@@ -234,13 +230,12 @@
             background: white;
         }
         
-        /* 修复5：优化底部提示排版 */
         .language-hint {
-            margin-top: 20px;  /* 减少上边距 */
+            margin-top: 20px;
             color: #ffd700;
-            font-size: 18px;  /* 加大一点 */
+            font-size: 18px;
             text-shadow: 1px 1px 0 #c1272d;
-            background: rgba(193, 39, 45, 0.6);  /* 加背景 */
+            background: rgba(193, 39, 45, 0.6);
             padding: 12px 20px;
             border-radius: 15px;
             border: 2px solid #ffd700;
@@ -843,17 +838,17 @@
             language: 'zh',
             currentScene: 0,
             luck: 88,
-            money: 100, // 初始给予100元
+            money: 100,
             happiness: 100,
             collectedItems: [],
             achievements: [],
             lastOptionResult: null,
             selectedOptions: [],
             choiceTypes: {
-                traditional: 0, // 传统型选择数量
-                modern: 0,      // 现代型选择数量
-                family: 0,      // 家庭型选择数量
-                social: 0       // 社交型选择数量
+                traditional: 0,
+                modern: 0,
+                family: 0,
+                social: 0
             }
         };
 
@@ -866,20 +861,37 @@
                 "images/年初一团年饭图去水印.png",
                 "images/元宵节逗利是图去水印.png"
             ],
-            // 选项结果图片
+            // 选项结果图片 - 根据您提供的文件名
             optionResults: [
-                "images/打扫结果图.png", // 可以替换为您的图片
-                "images/行花街结果图.png",
-                "images/团年饭结果图.png",
-                "images/拜年结果图.png"
+                [
+                    "images/擦排位去水印.png",
+                    "images/去霉运去水印.png", 
+                    "images/洗被褥去水印.png"
+                ],
+                [
+                    "images/买桃花去水印.png",
+                    "images/买年桔.png",
+                    "images/欣赏花.png"
+                ],
+                [
+                    "images/摆碗筷去水印.png",
+                    "images/包油角.png",
+                    "images/备盆菜去水印.png"
+                ],
+                [
+                    "images/给利是去水印.png",
+                    "images/吃点心去水印.png",
+                    "images/看舞狮去水印.png"
+                ]
             ],
-            // 结局图片
-            endings: [
-                "images/普通结局图.png",   // 普通结局
-                "images/好运结局图.png",   // 好运结局
-                "images/财富结局图.png",   // 财富结局
-                "images/完美结局图.png"    // 完美结局
-            ],
+            // 结局图片 - 根据您提供的文件名
+            endings: {
+                wealth: "images/财富结局去水印.png",
+                luck: "images/好运结局去水印.png",
+                happiness: "images/幸福结局去水印.png",
+                perfect: "images/完美结局去水印.png",
+                default: "images/普通结局图.png"
+            },
             fortunes: [
                 {
                     image: "images/新年签马到成功图去水印.png",
@@ -942,8 +954,9 @@
                                 happiness: 5,
                                 money: 20,
                                 collect: "🧧 长辈的赞赏",
-                                type: "traditional",
-                                choiceType: "traditional"
+                                type: "传统",
+                                choiceType: "traditional",
+                                imageIndex: 0
                             },
                             { 
                                 text: "🍃 用柚叶水抹门窗", 
@@ -951,17 +964,19 @@
                                 luck: 15,
                                 money: 30,
                                 collect: "🍃 吉祥柚叶",
-                                type: "traditional",
-                                choiceType: "traditional"
+                                type: "传统",
+                                choiceType: "traditional",
+                                imageIndex: 1
                             },
                             { 
-                                text: "🎍 整理年花摆设", 
-                                result: "将年桔、桃花摆到合适位置，邻居给了10元小红包",
-                                happiness: 10,
-                                money: 10,
-                                collect: "🎍 新年装饰",
-                                type: "decoration",
-                                choiceType: "family"
+                                text: "🧺 清洗床单被褥", 
+                                result: "将全家的床单被褥洗干净，阳光晒得暖暖的，妈妈给了20元零花钱",
+                                happiness: 15,
+                                money: 20,
+                                collect: "🧺 干净被褥",
+                                type: "家务",
+                                choiceType: "family",
+                                imageIndex: 2
                             }
                         ]
                     },
@@ -974,21 +989,23 @@
                                 text: "🌸 买一株桃花 (¥50)", 
                                 result: "花农说：'后生仔，今年行桃花运啦！' 还给了你一个小红包",
                                 luck: 20, 
-                                money: -30, // 实际花50，但得20红包
+                                money: -30,
                                 happiness: 10,
                                 collect: "🌸 桃花枝",
-                                type: "romantic",
-                                choiceType: "modern"
+                                type: "浪漫",
+                                choiceType: "modern",
+                                imageIndex: 0
                             },
                             { 
                                 text: "🍊 买盆年桔 (¥30)", 
                                 result: "金桔满枝头，寓意大吉大利，老板给了15元回礼",
                                 luck: 15, 
-                                money: -15, // 实际花30，但得15回礼
+                                money: -15,
                                 happiness: 5,
                                 collect: "🍊 金桔树",
-                                type: "wealth",
-                                choiceType: "traditional"
+                                type: "财富",
+                                choiceType: "traditional",
+                                imageIndex: 1
                             },
                             { 
                                 text: "🚶 只看不买，感受气氛", 
@@ -996,8 +1013,9 @@
                                 happiness: 10,
                                 money: 15,
                                 collect: "📸 花市回忆",
-                                type: "experience",
-                                choiceType: "social"
+                                type: "体验",
+                                choiceType: "social",
+                                imageIndex: 2
                             }
                         ]
                     },
@@ -1013,8 +1031,9 @@
                                 happiness: 8,
                                 money: 50,
                                 collect: "🥢 传统餐具",
-                                type: "traditional",
-                                choiceType: "family"
+                                type: "传统",
+                                choiceType: "family",
+                                imageIndex: 0
                             },
                             { 
                                 text: "🎁 学包油角", 
@@ -1022,8 +1041,9 @@
                                 happiness: 15,
                                 money: 30,
                                 collect: "🥟 自制油角",
-                                type: "food",
-                                choiceType: "family"
+                                type: "美食",
+                                choiceType: "family",
+                                imageIndex: 1
                             },
                             { 
                                 text: "🍲 帮忙准备盆菜", 
@@ -1031,8 +1051,9 @@
                                 luck: 10,
                                 money: 40,
                                 collect: "🍲 盆菜制作经验",
-                                type: "food",
-                                choiceType: "traditional"
+                                type: "美食",
+                                choiceType: "traditional",
+                                imageIndex: 2
                             }
                         ]
                     },
@@ -1047,8 +1068,9 @@
                                 money: 200, 
                                 happiness: 10,
                                 collect: "🧧 大红包",
-                                type: "family",
-                                choiceType: "family"
+                                type: "家庭",
+                                choiceType: "family",
+                                imageIndex: 0
                             },
                             { 
                                 text: "🏮 跟爸妈去茶楼", 
@@ -1056,8 +1078,9 @@
                                 money: 100, 
                                 happiness: 15,
                                 collect: "🍵 茶楼点心券",
-                                type: "social",
-                                choiceType: "social"
+                                type: "社交",
+                                choiceType: "social",
+                                imageIndex: 1
                             },
                             { 
                                 text: "🦁 看舞狮表演", 
@@ -1066,38 +1089,44 @@
                                 happiness: 20,
                                 money: 80,
                                 collect: "🦁 舞狮纪念章",
-                                type: "cultural",
-                                choiceType: "social"
+                                type: "文化",
+                                choiceType: "social",
+                                imageIndex: 2
                             }
                         ]
                     }
                 ],
-                // 结局类型（不再与成就挂钩，根据选择和数值）
+                // 结局类型
                 endings: [
                     {
                         title: "🏮 传统温馨型",
                         desc: "您选择了传统的春节习俗，注重家庭团聚和传统仪式。您的春节充满了温馨的家庭氛围和浓郁的传统气息。",
-                        condition: (game) => game.choiceTypes.traditional >= 2 && game.choiceTypes.family >= 2
+                        condition: (game) => game.choiceTypes.traditional >= 2 && game.choiceTypes.family >= 2,
+                        imageType: "perfect"
                     },
                     {
                         title: "💰 财运亨通型",
                         desc: "您的春节财运亨通！不仅收到了丰厚的利是钱，还做出了明智的选择。新的一年必将财源广进！",
-                        condition: (game) => game.money >= 300
+                        condition: (game) => game.money >= 300,
+                        imageType: "wealth"
                     },
                     {
                         title: "✨ 好运连连型",
                         desc: "好运伴随您的整个春节！您的选择带来了满满的好运值，新的一年必将一帆风顺，心想事成！",
-                        condition: (game) => game.luck >= 140
+                        condition: (game) => game.luck >= 140,
+                        imageType: "luck"
                     },
                     {
                         title: "🎉 社交达人型",
                         desc: "您积极参与各种社交活动，体验了丰富多彩的春节氛围。您的春节充满了欢乐和人气！",
-                        condition: (game) => game.choiceTypes.social >= 2
+                        condition: (game) => game.choiceTypes.social >= 2,
+                        imageType: "happiness"
                     },
                     {
                         title: "😊 幸福美满型",
                         desc: "您的春节幸福度爆棚！家人团聚、美食相伴、快乐无限，这是最完美的春节体验！",
-                        condition: (game) => game.happiness >= 140
+                        condition: (game) => game.happiness >= 140,
+                        imageType: "happiness"
                     },
                     {
                         title: "🎨 多样体验型",
@@ -1105,7 +1134,8 @@
                         condition: (game) => {
                             const types = Object.values(game.choiceTypes).filter(count => count > 0);
                             return types.length >= 3;
-                        }
+                        },
+                        imageType: "perfect"
                     }
                 ],
                 // 成就系统
@@ -1199,7 +1229,8 @@
                                 money: 20,
                                 collect: "🧧 Elders' Praise",
                                 type: "traditional",
-                                choiceType: "traditional"
+                                choiceType: "traditional",
+                                imageIndex: 0
                             },
                             { 
                                 text: "🍃 Wipe with pomelo leaves", 
@@ -1208,16 +1239,18 @@
                                 money: 30,
                                 collect: "🍃 Lucky Pomelo Leaves",
                                 type: "traditional",
-                                choiceType: "traditional"
+                                choiceType: "traditional",
+                                imageIndex: 1
                             },
                             { 
-                                text: "🎍 Arrange New Year plants", 
-                                result: "Place mandarin orange tree and peach blossoms beautifully, neighbor gives ¥10 small red packet",
-                                happiness: 10,
-                                money: 10,
-                                collect: "🎍 New Year Decorations",
-                                type: "decoration",
-                                choiceType: "family"
+                                text: "🧺 Wash bed linens", 
+                                result: "Wash all family bed linens, sun-dried and warm, mom gives ¥20 pocket money",
+                                happiness: 15,
+                                money: 20,
+                                collect: "🧺 Clean Linens",
+                                type: "housework",
+                                choiceType: "family",
+                                imageIndex: 2
                             }
                         ]
                     },
@@ -1234,7 +1267,8 @@
                                 happiness: 10,
                                 collect: "🌸 Peach Blossom Branch",
                                 type: "romantic",
-                                choiceType: "modern"
+                                choiceType: "modern",
+                                imageIndex: 0
                             },
                             { 
                                 text: "🍊 Buy kumquat tree (¥30)", 
@@ -1244,7 +1278,8 @@
                                 happiness: 5,
                                 collect: "🍊 Kumquat Tree",
                                 type: "wealth",
-                                choiceType: "traditional"
+                                choiceType: "traditional",
+                                imageIndex: 1
                             },
                             { 
                                 text: "🚶 Just enjoy the atmosphere", 
@@ -1253,7 +1288,8 @@
                                 money: 15,
                                 collect: "📸 Market Memories",
                                 type: "experience",
-                                choiceType: "social"
+                                choiceType: "social",
+                                imageIndex: 2
                             }
                         ]
                     },
@@ -1270,7 +1306,8 @@
                                 money: 50,
                                 collect: "🥢 Traditional Tableware",
                                 type: "traditional",
-                                choiceType: "family"
+                                choiceType: "family",
+                                imageIndex: 0
                             },
                             { 
                                 text: "🎁 Learn to make dumplings", 
@@ -1279,7 +1316,8 @@
                                 money: 30,
                                 collect: "🥟 Homemade Dumplings",
                                 type: "food",
-                                choiceType: "family"
+                                choiceType: "family",
+                                imageIndex: 1
                             },
                             { 
                                 text: "🍲 Prepare Poon Choi", 
@@ -1288,7 +1326,8 @@
                                 money: 40,
                                 collect: "🍲 Poon Choi Experience",
                                 type: "food",
-                                choiceType: "traditional"
+                                choiceType: "traditional",
+                                imageIndex: 2
                             }
                         ]
                     },
@@ -1304,7 +1343,8 @@
                                 happiness: 10,
                                 collect: "🧧 Big Red Packet",
                                 type: "family",
-                                choiceType: "family"
+                                choiceType: "family",
+                                imageIndex: 0
                             },
                             { 
                                 text: "🏮 Go to tea house", 
@@ -1313,7 +1353,8 @@
                                 happiness: 15,
                                 collect: "🍵 Tea House Voucher",
                                 type: "social",
-                                choiceType: "social"
+                                choiceType: "social",
+                                imageIndex: 1
                             },
                             { 
                                 text: "🦁 Watch lion dance", 
@@ -1323,7 +1364,8 @@
                                 money: 80,
                                 collect: "🦁 Lion Dance Badge",
                                 type: "cultural",
-                                choiceType: "social"
+                                choiceType: "social",
+                                imageIndex: 2
                             }
                         ]
                     }
@@ -1333,27 +1375,32 @@
                     {
                         title: "🏮 Traditional & Warm",
                         desc: "You followed traditional New Year customs, focusing on family reunions. Your celebration was filled with warmth and tradition.",
-                        condition: (game) => game.choiceTypes.traditional >= 2 && game.choiceTypes.family >= 2
+                        condition: (game) => game.choiceTypes.traditional >= 2 && game.choiceTypes.family >= 2,
+                        imageType: "perfect"
                     },
                     {
                         title: "💰 Wealth & Prosperity",
                         desc: "Your New Year brought great wealth! You received generous red packets and made wise choices. Prosperity awaits!",
-                        condition: (game) => game.money >= 300
+                        condition: (game) => game.money >= 300,
+                        imageType: "wealth"
                     },
                     {
                         title: "✨ Lucky & Fortunate",
                         desc: "Good luck accompanied your whole celebration! Your choices brought high luck points for a smooth year ahead.",
-                        condition: (game) => game.luck >= 140
+                        condition: (game) => game.luck >= 140,
+                        imageType: "luck"
                     },
                     {
                         title: "🎉 Social Butterfly",
                         desc: "You actively participated in social activities, experiencing diverse festive atmosphere. Your New Year was joyful!",
-                        condition: (game) => game.choiceTypes.social >= 2
+                        condition: (game) => game.choiceTypes.social >= 2,
+                        imageType: "happiness"
                     },
                     {
                         title: "😊 Happiness & Joy",
                         desc: "Your happiness overflowed! Family gatherings, delicious food, and endless joy made a perfect celebration.",
-                        condition: (game) => game.happiness >= 140
+                        condition: (game) => game.happiness >= 140,
+                        imageType: "happiness"
                     },
                     {
                         title: "🎨 Diverse Experience",
@@ -1361,7 +1408,8 @@
                         condition: (game) => {
                             const types = Object.values(game.choiceTypes).filter(count => count > 0);
                             return types.length >= 3;
-                        }
+                        },
+                        imageType: "perfect"
                     }
                 ],
                 // 成就系统
@@ -1433,7 +1481,6 @@
         function init() {
             console.log("游戏初始化...");
             
-            // 加载背景图
             const bgImg = document.getElementById('bgImage');
             bgImg.src = gameImages.languageBg;
             bgImg.onerror = function() {
@@ -1442,7 +1489,6 @@
                 bgImg.style.display = 'none';
             };
             
-            // 加载二维码
             const qrImg = document.getElementById('qrcodeImg');
             qrImg.src = gameImages.qrcode;
             qrImg.onerror = function() {
@@ -1450,7 +1496,6 @@
                 qrImg.parentNode.innerHTML = '<div style="font-size: 60px; color: #c1272d; text-align:center;">📱</div>';
             };
             
-            // 绑定按钮事件
             document.getElementById('chineseBtn').addEventListener('click', function() {
                 startGame('zh');
             });
@@ -1459,7 +1504,6 @@
                 startGame('en');
             });
             
-            // 规则按钮事件
             document.getElementById('rulesBtn').addEventListener('click', function() {
                 document.getElementById('rulesModal').classList.add('active');
             });
@@ -1468,13 +1512,11 @@
                 document.getElementById('rulesModal').classList.remove('active');
             });
             
-            // 新年签按钮事件
             document.getElementById('shareBtn').addEventListener('click', shareFortune);
             document.getElementById('retryBtn').addEventListener('click', drawFortune);
             document.getElementById('homeBtn').addEventListener('click', backToHome);
             document.getElementById('drawFortuneBtn').addEventListener('click', showFortunePage);
             
-            // 拍立得弹窗点击事件
             document.getElementById('polaroidModal').addEventListener('click', function() {
                 this.classList.remove('active');
             });
@@ -1489,7 +1531,7 @@
             game.language = lang;
             game.currentScene = 0;
             game.luck = 88;
-            game.money = 100; // 初始给予100元
+            game.money = 100;
             game.happiness = 100;
             game.collectedItems = [];
             game.achievements = [];
@@ -1501,16 +1543,13 @@
                 social: 0
             };
             
-            // 更新界面语言
             updateLanguageUI();
             
-            // 切换页面
             document.getElementById('languagePage').classList.remove('active');
             document.getElementById('gamePage').classList.add('active');
             document.getElementById('endingPage').classList.remove('active');
             document.getElementById('fortunePage').classList.remove('active');
             
-            // 加载第一个场景
             loadScene();
         }
 
@@ -1518,16 +1557,13 @@
         function updateLanguageUI() {
             const langData = gameData[game.language];
             
-            // 更新状态栏
             document.getElementById('dayLabel').textContent = langData.dayLabel;
             document.getElementById('luckLabel').textContent = langData.luckLabel;
             document.getElementById('moneyLabel').textContent = langData.moneyLabel;
             
-            // 更新结局页面
             document.getElementById('endingTitle').textContent = langData.endingTitle;
             document.getElementById('endingResultTitle').textContent = game.language === 'zh' ? '本次春节成就' : 'This Playthrough Achievements';
             
-            // 更新新年签页面
             document.getElementById('fortuneTitle').textContent = langData.fortuneTitle;
             document.getElementById('shareBtn').textContent = langData.shareText;
             document.getElementById('retryBtn').textContent = langData.retryText;
@@ -1535,17 +1571,14 @@
             document.getElementById('qrcodeTitle').textContent = langData.qrcodeTitle;
             document.getElementById('qrcodeHint').textContent = langData.qrcodeHint;
             
-            // 根据语言更新开屏按钮文本
             const chineseBtn = document.getElementById('chineseBtn');
             const englishBtn = document.getElementById('englishBtn');
             
             if (game.language === 'zh') {
-                // 中文版：按钮保持中文
                 chineseBtn.textContent = '🇨🇳 中文版';
                 englishBtn.textContent = '🌏 English Version';
                 document.getElementById('drawFortuneBtn').textContent = '✨ 抽取我的新年签';
             } else {
-                // 英文版：按钮显示英文
                 chineseBtn.textContent = '🇨🇳 Chinese';
                 englishBtn.textContent = '🌏 English';
                 document.getElementById('drawFortuneBtn').textContent = '✨ Draw My Fortune';
@@ -1564,12 +1597,10 @@
             
             const scene = scenes[game.currentScene];
             
-            // 更新场景内容
             document.getElementById('sceneTitle').textContent = scene.title;
             document.getElementById('sceneText').textContent = scene.text;
             document.getElementById('currentDay').textContent = langData.days[game.currentScene];
             
-            // 更新粤语文本
             const cantoneseEl = document.getElementById('cantoneseText');
             if (scene.cantonese) {
                 cantoneseEl.textContent = scene.cantonese;
@@ -1578,7 +1609,6 @@
                 cantoneseEl.style.display = 'none';
             }
             
-            // 加载场景图片
             const sceneImg = document.getElementById('sceneImage');
             if (game.currentScene < gameImages.scenes.length) {
                 sceneImg.src = gameImages.scenes[game.currentScene];
@@ -1589,7 +1619,6 @@
                 sceneImg.style.display = 'block';
             }
             
-            // 创建选项按钮
             const optionsArea = document.getElementById('optionsArea');
             optionsArea.innerHTML = '';
             
@@ -1599,34 +1628,27 @@
                 button.innerHTML = option.text;
                 
                 button.addEventListener('click', function() {
-                    // 保存选项结果
                     game.lastOptionResult = option;
-                    // 记录选择的选项文本（去掉emoji）
                     const optionText = option.text.replace(/[🧹🍃🎍🌸🍊🚶🥢🎁🍲🏡🏮🦁]/g, '').trim();
                     game.selectedOptions.push(optionText);
                     
-                    // 记录选择类型
                     if (option.choiceType && game.choiceTypes[option.choiceType] !== undefined) {
                         game.choiceTypes[option.choiceType]++;
                     }
                     
-                    // 显示拍立得弹窗
                     showPolaroidModal(option);
                     
-                    // 更新游戏状态
                     if (option.luck) game.luck += option.luck;
                     if (option.money) game.money += option.money;
                     if (option.happiness) game.happiness += option.happiness;
                     if (option.collect) game.collectedItems.push(option.collect);
                     
-                    // 确保数值不为负（由于初始有100元，不会为负）
                     game.luck = Math.max(0, game.luck);
                     game.money = Math.max(0, game.money);
                     game.happiness = Math.max(0, game.happiness);
                     
                     updateStatus();
                     
-                    // 振动反馈
                     if (navigator.vibrate) {
                         navigator.vibrate(50);
                     }
@@ -1646,17 +1668,20 @@
             const polaroidStats = document.getElementById('polaroidStats');
             const polaroidCollect = document.getElementById('polaroidCollect');
             
-            // 设置拍立得图片
+            // 设置拍立得图片 - 使用您提供的选项反馈图片
             if (game.currentScene < gameImages.optionResults.length) {
-                polaroidImage.src = gameImages.optionResults[game.currentScene];
+                const sceneImages = gameImages.optionResults[game.currentScene];
+                if (option.imageIndex !== undefined && option.imageIndex < sceneImages.length) {
+                    polaroidImage.src = sceneImages[option.imageIndex];
+                } else {
+                    polaroidImage.src = gameImages.scenes[game.currentScene];
+                }
             } else {
                 polaroidImage.src = gameImages.scenes[game.currentScene];
             }
             
-            // 设置描述
             polaroidDesc.textContent = option.result;
             
-            // 设置统计数据
             let statsHTML = '';
             if (option.luck) {
                 statsHTML += `
@@ -1686,7 +1711,6 @@
             
             polaroidStats.innerHTML = statsHTML;
             
-            // 设置收集物品
             if (option.collect) {
                 polaroidCollect.textContent = `${game.language === 'zh' ? '收集到：' : 'Collected: '}${option.collect}`;
                 polaroidCollect.style.display = 'block';
@@ -1694,16 +1718,13 @@
                 polaroidCollect.style.display = 'none';
             }
             
-            // 显示弹窗
             modal.classList.add('active');
             
-            // 延迟进入下一个场景
             setTimeout(() => {
                 game.currentScene++;
                 if (game.currentScene < gameData[game.language].scenes.length) {
                     loadScene();
                 } else {
-                    // 所有场景完成，显示结局
                     setTimeout(showEndingPage, 500);
                 }
             }, 1500);
@@ -1716,34 +1737,24 @@
             
             const langData = gameData[game.language];
             
-            // 计算成就
             calculateAchievements();
             
-            // 确定结局类型
             const ending = determineEndingType();
             
-            // 设置结局图片（根据结局类型选择图片）
+            // 设置结局图片 - 使用您提供的结局图片
             const endingImg = document.getElementById('endingImage');
-            let endingImageIndex = 0; // 默认普通结局
-            
-            if (ending.title.includes('财运') || ending.title.includes('Wealth')) endingImageIndex = 2;
-            else if (ending.title.includes('好运') || ending.title.includes('Lucky')) endingImageIndex = 1;
-            else if (ending.title.includes('幸福') || ending.title.includes('Happiness') || 
-                     ending.title.includes('完美') || ending.title.includes('Perfect')) endingImageIndex = 3;
-            
-            if (endingImageIndex < gameImages.endings.length) {
-                endingImg.src = gameImages.endings[endingImageIndex];
+            if (ending && ending.imageType && gameImages.endings[ending.imageType]) {
+                endingImg.src = gameImages.endings[ending.imageType];
+            } else {
+                endingImg.src = gameImages.endings.default;
             }
             
-            // 设置结局文本
             document.getElementById('endingResultTitle').textContent = game.language === 'zh' ? '您的春节类型' : 'Your New Year Type';
             document.getElementById('endingResultText').textContent = game.language === 'zh' ? '根据您的选择和表现，您的春节属于：' : 'Based on your choices, your New Year celebration is:';
             
-            // 显示结局类型
             document.getElementById('endingTypeTitle').textContent = ending.title;
             document.getElementById('endingTypeDesc').textContent = ending.desc;
             
-            // 显示统计数据
             const endingStats = document.getElementById('endingStats');
             endingStats.innerHTML = `
                 <div class="ending-stat-item">
@@ -1760,12 +1771,10 @@
                 </div>
             `;
             
-            // 显示本次获得的成就
             const achievementList = document.getElementById('achievementList');
             if (game.achievements.length > 0) {
                 let achievementsHTML = `<h4>${game.language === 'zh' ? '🎉 本次获得的成就' : '🎉 Achievements Earned'}</h4>`;
                 
-                // 获取成就详细信息
                 const earnedAchievements = langData.achievements.filter(ach => 
                     game.achievements.includes(ach.id)
                 );
@@ -1780,7 +1789,6 @@
                     `;
                 });
                 
-                // 添加总结
                 achievementsHTML += `
                     <div style="margin-top: 15px; padding: 10px; background: #fff9e6; border-radius: 8px; border: 1px dashed #ff9a9e;">
                         <strong>${game.language === 'zh' ? '本次共获得：' : 'Total earned: '}</strong>
@@ -1800,7 +1808,6 @@
                 `;
             }
             
-            // 设置结论文本
             const conclusionText = game.language === 'zh' 
                 ? `点击下方按钮抽取您的新年好运签！` 
                 : `Click below to draw your New Year fortune!`;
@@ -1813,7 +1820,6 @@
             const langData = gameData[game.language];
             game.achievements = [];
             
-            // 计算所有成就
             langData.achievements.forEach(ach => {
                 if (ach.condition(game)) {
                     game.achievements.push(ach.id);
@@ -1828,14 +1834,12 @@
             const langData = gameData[game.language];
             const endings = langData.endings;
             
-            // 按优先级检查每个结局条件
             for (let ending of endings) {
                 if (ending.condition(game)) {
                     return ending;
                 }
             }
             
-            // 如果没有匹配，返回默认结局
             return endings[0];
         }
 
@@ -1860,23 +1864,18 @@
         // ==================== 抽取新年签 ====================
         function drawFortune() {
             const fortunes = gameImages.fortunes;
-            // 根据数值决定好运签质量
-            let randomIndex;
             
+            let randomIndex;
             if (game.luck >= 140) {
-                // 高好运值：高质量签
-                randomIndex = Math.floor(Math.random() * 2); // 前两个最好的签
+                randomIndex = Math.floor(Math.random() * 2);
             } else if (game.luck >= 120) {
-                // 中等好运值
-                randomIndex = Math.floor(Math.random() * 3); // 前三个
+                randomIndex = Math.floor(Math.random() * 3);
             } else {
-                // 一般或低好运值
                 randomIndex = Math.floor(Math.random() * fortunes.length);
             }
             
             const fortune = fortunes[randomIndex];
             
-            // 加载新年签图片
             const fortuneImg = document.getElementById('fortuneImage');
             fortuneImg.src = fortune.image;
             fortuneImg.onerror = function() {
@@ -1885,20 +1884,15 @@
             };
             fortuneImg.style.display = 'block';
             
-            // 显示祝福语
             const fortuneText = document.getElementById('fortuneText');
             const englishEl = document.getElementById('fortuneEnglish');
             
-            // 清空并隐藏英文部分
             englishEl.textContent = '';
             englishEl.style.display = 'none';
             
-            // 根据语言显示
             if (game.language === 'zh') {
-                // 中文版：只显示中文
                 fortuneText.textContent = fortune.text.zh;
             } else {
-                // 英文版：显示英文
                 fortuneText.textContent = fortune.text.en;
             }
         }
@@ -1916,7 +1910,6 @@
                     text: shareMsg
                 });
             } else {
-                // 复制到剪贴板
                 navigator.clipboard.writeText(shareMsg).then(() => {
                     showMessage(game.language === 'zh' ? '已复制到剪贴板' : 'Copied to clipboard');
                 });
@@ -1940,10 +1933,9 @@
             document.getElementById('endingPage').classList.remove('active');
             document.getElementById('languagePage').classList.add('active');
             
-            // 重置游戏
             game.currentScene = 0;
             game.luck = 88;
-            game.money = 100; // 重置为100元
+            game.money = 100;
             game.happiness = 100;
             game.collectedItems = [];
             game.achievements = [];
@@ -1956,7 +1948,6 @@
             };
         }
 
-        // ==================== 页面加载完成后启动 ====================
         window.onload = init;
     </script>
 </body>
