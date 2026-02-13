@@ -56,55 +56,55 @@
             height: 100%;
         }
         
-        /* ---------- 核心修复：背景图片容器 ---------- */
-        .bg-wrapper {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            min-height: 100%;           /* 最小高度100%，保证覆盖视口 */
-            height: auto;              /* 高度随内容伸缩 */
-            z-index: 1;
-            pointer-events: none;      /* 让点击穿透到按钮 */
-        }
-        
-        #bgImage {
-            width: 100%;
-            height: auto;             /* 高度自适应，保持原始比例 */
-            display: block;
-            object-fit: cover;        /* 覆盖容器，但容器高度由内容撑开 */
-            object-position: top center;
-            filter: brightness(1) !important;
-            opacity: 1 !important;
-        }
-        
-        /* 背景图片加载失败时的备用纹理 - 覆盖整个bg-wrapper */
-        .bg-wrapper.bg-fallback {
-            background: linear-gradient(145deg, #c1272d, #e63946);
-            min-height: 100%;
-            height: 100%;
-        }
-        
-        .bg-wrapper.bg-fallback::after {
-            content: "🐉🧧🏮🎋🐴🧨🍊🌸";
-            position: absolute;
-            top: 10%;
-            left: 0;
-            width: 100%;
-            height: 200%;            /* 足够覆盖整个滚动内容 */
-            font-size: 60px;
-            opacity: 0.1;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: flex-start;
-            pointer-events: none;
-            color: #ffd700;
-            letter-spacing: 20px;
-            line-height: 2;
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
+/* ---------- 核心修复：背景图片容器 - 完全自适应内容高度 ---------- */
+.bg-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;              /* 高度跟随父容器 #languagePage */
+    z-index: 1;
+    pointer-events: none;      /* 让点击穿透到按钮 */
+    overflow: hidden;          /* 防止图片溢出 */
+}
+
+#bgImage {
+    width: 100%;
+    height: 100%;             /* 高度100%跟随bg-wrapper */
+    display: block;
+    object-fit: cover;        /* 保证图片覆盖整个容器，不变形裁剪 */
+    object-position: center;  /* 居中显示，适配不同屏幕比例 */
+    filter: brightness(1) !important;
+    opacity: 1 !important;
+}
+
+/* 背景图片加载失败时的备用纹理 - 覆盖整个bg-wrapper */
+.bg-wrapper.bg-fallback {
+    background: linear-gradient(145deg, #c1272d, #e63946);
+    width: 100%;
+    height: 100%;
+}
+
+.bg-wrapper.bg-fallback::after {
+    content: "🐉🧧🏮🎋🐴🧨🍊🌸";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 60px;
+    opacity: 0.1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    color: #ffd700;
+    letter-spacing: 20px;
+    line-height: 2;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
         
         /* 内容层 - 必须高于背景，并且跟随滚动 */
         .language-content {
@@ -1245,73 +1245,75 @@
         // 为保证演示完整性，在初始化时补充英文场景（此处仅做结构示意，完整代码中保留原有英文数据）
         // 因篇幅限制，英文数据在此省略，但实际运行文件是完整的。
         
-        // ==================== 初始化 ====================
-        function init() {
-            console.log("游戏初始化...");
-            
-            const bgWrapper = document.getElementById('bgWrapper');
-            const bgImg = document.getElementById('bgImage');
-            
-            // 关键修复：确保背景图片高度自适应，并且bg-wrapper高度随内容撑开
-            bgImg.onload = function() {
-                bgWrapper.classList.remove('bg-fallback');
-                bgImg.style.display = 'block';
-                // 确保图片完整显示
-                console.log("背景图加载成功，尺寸:", bgImg.naturalWidth, "x", bgImg.naturalHeight);
-            };
-            
-            bgImg.onerror = function() {
-                console.log("背景图加载失败，使用纯色纹理背景");
-                bgWrapper.classList.add('bg-fallback');
-                bgImg.style.display = 'none';
-            };
-            
-            // 设置背景图源
-            bgImg.src = gameImages.languageBg;
-            
-            // 超时保护：5秒后如果图片未完全加载，启用备用背景
-            setTimeout(() => {
-                if (!bgImg.complete || bgImg.naturalHeight === 0) {
-                    bgWrapper.classList.add('bg-fallback');
-                    bgImg.style.display = 'none';
-                    console.log("背景图超时，启用备用样式");
-                }
-            }, 5000);
-            
-            const qrImg = document.getElementById('qrcodeImg');
-            qrImg.src = gameImages.qrcode;
-            qrImg.onerror = function() {
-                console.log("二维码加载失败");
-                qrImg.parentNode.innerHTML = '<div style="font-size: 60px; color: #c1272d; text-align:center;">📱</div>';
-            };
-            
-            document.getElementById('chineseBtn').addEventListener('click', function() {
-                startGame('zh');
-            });
-            
-            document.getElementById('englishBtn').addEventListener('click', function() {
-                startGame('en');
-            });
-            
-            document.getElementById('rulesBtn').addEventListener('click', function() {
-                document.getElementById('rulesModal').classList.add('active');
-            });
-            
-            document.getElementById('rulesClose').addEventListener('click', function() {
-                document.getElementById('rulesModal').classList.remove('active');
-            });
-            
-            document.getElementById('shareBtn').addEventListener('click', shareFortune);
-            document.getElementById('retryBtn').addEventListener('click', drawFortune);
-            document.getElementById('homeBtn').addEventListener('click', backToHome);
-            document.getElementById('drawFortuneBtn').addEventListener('click', showFortunePage);
-            
-            document.getElementById('polaroidModal').addEventListener('click', function() {
-                this.classList.remove('active');
-            });
-            
-            console.log("初始化完成");
+    // ==================== 初始化 ====================
+function init() {
+    console.log("游戏初始化...");
+    
+    const bgWrapper = document.getElementById('bgWrapper');
+    const bgImg = document.getElementById('bgImage');
+    const languagePage = document.getElementById('languagePage');
+    
+    // 设置背景图源
+    bgImg.src = gameImages.languageBg;
+    
+    // 图片加载成功
+    bgImg.onload = function() {
+        bgWrapper.classList.remove('bg-fallback');
+        bgImg.style.display = 'block';
+        console.log("背景图加载成功");
+    };
+    
+    // 图片加载失败
+    bgImg.onerror = function() {
+        console.log("背景图加载失败，使用纯色纹理背景");
+        bgWrapper.classList.add('bg-fallback');
+        bgImg.style.display = 'none';
+    };
+    
+    // 超时保护
+    setTimeout(() => {
+        if (!bgImg.complete || bgImg.naturalHeight === 0) {
+            bgWrapper.classList.add('bg-fallback');
+            bgImg.style.display = 'none';
+            console.log("背景图超时，启用备用样式");
         }
+    }, 3000);
+    
+    // 其他初始化代码保持不变...
+    const qrImg = document.getElementById('qrcodeImg');
+    qrImg.src = gameImages.qrcode;
+    qrImg.onerror = function() {
+        console.log("二维码加载失败");
+        qrImg.parentNode.innerHTML = '<div style="font-size: 60px; color: #c1272d; text-align:center;">📱</div>';
+    };
+    
+    document.getElementById('chineseBtn').addEventListener('click', function() {
+        startGame('zh');
+    });
+    
+    document.getElementById('englishBtn').addEventListener('click', function() {
+        startGame('en');
+    });
+    
+    document.getElementById('rulesBtn').addEventListener('click', function() {
+        document.getElementById('rulesModal').classList.add('active');
+    });
+    
+    document.getElementById('rulesClose').addEventListener('click', function() {
+        document.getElementById('rulesModal').classList.remove('active');
+    });
+    
+    document.getElementById('shareBtn').addEventListener('click', shareFortune);
+    document.getElementById('retryBtn').addEventListener('click', drawFortune);
+    document.getElementById('homeBtn').addEventListener('click', backToHome);
+    document.getElementById('drawFortuneBtn').addEventListener('click', showFortunePage);
+    
+    document.getElementById('polaroidModal').addEventListener('click', function() {
+        this.classList.remove('active');
+    });
+    
+    console.log("初始化完成");
+}
 
         // ==================== 开始游戏 ====================
         function startGame(lang) {
@@ -1584,4 +1586,5 @@
     </script>
 </body>
 </html>
+
 
