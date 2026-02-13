@@ -1220,8 +1220,7 @@
                     { id: 8, name: "🏡 家庭温馨型", desc: "您注重家庭团聚，享受天伦之乐", icon: "👨‍👩‍👧‍👦", condition: (game) => game.choiceTypes.family >= 2 }
                 ]
             },
-            en: {
-                // 英文版数据与之前相同，为节省篇幅此处省略，实际代码完整保留
+           en: {
                 languageTitle: "Guangdong New Year Journey",
                 languageSubtitle: "Experience Cantonese New Year Traditions",
                 days: ["28th day before New Year", "New Year's Eve", "New Year's Day", "Lantern Festival"],
@@ -1235,15 +1234,267 @@
                 homeText: "Back to Home",
                 qrcodeTitle: "📱 Share with Friends",
                 qrcodeHint: "Scan QR code to play together!",
-                scenes: [ /* 英文场景完整，此处省略 */ ],
-                endings: [ /* 英文结局完整，此处省略 */ ],
-                achievements: [ /* 英文成就完整，此处省略 */ ]
+                scenes: [
+                    {
+                        title: "🧹 Spring Cleaning Day",
+                        text: "Morning sunlight shines through the traditional windows. It's time for thorough cleaning to welcome the New Year! Mom gives you ¥100 pocket money.",
+                        cantonese: "",
+                        options: [
+                            { 
+                                text: "🧹 Clean the altar", 
+                                result: "Earn praise from elders for cleaning carefully, dad gives ¥20 red packet",
+                                luck: 10, 
+                                happiness: 5,
+                                money: 20,
+                                collect: "🧧 Elders' Praise",
+                                type: "traditional",
+                                choiceType: "traditional",
+                                imageIndex: 0
+                            },
+                            { 
+                                text: "🍃 Wipe with pomelo leaves", 
+                                result: "Fresh scent fills the room, driving away bad luck, relative gives ¥30 red packet",
+                                luck: 15,
+                                money: 30,
+                                collect: "🍃 Lucky Pomelo Leaves",
+                                type: "traditional",
+                                choiceType: "traditional",
+                                imageIndex: 1
+                            },
+                            { 
+                                text: "🧺 Wash bed linens", 
+                                result: "Wash all family bed linens, sun-dried and warm, mom gives ¥20 pocket money",
+                                happiness: 15,
+                                money: 20,
+                                collect: "🧺 Clean Linens",
+                                type: "housework",
+                                choiceType: "family",
+                                imageIndex: 2
+                            }
+                        ]
+                    },
+                    {
+                        title: "🏮 Flower Market Visit",
+                        text: "The flower market is bustling with people under neon lights. Scents of peach blossoms fill the air.",
+                        cantonese: "",
+                        options: [
+                            { 
+                                text: "🌸 Buy peach blossoms", 
+                                result: "The florist smiles: Good luck in love this year!",
+                                luck: 20, 
+                                money: -30,
+                                happiness: 10,
+                                collect: "🌸 Peach Blossom Branch",
+                                type: "romantic",
+                                choiceType: "modern",
+                                imageIndex: 0
+                            },
+                            { 
+                                text: "🍊 Buy kumquat tree", 
+                                result: "Golden fruits symbolize prosperity and good fortune",
+                                luck: 15, 
+                                money: -15,
+                                happiness: 5,
+                                collect: "🍊 Kumquat Tree",
+                                type: "wealth",
+                                choiceType: "traditional",
+                                imageIndex: 1
+                            },
+                            { 
+                                text: "🚶 Just enjoy the atmosphere", 
+                                result: "Wander through the market, meeting neighbor who gives small red packet",
+                                happiness: 10,
+                                money: 15,
+                                collect: "📸 Market Memories",
+                                type: "experience",
+                                choiceType: "social",
+                                imageIndex: 2
+                            }
+                        ]
+                    },
+                    {
+                        title: "🥘 Reunion Dinner Feast",
+                        text: "The whole family gathers around a table filled with Cantonese New Year dishes... Grandma serves hot soup.",
+                        cantonese: "",
+                        options: [
+                            { 
+                                text: "🥢 Set the table", 
+                                result: "Arrange dishes properly, earning approval from elders who give red packet",
+                                luck: 5, 
+                                happiness: 8,
+                                money: 50,
+                                collect: "🥢 Traditional Tableware",
+                                type: "traditional",
+                                choiceType: "family",
+                                imageIndex: 0
+                            },
+                            { 
+                                text: "🎁 Learn to make Yau Gok (Crispy Pastry Dumpling)", 
+                                result: "Mom teaches you traditional recipes and gives pocket money",
+                                happiness: 15,
+                                money: 30,
+                                collect: "🥟 Homemade Yau Gok (Crispy Pastry Dumpling)",
+                                type: "food",
+                                choiceType: "family",
+                                imageIndex: 1
+                            },
+                            { 
+                                text: "🍲 Prepare Poon Choi (Big Bowl Feast)", 
+                                result: "Layer abalone, mushrooms and other ingredients, relative gives appreciation red packet",
+                                luck: 10,
+                                money: 40,
+                                collect: "🍲 Poon Choi (Big Bowl Feast) Experience",
+                                type: "food",
+                                choiceType: "traditional",
+                                imageIndex: 2
+                            }
+                        ]
+                    },
+                    {
+                        title: "🧧 Red Packets Day",
+                        text: "Dressed in new traditional clothes, ready for visiting. Red packets (lai see) await!",
+                        cantonese: "",
+                        options: [
+                            { 
+                                text: "🏡 Visit grandparents", 
+                                result: "Receive big red packets with blessings",
+                                money: 200, 
+                                happiness: 10,
+                                collect: "🧧 Big Red Packet",
+                                type: "family",
+                                choiceType: "family",
+                                imageIndex: 0
+                            },
+                            { 
+                                text: "🏮 Go to tea house", 
+                                result: "Experience festive atmosphere with family, meet relatives who give red packets",
+                                money: 100, 
+                                happiness: 15,
+                                collect: "🍵 Tea House Voucher",
+                                type: "social",
+                                choiceType: "social",
+                                imageIndex: 1
+                            },
+                            { 
+                                text: "🦁 Watch lion dance", 
+                                result: "Exciting performance with drums and colors, performers give small red packet",
+                                luck: 20, 
+                                happiness: 20,
+                                money: 80,
+                                collect: "🦁 Lion Dance Badge",
+                                type: "cultural",
+                                choiceType: "social",
+                                imageIndex: 2
+                            }
+                        ]
+                    }
+                ],
+                // 结局类型
+                endings: [
+                    {
+                        title: "🏮 Traditional & Warm",
+                        desc: "You followed traditional New Year customs, focusing on family reunions. Your celebration was filled with warmth and tradition.",
+                        condition: (game) => game.choiceTypes.traditional >= 2 && game.choiceTypes.family >= 2,
+                        imageType: "perfect"
+                    },
+                    {
+                        title: "💰 Wealth & Prosperity",
+                        desc: "Your New Year brought great wealth! You received generous red packets and made wise choices. Prosperity awaits!",
+                        condition: (game) => game.money >= 300,
+                        imageType: "wealth"
+                    },
+                    {
+                        title: "✨ Lucky & Fortunate",
+                        desc: "Good luck accompanied your whole celebration! Your choices brought high luck points for a smooth year ahead.",
+                        condition: (game) => game.luck >= 140,
+                        imageType: "luck"
+                    },
+                    {
+                        title: "🎉 Social Butterfly",
+                        desc: "You actively participated in social activities, experiencing diverse festive atmosphere. Your New Year was joyful!",
+                        condition: (game) => game.choiceTypes.social >= 2,
+                        imageType: "happiness"
+                    },
+                    {
+                        title: "😊 Happiness & Joy",
+                        desc: "Your happiness overflowed! Family gatherings, delicious food, and endless joy made a perfect celebration.",
+                        condition: (game) => game.happiness >= 140,
+                        imageType: "happiness"
+                    },
+                    {
+                        title: "🎨 Diverse Experience",
+                        desc: "You tried various New Year experiences, blending tradition with modernity. Your celebration was rich and colorful!",
+                        condition: (game) => {
+                            const types = Object.values(game.choiceTypes).filter(count => count > 0);
+                            return types.length >= 3;
+                        },
+                        imageType: "perfect"
+                    }
+                ],
+                // 成就系统
+                achievements: [
+                    { 
+                        id: 1, 
+                        name: "🧹 Tradition Keeper", 
+                        desc: "You followed multiple traditional customs",
+                        icon: "🏮",
+                        condition: (game) => game.choiceTypes.traditional >= 2
+                    },
+                    { 
+                        id: 2, 
+                        name: "🌸 Romantic Soul", 
+                        desc: "You chose peach blossoms for love luck",
+                        icon: "💕",
+                        condition: (game) => game.selectedOptions.includes('Buy peach blossoms')
+                    },
+                    { 
+                        id: 3, 
+                        name: "💰 Wealth Seeker", 
+                        desc: "You received generous red packets",
+                        icon: "💰",
+                        condition: (game) => game.money >= 250
+                    },
+                    { 
+                        id: 4, 
+                        name: "🎯 All-Round Experiencer", 
+                        desc: "You tried various New Year experiences",
+                        icon: "🎨",
+                        condition: (game) => game.collectedItems.length >= 4
+                    },
+                    { 
+                        id: 5, 
+                        name: "✨ Lucky Star", 
+                        desc: "You have exceptional luck for the new year",
+                        icon: "⭐",
+                        condition: (game) => game.luck >= 130
+                    },
+                    { 
+                        id: 6, 
+                        name: "🎉 Happiness Master", 
+                        desc: "You experienced great joy this New Year",
+                        icon: "😊",
+                        condition: (game) => game.happiness >= 130
+                    },
+                    { 
+                        id: 7, 
+                        name: "🍲 Food Connoisseur", 
+                        desc: "You participated in various food preparations",
+                        icon: "🍜",
+                        condition: (game) => {
+                            const foodItems = ['Homemade Dumplings', 'Poon Choi Experience', 'Tea House Voucher'];
+                            return game.collectedItems.filter(item => foodItems.includes(item)).length >= 2;
+                        }
+                    },
+                    { 
+                        id: 8, 
+                        name: "🏡 Family Oriented", 
+                        desc: "You focused on family gatherings and bonding",
+                        icon: "👨‍👩‍👧‍👦",
+                        condition: (game) => game.choiceTypes.family >= 2
+                    }
+                ]
             }
         };
-
-        // 快速补全英文数据（实际开发中应完整保留，此处简写示意，确保运行不报错）
-        // 为保证演示完整性，在初始化时补充英文场景（此处仅做结构示意，完整代码中保留原有英文数据）
-        // 因篇幅限制，英文数据在此省略，但实际运行文件是完整的。
         
     // ==================== 初始化 ====================
 function init() {
@@ -1586,5 +1837,6 @@ function init() {
     </script>
 </body>
 </html>
+
 
 
