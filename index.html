@@ -56,55 +56,67 @@
             height: 100%;
         }
         
-/* ---------- 核心修复：背景图片容器 - 完美适配滚动长度 ---------- */
+/* ---------- 终极修复：背景图片强制100%覆盖整个模块 ---------- */
 .bg-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 100%;          /* 最小高度100%，保证至少一屏 */
-    height: auto;             /* 高度自动，随内容撑开 */
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;     /* 强制跟随父容器高度 */
+    min-height: 100% !important; /* 双重保障 */
+    max-height: 100% !important;
     z-index: 1;
     pointer-events: none;
-    overflow: hidden;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 #bgImage {
-    width: 100%;
-    height: auto;            /* 高度自适应，保持原始比例 */
-    display: block;
-    object-fit: cover;       /* 覆盖容器宽度，高度自适应 */
-    object-position: top center; /* 从顶部开始显示，保证上半部分完整 */
+    width: 100% !important;
+    height: 100% !important;     /* 强制填满整个bg-wrapper */
+    display: block !important;
+    object-fit: cover !important; /* 裁剪填充，保证不留白 */
+    object-position: center !important; /* 居中裁剪，保证主体可见 */
     filter: brightness(1) !important;
     opacity: 1 !important;
+    position: relative !important;
 }
 
-/* 背景图片加载失败时的备用纹理 - 覆盖整个滚动区域 */
+/* 父容器强制相对定位，确保背景容器绝对定位生效 */
+#languagePage {
+    position: relative !important;
+    background: #c1272d;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    height: 100%;
+}
+
+/* 背景图片加载失败时的备用纹理 - 同样强制100%覆盖 */
 .bg-wrapper.bg-fallback {
-    background: linear-gradient(145deg, #c1272d, #e63946);
-    width: 100%;
-    min-height: 100%;
-    height: auto;
+    background: linear-gradient(145deg, #c1272d, #e63946) !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
 }
 
 .bg-wrapper.bg-fallback::after {
     content: "🐉🧧🏮🎋🐴🧨🍊🌸";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     font-size: 60px;
     opacity: 0.1;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     pointer-events: none;
     color: #ffd700;
     letter-spacing: 20px;
     line-height: 2;
-    padding-top: 20px;
     white-space: pre-wrap;
     word-break: break-all;
 }
@@ -1550,22 +1562,26 @@ function init() {
     const bgImg = document.getElementById('bgImage');
     const languagePage = document.getElementById('languagePage');
     
+    // 强制设置父容器为相对定位（确保绝对定位生效）
+    languagePage.style.position = 'relative';
+    
     // 设置背景图源
     bgImg.src = gameImages.languageBg;
     
-    // 图片加载成功 - 关键修复：调整图片和容器高度
+    // 图片加载成功 - 强制覆盖，不做任何自适应调整
     bgImg.onload = function() {
         bgWrapper.classList.remove('bg-fallback');
         bgImg.style.display = 'block';
         
-        // 核心修复：让bgWrapper的高度跟随内容撑开
-        setTimeout(() => {
-            const contentHeight = document.querySelector('.language-content').offsetHeight;
-            bgWrapper.style.height = contentHeight + 'px';
-            console.log("背景容器高度调整为:", contentHeight);
-        }, 50);
+        // 强制样式，确保覆盖
+        bgWrapper.style.height = '100%';
+        bgWrapper.style.width = '100%';
+        bgImg.style.height = '100%';
+        bgImg.style.width = '100%';
+        bgImg.style.objectFit = 'cover';
+        bgImg.style.objectPosition = 'center';
         
-        console.log("背景图加载成功");
+        console.log("背景图加载成功，强制100%覆盖");
     };
     
     // 图片加载失败
@@ -1574,35 +1590,55 @@ function init() {
         bgWrapper.classList.add('bg-fallback');
         bgImg.style.display = 'none';
         
-        // 失败时也调整高度
-        setTimeout(() => {
-            const contentHeight = document.querySelector('.language-content').offsetHeight;
-            bgWrapper.style.height = contentHeight + 'px';
-        }, 50);
+        // 强制备用背景高度
+        bgWrapper.style.height = '100%';
+        bgWrapper.style.width = '100%';
     };
     
-    // 超时保护 + 高度二次校准（重要：解决手机端滚动后高度不准问题）
+    // 超时保护 - 只处理失败情况，不干扰高度
     setTimeout(() => {
         if (!bgImg.complete || bgImg.naturalHeight === 0) {
             bgWrapper.classList.add('bg-fallback');
             bgImg.style.display = 'none';
+            bgWrapper.style.height = '100%';
+            bgWrapper.style.width = '100%';
+            console.log("背景图超时，启用备用样式");
         }
         
-        // 无论成功失败，再次校准高度（确保手机端滚动到底部仍有背景）
-        const contentHeight = document.querySelector('.language-content').offsetHeight;
-        bgWrapper.style.height = contentHeight + 'px';
-        console.log("超时校准：背景容器高度设为", contentHeight);
+        // 每次页面加载都强制检查并修正样式（终极保险）
+        const enforceBackground = function() {
+            if (bgWrapper) {
+                bgWrapper.style.height = '100%';
+                bgWrapper.style.width = '100%';
+            }
+            if (bgImg && bgImg.style.display !== 'none') {
+                bgImg.style.height = '100%';
+                bgImg.style.width = '100%';
+                bgImg.style.objectFit = 'cover';
+                bgImg.style.objectPosition = 'center';
+            }
+        };
         
-        // 监听窗口大小变化（手机旋转/折叠屏适配）
+        // 立即执行一次
+        enforceBackground();
+        
+        // 延迟再执行几次（应对移动端渲染延迟）
+        setTimeout(enforceBackground, 100);
+        setTimeout(enforceBackground, 300);
+        setTimeout(enforceBackground, 500);
+        
+        // 监听滚动和触摸事件，持续保证背景覆盖
+        languagePage.addEventListener('scroll', enforceBackground);
+        languagePage.addEventListener('touchmove', enforceBackground);
+        languagePage.addEventListener('touchend', enforceBackground);
+        
+        // 监听窗口大小变化
         window.addEventListener('resize', function() {
-            setTimeout(() => {
-                const newHeight = document.querySelector('.language-content').offsetHeight;
-                bgWrapper.style.height = newHeight + 'px';
-                console.log("窗口变化，背景高度重设为:", newHeight);
-            }, 100);
+            enforceBackground();
+            setTimeout(enforceBackground, 100);
         });
         
-    }, 500); // 缩短到500ms，更快响应
+    }, 300);
     
     // 其他初始化代码保持不变...
     const qrImg = document.getElementById('qrcodeImg');
@@ -1637,7 +1673,7 @@ function init() {
         this.classList.remove('active');
     });
     
-    console.log("初始化完成");
+    console.log("初始化完成 - 背景图强制覆盖模式已启用");
 }
 
         // ==================== 开始游戏 ====================
@@ -1911,6 +1947,7 @@ function init() {
     </script>
 </body>
 </html>
+
 
 
 
