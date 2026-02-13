@@ -50,11 +50,12 @@
         /* ============ 开屏页面样式 ============ */
         #languagePage {
             position: relative;
-            background: linear-gradient(135deg, #c1272d 0%, #ff6b6b 100%);
+            background: #c1272d;  /* 基础红色，作为备用背景色 */
             overflow-y: auto;  /* 允许整个页面滚动 */
             -webkit-overflow-scrolling: touch;
         }
         
+        /* 背景图片 - 确保有稳定背景 */
         #bgImage {
             width: 100%;
             height: 100%;
@@ -62,12 +63,43 @@
             filter: brightness(1) !important;
             opacity: 1 !important;
             position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        
+        /* 如果图片加载失败，显示纯色背景 + 吉祥图案装饰 */
+        #languagePage:not(.bg-loaded) #bgImage {
+            display: none;
+        }
+        
+        #languagePage:not(.bg-loaded) {
+            background: linear-gradient(145deg, #c1272d, #e63946);
+        }
+        
+        /* 装饰纹理 - 图片加载失败时显示 */
+        #languagePage:not(.bg-loaded)::after {
+            content: "🐉🧧🏮🎋";
+            position: absolute;
+            top: 20%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 60px;
+            opacity: 0.1;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
             z-index: 0;
+            letter-spacing: 20px;
+            color: #ffd700;
         }
         
         .language-content {
-            position: relative;  /* 改为相对定位，跟随滚动 */
-            z-index: 2;
+            position: relative;  /* 相对定位，跟随滚动 */
+            z-index: 20;        /* 高于背景和装饰 */
             width: 100%;
             min-height: 100%;
             display: flex;
@@ -78,11 +110,11 @@
             text-align: center;
             background: linear-gradient(
                 180deg, 
-                rgba(255, 215, 0, 0.3) 0%, 
-                rgba(255, 107, 107, 0.2) 50%,
-                rgba(193, 39, 45, 0.3) 100%
+                rgba(255, 215, 0, 0.35) 0%, 
+                rgba(255, 107, 107, 0.25) 50%,
+                rgba(193, 39, 45, 0.4) 100%
             );
-            backdrop-filter: brightness(1.05);
+            backdrop-filter: brightness(1.1);
         }
         
         /* 规则按钮 */
@@ -99,7 +131,7 @@
             font-size: 20px;
             font-weight: bold;
             cursor: pointer;
-            z-index: 20;
+            z-index: 30;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -257,25 +289,6 @@
             color: white;
             opacity: 0.95;
             line-height: 1.4;
-        }
-        
-        /* 拖动条提示 (视觉增强) */
-        .scroll-indicator {
-            margin-top: 15px;
-            color: white;
-            font-size: 14px;
-            background: rgba(0,0,0,0.3);
-            padding: 8px 16px;
-            border-radius: 30px;
-            border: 1px solid rgba(255,215,0,0.7);
-            backdrop-filter: blur(4px);
-            display: inline-block;
-            animation: bounce 1.5s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(5px); }
         }
         
         /* ============ 拍立得弹窗样式 ============ */
@@ -800,10 +813,7 @@
                     <span>从年廿八到元宵节，体验完整广东年俗</span>
                 </div>
                 
-                <!-- 新增的拖动提示条，方便所有机型阅读 -->
-                <div class="scroll-indicator">
-                    ⬆️⬇️ 上下拖动浏览 ⬆️⬇️
-                </div>
+                <!-- 拖动提示条已完全移除，再无“上下拖动浏览”文字 -->
             </div>
         </div>
         
@@ -904,21 +914,21 @@ const gameImages = {
         "images/年初一团年饭图去水印.png",
         "images/元宵节逗利是图去水印.png"
     ],
-    // 选项结果图片 - 已更正文件名
+    // 选项结果图片
     optionResults: [
         [
-            "images/擦牌位去水印.png",      // 第一场景选项1 - 打扫神台（更正）
+            "images/擦牌位去水印.png",      // 第一场景选项1 - 打扫神台
             "images/去霉运去水印.png",       // 第一场景选项2 - 柚叶水
             "images/洗被褥去水印.png"        // 第一场景选项3 - 洗被褥
         ],
         [
             "images/买桃花去水印.png",        // 第二场景选项1 - 买桃花
-            "images/买年桔去水印.png",        // 第二场景选项2 - 买年桔（更正）
-            "images/欣赏花去水印.png"         // 第二场景选项3 - 欣赏花（更正）
+            "images/买年桔去水印.png",        // 第二场景选项2 - 买年桔
+            "images/欣赏花去水印.png"         // 第二场景选项3 - 欣赏花
         ],
         [
             "images/摆碗筷去水印.png",        // 第三场景选项1 - 摆碗筷
-            "images/包油角去水印.png",        // 第三场景选项2 - 包油角（更正）
+            "images/包油角去水印.png",        // 第三场景选项2 - 包油角
             "images/备盆菜去水印.png"         // 第三场景选项3 - 备盆菜
         ],
         [
@@ -1528,12 +1538,32 @@ const gameImages = {
             console.log("游戏初始化...");
             
             const bgImg = document.getElementById('bgImage');
-            bgImg.src = gameImages.languageBg;
+            const languagePage = document.getElementById('languagePage');
+            
+            // 标记背景加载状态
+            bgImg.onload = function() {
+                languagePage.classList.add('bg-loaded');
+                console.log("背景图加载成功");
+            };
+            
             bgImg.onerror = function() {
-                console.log("背景图加载失败，使用喜庆背景");
-                document.getElementById('languagePage').style.background = 'linear-gradient(135deg, #c1272d 0%, #ff6b6b 100%)';
+                console.log("背景图加载失败，使用纯色底纹装饰");
+                languagePage.classList.remove('bg-loaded'); // 确保不添加loaded类，从而显示备用样式
+                // 移除图片，避免显示破碎图标
                 bgImg.style.display = 'none';
             };
+            
+            // 设置背景图源
+            bgImg.src = gameImages.languageBg;
+            
+            // 强制检查：若3秒后仍未加载成功，自动移除loaded类并隐藏图片
+            setTimeout(() => {
+                if (!bgImg.complete || bgImg.naturalHeight === 0) {
+                    languagePage.classList.remove('bg-loaded');
+                    bgImg.style.display = 'none';
+                    console.log("背景图超时，使用备用样式");
+                }
+            }, 3000);
             
             const qrImg = document.getElementById('qrcodeImg');
             qrImg.src = gameImages.qrcode;
