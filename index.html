@@ -56,77 +56,68 @@
             height: 100%;
         }
         
-/* ---------- 终极修复：背景图片强制100%覆盖整个模块 ---------- */
-.bg-wrapper {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;     /* 强制跟随父容器高度 */
-    min-height: 100% !important; /* 双重保障 */
-    max-height: 100% !important;
-    z-index: 1;
-    pointer-events: none;
-    overflow: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-#bgImage {
-    width: 100% !important;
-    height: 100% !important;     /* 强制填满整个bg-wrapper */
-    display: block !important;
-    object-fit: cover !important; /* 裁剪填充，保证不留白 */
-    object-position: center !important; /* 居中裁剪，保证主体可见 */
-    filter: brightness(1) !important;
-    opacity: 1 !important;
-    position: relative !important;
-}
-
-/* 父容器强制相对定位，确保背景容器绝对定位生效 */
-#languagePage {
-    position: relative !important;
-    background: #c1272d;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    height: 100%;
-}
-
-/* 背景图片加载失败时的备用纹理 - 同样强制100%覆盖 */
-.bg-wrapper.bg-fallback {
-    background: linear-gradient(145deg, #c1272d, #e63946) !important;
-    width: 100% !important;
-    height: 100% !important;
-    min-height: 100% !important;
-}
-
-.bg-wrapper.bg-fallback::after {
-    content: "🐉🧧🏮🎋🐴🧨🍊🌸";
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    font-size: 60px;
-    opacity: 0.1;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    pointer-events: none;
-    color: #ffd700;
-    letter-spacing: 20px;
-    line-height: 2;
-    white-space: pre-wrap;
-    word-break: break-all;
-}
+        /* 背景图片容器 - 修复版 */
+        .bg-wrapper {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 100% !important;
+            max-height: 100% !important;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
         
-        /* 内容层 - 必须高于背景，并且跟随滚动 */
+        #bgImage {
+            width: 100% !important;
+            height: 100% !important;
+            display: block !important;
+            object-fit: cover !important;
+            object-position: center !important;
+            filter: brightness(1) !important;
+            opacity: 1 !important;
+            position: relative !important;
+        }
+        
+        /* 背景图片加载失败时的备用纹理 */
+        .bg-wrapper.bg-fallback {
+            background: linear-gradient(145deg, #c1272d, #e63946) !important;
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 100% !important;
+        }
+        
+        .bg-wrapper.bg-fallback::after {
+            content: "🐉🧧🏮🎋🐴🧨🍊🌸";
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            font-size: 60px;
+            opacity: 0.1;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            color: #ffd700;
+            letter-spacing: 20px;
+            line-height: 2;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        /* 内容层 */
         .language-content {
             position: relative;
             z-index: 20;
             width: 100%;
-            min-height: 100%;         /* 最小高度撑满视口 */
+            min-height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -140,10 +131,9 @@
                 rgba(193, 39, 45, 0.4) 100%
             );
             backdrop-filter: brightness(1.1);
-            /* 确保内容区有足够的内边距，小屏幕也能通过滚动看到底部 */
         }
         
-        /* 规则按钮 - 保持在最上层 */
+        /* 规则按钮 */
         .rules-btn {
             position: absolute;
             top: 15px;
@@ -317,7 +307,6 @@
             line-height: 1.4;
         }
         
-        /* ============ 其他页面样式保持不变 ============ */
         /* 拍立得弹窗样式 */
         .polaroid-modal {
             position: fixed;
@@ -748,7 +737,7 @@
             display: block;
             border: 2px solid #ff9a9e;
         }
-
+        
         #message {
             position: fixed;
             top: 50%;
@@ -763,55 +752,55 @@
             font-size: 16px;
             border: 2px solid #ffd700;
         }
-/* ============ BGM 控制按钮样式 - 增强版 ============ */
-.bgm-btn {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    width: 44px;  /* 稍微放大，更容易点击 */
-    height: 44px;
-    background: rgba(255, 215, 0, 0.95);
-    border: 2px solid #c1272d;
-    border-radius: 50%;
-    color: #c1272d;
-    font-size: 22px;
-    font-weight: bold;
-    cursor: pointer;
-    z-index: 10000 !important;  /* 最高层级 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
-}
-
-.bgm-btn.muted {
-    background: rgba(180, 180, 180, 0.95);
-    color: #444;
-    border-color: #444;
-}
-
-.bgm-btn.muted::after {
-    content: "";
-    position: absolute;
-    width: 2px;
-    height: 26px;
-    background: #444;
-    transform: rotate(45deg);
-    border-radius: 2px;
-}
-
-/* 添加点击波纹效果 */
-.bgm-btn:active {
-    transform: scale(0.95);
-}
+        
+        /* BGM 控制按钮样式 */
+        .bgm-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 215, 0, 0.95);
+            border: 2px solid #c1272d;
+            border-radius: 50%;
+            color: #c1272d;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10000 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .bgm-btn.muted {
+            background: rgba(180, 180, 180, 0.95);
+            color: #444;
+            border-color: #444;
+        }
+        
+        .bgm-btn.muted::after {
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 26px;
+            background: #444;
+            transform: rotate(45deg);
+            border-radius: 2px;
+        }
+        
+        .bgm-btn:active {
+            transform: scale(0.95);
+        }
     </style>
 </head>
 <body>
     <!-- 拍立得弹窗 -->
     <div class="polaroid-modal" id="polaroidModal">
         <div class="polaroid">
-            <img class="polaroid-image" id="polaroidImage" alt="选项结果图片">
+            <img class="polaroid-image" id="polaroidImage" alt="选项结果图片" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23f0f0f0'/%3E%3Ctext x='50' y='110' font-family='Arial' font-size='16' fill='%23999'%3E图片加载中...%3C/text%3E%3C/svg%3E">
             <div class="polaroid-text">
                 <div class="polaroid-title" id="polaroidTitle">选项结果</div>
                 <div class="polaroid-desc" id="polaroidDesc"></div>
@@ -826,19 +815,20 @@
     
     <!-- 游戏容器 -->
     <div class="game-container">
-   <!-- BGM 控制按钮 - 固定在游戏容器左上角 -->
-<button id="bgmToggle" class="bgm-btn">🎵</button>
+        <!-- BGM 控制按钮 -->
+        <button id="bgmToggle" class="bgm-btn">🎵</button>
 
-<!-- 隐藏的音频元素 - 移除 muted 属性，让浏览器尽力播放 -->
-<audio id="bgmAudio" loop preload="auto" playsinline webkit-playsinline>
-    <source src="images/bgm.mp3" type="audio/mpeg">
-    您的浏览器不支持音频元素
-</audio>
-        <!-- 语言选择页面 - 重构背景结构，保证滚动时图片完整跟随 -->
+        <!-- 隐藏的音频元素 -->
+        <audio id="bgmAudio" loop preload="auto" playsinline webkit-playsinline>
+            <source src="images/bgm.mp3" type="audio/mpeg">
+            <!-- 如果背景音乐加载失败，使用无声的DataURI作为后备 -->
+        </audio>
+        
+        <!-- 语言选择页面 -->
         <div id="languagePage" class="page active">
-            <!-- 背景独立包装：绝对定位，但高度随内容撑开，保证滚动到底部仍有背景 -->
+            <!-- 背景独立包装 -->
             <div class="bg-wrapper" id="bgWrapper">
-                <img id="bgImage" alt="新春背景图">
+                <img id="bgImage" alt="新春背景图" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='800' viewBox='0 0 400 800'%3E%3Crect width='400' height='800' fill='%23c1272d'/%3E%3Ctext x='50' y='400' font-family='Arial' font-size='20' fill='%23ffd700'%3E加载背景图...%3C/text%3E%3C/svg%3E">
             </div>
             
             <!-- 规则按钮 -->
@@ -871,7 +861,7 @@
                 </div>
             </div>
             
-            <!-- 内容层 - 位于背景之上，高度撑开父容器 -->
+            <!-- 内容层 -->
             <div class="language-content">
                 <div style="margin-bottom: 30px;">
                     <h1 class="language-title">
@@ -895,7 +885,7 @@
         <!-- 游戏主页面 -->
         <div id="gamePage" class="page">
             <div class="scene-area">
-                <img id="sceneImage" alt="场景图">
+                <img id="sceneImage" alt="场景图" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23ff9a9e'/%3E%3Ctext x='100' y='150' font-family='Arial' font-size='20' fill='white'%3E加载场景图...%3C/text%3E%3C/svg%3E">
                 <div class="scene-overlay">
                     <h3 id="sceneTitle">场景标题</h3>
                     <p id="sceneText">场景描述内容...</p>
@@ -922,7 +912,7 @@
         <!-- 结局结算页面 -->
         <div id="endingPage" class="page">
             <h2 id="endingTitle">🎊 春节旅程结束</h2>
-            <img id="endingImage" alt="结局图片">
+            <img id="endingImage" alt="结局图片" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23ffd700'/%3E%3Ctext x='50' y='100' font-family='Arial' font-size='16' fill='%23c1272d'%3E加载结局图...%3C/text%3E%3C/svg%3E">
             <div class="ending-content">
                 <h3 id="endingResultTitle">本次春节成就</h3>
                 <p id="endingResultText">根据您的选择，获得了以下成就...</p>
@@ -944,7 +934,7 @@
         <!-- 新年签页面 -->
         <div id="fortunePage" class="page">
             <h2 id="fortuneTitle">马年好运签</h2>
-            <img id="fortuneImage" alt="好运签图片">
+            <img id="fortuneImage" alt="好运签图片" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23ff9a9e'/%3E%3Ctext x='50' y='100' font-family='Arial' font-size='16' fill='white'%3E加载新年签...%3C/text%3E%3C/svg%3E">
             <div class="fortune-text">
                 <p id="fortuneText">正在抽取您的新年好运签...</p>
                 <p id="fortuneEnglish"></p>
@@ -954,7 +944,7 @@
             <button id="homeBtn" class="action-btn">返回首页</button>
             <div class="qrcode-section">
                 <h4 id="qrcodeTitle">📱 分享游戏给朋友</h4>
-                <img id="qrcodeImg" alt="二维码">
+                <img id="qrcodeImg" alt="二维码" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' fill='%23ffffff'/%3E%3Cpath d='M30,30 L120,30 L120,120 L30,120 Z' stroke='%23333' stroke-width='2' fill='none'/%3E%3Ctext x='35' y='80' font-family='Arial' font-size='12' fill='%23333'%3EQR Code%3C/text%3E%3C/svg%3E">
                 <p id="qrcodeHint">扫码一起体验广府年味！</p>
             </div>
         </div>
@@ -979,146 +969,73 @@
                 social: 0
             }
         };
-// ==================== BGM 控制 - 真正的自动播放 ====================
-const bgmConfig = {
-    audio: null,
-    isMuted: false,
-    isPlaying: false,
-    playAttempts: 0
-};
 
-// 初始化 BGM - 强制自动播放
-function initBGM() {
-    bgmConfig.audio = document.getElementById('bgmAudio');
-    const bgmBtn = document.getElementById('bgmToggle');
-    
-    if (!bgmConfig.audio || !bgmBtn) return;
-    
-    // 设置初始音量
-    bgmConfig.audio.volume = 0.4;
-    bgmConfig.audio.muted = false;
-    
-    // 预加载音频
-    bgmConfig.audio.load();
-    
-    // === 核心：立即尝试播放，无视浏览器限制 ===
-    function forcePlay() {
-        bgmConfig.audio.play().then(() => {
-            console.log('✅ BGM 自动播放成功');
-            bgmConfig.isPlaying = true;
-            bgmBtn.classList.remove('muted');
-            bgmBtn.innerHTML = '🎵';
-        }).catch(error => {
-            console.log('❌ BGM 自动播放失败:', error);
-            bgmConfig.playAttempts++;
+        // ==================== BGM 控制 ====================
+        const bgmConfig = {
+            audio: null,
+            isMuted: false,
+            isPlaying: false,
+            playAttempts: 0
+        };
+
+        // 初始化 BGM
+        function initBGM() {
+            bgmConfig.audio = document.getElementById('bgmAudio');
+            const bgmBtn = document.getElementById('bgmToggle');
             
-            // 如果失败，使用终极方案：创建一个虚拟的用户交互
-            if (bgmConfig.playAttempts < 5) {
-                // 方法1：延迟重试
-                setTimeout(forcePlay, 200);
-                
-                // 方法2：创建一个不可见的按钮让用户"无意识"点击
-                if (bgmConfig.playAttempts === 3) {
-                    createInvisibleClickCatcher();
-                }
-            }
-        });
-    }
-    
-    // 终极方案：创建一个全屏不可见点击捕获器
-    function createInvisibleClickCatcher() {
-        const catcher = document.createElement('div');
-        catcher.style.position = 'fixed';
-        catcher.style.top = '0';
-        catcher.style.left = '0';
-        catcher.style.width = '100%';
-        catcher.style.height = '100%';
-        catcher.style.zIndex = '9998';
-        catcher.style.background = 'transparent';
-        catcher.style.cursor = 'pointer';
-        
-        catcher.addEventListener('click', function() {
-            bgmConfig.audio.play().then(() => {
-                bgmConfig.isPlaying = true;
-                bgmBtn.classList.remove('muted');
-                bgmBtn.innerHTML = '🎵';
-                console.log('✅ 通过点击捕获器播放成功');
-            }).catch(e => console.log('播放失败:', e));
+            if (!bgmConfig.audio || !bgmBtn) return;
             
-            // 点击后立即移除
-            setTimeout(() => {
-                if (catcher.parentNode) {
-                    catcher.parentNode.removeChild(catcher);
-                }
-            }, 100);
-        }, { once: true });
-        
-        document.body.appendChild(catcher);
-        
-        // 3秒后自动移除，避免阻挡其他点击
-        setTimeout(() => {
-            if (catcher.parentNode) {
-                catcher.parentNode.removeChild(catcher);
-            }
-        }, 3000);
-    }
-    
-    // 立即开始第一次播放尝试
-    forcePlay();
-    
-    // 备用：监听页面完全加载后再次尝试
-    window.addEventListener('load', function() {
-        if (!bgmConfig.isPlaying) {
-            setTimeout(forcePlay, 500);
-        }
-    });
-    
-    // BGM 按钮点击事件 - 静音/取消静音
-    bgmBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        
-        if (!bgmConfig.audio) return;
-        
-        if (bgmConfig.isMuted) {
-            // 取消静音
+            // 设置初始音量
+            bgmConfig.audio.volume = 0.4;
             bgmConfig.audio.muted = false;
-            bgmConfig.isMuted = false;
-            bgmBtn.classList.remove('muted');
-            bgmBtn.innerHTML = '🎵';
             
-            // 如果没在播放，尝试播放
-            if (!bgmConfig.isPlaying) {
+            // 预加载音频
+            bgmConfig.audio.load();
+            
+            // 尝试播放
+            function forcePlay() {
                 bgmConfig.audio.play().then(() => {
+                    console.log('✅ BGM 自动播放成功');
                     bgmConfig.isPlaying = true;
-                }).catch(e => console.log('播放失败:', e));
+                    bgmBtn.classList.remove('muted');
+                    bgmBtn.innerHTML = '🎵';
+                }).catch(error => {
+                    console.log('❌ BGM 自动播放失败:', error);
+                    bgmConfig.playAttempts++;
+                });
             }
-        } else {
-            // 静音
-            bgmConfig.audio.muted = true;
-            bgmConfig.isMuted = true;
-            bgmBtn.classList.add('muted');
-            bgmBtn.innerHTML = '🔇';
+            
+            // 立即开始第一次播放尝试
+            forcePlay();
+            
+            // BGM 按钮点击事件
+            bgmBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                
+                if (!bgmConfig.audio) return;
+                
+                if (bgmConfig.isMuted) {
+                    bgmConfig.audio.muted = false;
+                    bgmConfig.isMuted = false;
+                    bgmBtn.classList.remove('muted');
+                    bgmBtn.innerHTML = '🎵';
+                    
+                    if (!bgmConfig.isPlaying) {
+                        bgmConfig.audio.play().then(() => {
+                            bgmConfig.isPlaying = true;
+                        }).catch(e => console.log('播放失败:', e));
+                    }
+                } else {
+                    bgmConfig.audio.muted = true;
+                    bgmConfig.isMuted = true;
+                    bgmBtn.classList.add('muted');
+                    bgmBtn.innerHTML = '🔇';
+                }
+            });
         }
-        
-        console.log('BGM 静音状态:', bgmConfig.isMuted);
-    });
-    
-    // 处理页面可见性变化
-    document.addEventListener('visibilitychange', function() {
-        if (!document.hidden && bgmConfig.isPlaying && !bgmConfig.isMuted) {
-            bgmConfig.audio.play().catch(e => console.log('恢复播放失败:', e));
-        }
-    });
-    
-    // 页面卸载时暂停
-    window.addEventListener('beforeunload', function() {
-        if (bgmConfig.audio && bgmConfig.isPlaying) {
-            bgmConfig.audio.pause();
-        }
-    });
-}
-       // ==================== 图片配置 ====================
+
+        // ==================== 图片配置 ====================
         const gameImages = {
             languageBg: "images/开屏图去水印 (1).png",
             scenes: [
@@ -1127,30 +1044,28 @@ function initBGM() {
                 "images/年初一团年饭图去水印.png",
                 "images/元宵节逗利是图去水印.png"
             ],
-            // 选项结果图片
             optionResults: [
                 [
-                    "images/擦牌位去水印.png",      // 第一场景选项1
-                    "images/去霉运去水印.png",       // 第一场景选项2
-                    "images/洗被褥去水印.png"        // 第一场景选项3
+                    "images/擦牌位去水印.png",
+                    "images/去霉运去水印.png",
+                    "images/洗被褥去水印.png"
                 ],
                 [
-                    "images/买桃花去水印.png",        // 第二场景选项1
-                    "images/买年桔去水印.png",        // 第二场景选项2
-                    "images/欣赏花去水印.png"         // 第二场景选项3
+                    "images/买桃花去水印.png",
+                    "images/买年桔去水印.png",
+                    "images/欣赏花去水印.png"
                 ],
                 [
-                    "images/摆碗筷去水印.png",        // 第三场景选项1
-                    "images/包油角去水印.png",        // 第三场景选项2
-                    "images/备盆菜去水印.png"         // 第三场景选项3
+                    "images/摆碗筷去水印.png",
+                    "images/包油角去水印.png",
+                    "images/备盆菜去水印.png"
                 ],
                 [
-                    "images/给利是去水印.png",        // 第四场景选项1
-                    "images/吃点心去水印.png",        // 第四场景选项2
-                    "images/看舞狮去水印.png"         // 第四场景选项3
+                    "images/给利是去水印.png",
+                    "images/吃点心去水印.png",
+                    "images/看舞狮去水印.png"
                 ]
             ],
-            // 结局图片
             endings: {
                 wealth: "images/财富结局去水印.png",
                 luck: "images/好运结局去水印.png",
@@ -1160,7 +1075,6 @@ function initBGM() {
                 social: "images/社交结局去水印.png",
                 default: "images/普通结局图.png"
             },
-            // 新年签图片
             fortunes: [
                 {
                     image: "images/新年签马到成功图去水印.png",
@@ -1194,676 +1108,639 @@ function initBGM() {
             qrcode: "images/分享二维码.png"
         };
 
-      // ==================== 游戏数据 ====================
-const gameData = {
-    zh: {
-        languageTitle: "广府年味之旅",
-        languageSubtitle: "体验广东春节传统习俗",
-        days: ["年廿八", "年三十", "年初一", "元宵节"],
-        dayLabel: "当前日期",
-        luckLabel: "好运值", 
-        moneyLabel: "利是钱",
-        endingTitle: "🎊 春节旅程结束",
-        fortuneTitle: "马年好运签",
-        shareText: "分享好运",
-        retryText: "再抽一次",
-        homeText: "返回首页",
-        qrcodeTitle: "📱 分享游戏给朋友",
-        qrcodeHint: "扫码一起体验广府年味！",
-        scenes: [
-            {
-                title: "🧹 洗邋遢迎新春",
-                text: "年廿八的阳光透过满洲窗，洒在西关大屋的青砖墙上。今天是'洗邋遢'的日子，要把家里打扫得干干净净迎新年。妈妈给了你100元零花钱。",
-                cantonese: "阿妈话：年廿八，洗邋遢，洗埋衰气好运来！",
-                options: [
+        // ==================== 游戏数据 ====================
+        const gameData = {
+            zh: {
+                languageTitle: "广府年味之旅",
+                languageSubtitle: "体验广东春节传统习俗",
+                days: ["年廿八", "年三十", "年初一", "元宵节"],
+                dayLabel: "当前日期",
+                luckLabel: "好运值", 
+                moneyLabel: "利是钱",
+                endingTitle: "🎊 春节旅程结束",
+                fortuneTitle: "马年好运签",
+                shareText: "分享好运",
+                retryText: "再抽一次",
+                homeText: "返回首页",
+                qrcodeTitle: "📱 分享游戏给朋友",
+                qrcodeHint: "扫码一起体验广府年味！",
+                scenes: [
+                    {
+                        title: "🧹 洗邋遢迎新春",
+                        text: "年廿八的阳光透过满洲窗，洒在西关大屋的青砖墙上。今天是'洗邋遢'的日子，要把家里打扫得干干净净迎新年。妈妈给了你100元零花钱。",
+                        cantonese: "阿妈话：年廿八，洗邋遢，洗埋衰气好运来！",
+                        options: [
+                            { 
+                                text: "🧹 帮忙打扫神台", 
+                                result: "认真擦拭祖先牌位，爸爸赞赏给了20元利是",
+                                luck: 10, 
+                                happiness: 5,
+                                money: 20,
+                                collect: "🧧 长辈的赞赏",
+                                type: "传统",
+                                choiceType: "traditional",
+                                imageIndex: 0
+                            },
+                            { 
+                                text: "🍃 用柚叶水抹门窗", 
+                                result: "柚叶清香满屋，驱除霉运，亲戚给了30元利是",
+                                luck: 15,
+                                money: 30,
+                                collect: "🍃 吉祥柚叶",
+                                type: "传统",
+                                choiceType: "traditional",
+                                imageIndex: 1
+                            },
+                            { 
+                                text: "🧺 清洗床单被褥", 
+                                result: "将全家的床单被褥洗干净，阳光晒得暖暖的，妈妈给了20元零花钱",
+                                happiness: 15,
+                                money: 20,
+                                collect: "🧺 干净被褥",
+                                type: "家务",
+                                choiceType: "family",
+                                imageIndex: 2
+                            }
+                        ]
+                    },
+                    {
+                        title: "🏮 行花街买年花",
+                        text: "傍晚的花市人潮涌动，霓虹灯映照着各色年花。空气中弥漫着桃花香和年桔的清新气息。",
+                        cantonese: "行花街，转大运！买支桃花旺姻缘！",
+                        options: [
+                            { 
+                                text: "🌸 买一株桃花 ", 
+                                result: "花农说：后生仔，今年行桃花运啦！",
+                                luck: 20, 
+                                money: -30,
+                                happiness: 10,
+                                collect: "🌸 桃花枝",
+                                type: "浪漫",
+                                choiceType: "modern",
+                                imageIndex: 0
+                            },
+                            { 
+                                text: "🍊 买盆年桔 ", 
+                                result: "金桔满枝头，寓意大吉大利",
+                                luck: 15, 
+                                money: -15,
+                                happiness: 5,
+                                collect: "🍊 金桔树",
+                                type: "财富",
+                                choiceType: "traditional",
+                                imageIndex: 1
+                            },
+                            { 
+                                text: "🚶 只看不买，感受气氛", 
+                                result: "在花市里闲逛，遇见邻居给了你一个小红包",
+                                happiness: 10,
+                                money: 15,
+                                collect: "📸 花市回忆",
+                                type: "体验",
+                                choiceType: "social",
+                                imageIndex: 2
+                            }
+                        ]
+                    },
+                    {
+                        title: "🥘 团年饭盛宴",
+                        text: "全家人围坐一堂，桌上摆满了广府特色年菜：白切鸡、烧鹅、发菜蚝豉、清蒸鱼...阿嫲正在盛老火靓汤。",
+                        cantonese: "阿嫲话：饮啖汤先，好足料嘎！",
+                        options: [
+                            { 
+                                text: "🥢 帮忙摆碗筷", 
+                                result: "按照长幼顺序摆好碗筷，阿公点头赞许给了利是",
+                                luck: 5, 
+                                happiness: 8,
+                                money: 50,
+                                collect: "🥢 传统餐具",
+                                type: "传统",
+                                choiceType: "family",
+                                imageIndex: 0
+                            },
+                            { 
+                                text: "🎁 学包油角", 
+                                result: "阿妈教你包油角，还给了零花钱",
+                                happiness: 15,
+                                money: 30,
+                                collect: "🥟 自制油角",
+                                type: "美食",
+                                choiceType: "family",
+                                imageIndex: 1
+                            },
+                            { 
+                                text: "🍲 帮忙准备盆菜", 
+                                result: "将鲍鱼、鹅掌、花菇等食材一层层铺好，亲戚给了赞赏红包",
+                                luck: 10,
+                                money: 40,
+                                collect: "🍲 盆菜制作经验",
+                                type: "美食",
+                                choiceType: "traditional",
+                                imageIndex: 2
+                            }
+                        ]
+                    },
+                    {
+                        title: "🧧 拜年逗利是",
+                        text: "穿上全新的唐装衫裤，准备出门拜年。阿爸递给你一叠利是封：见到长辈要讲恭喜发财啊！",
+                        cantonese: "细路仔最开心就系逗利是啦！",
+                        options: [
+                            { 
+                                text: "🏡 去阿公阿嫲家拜年", 
+                                result: "阿公给你大利是，还准备了瓜子糖果",
+                                money: 200, 
+                                happiness: 10,
+                                collect: "🧧 大红包",
+                                type: "家庭",
+                                choiceType: "family",
+                                imageIndex: 0
+                            },
+                            { 
+                                text: "🏮 跟爸妈去茶楼", 
+                                result: "茶楼人声鼎沸，一盅两件，遇到亲戚给了利是",
+                                money: 100, 
+                                happiness: 15,
+                                collect: "🍵 茶楼点心券",
+                                type: "社交",
+                                choiceType: "social",
+                                imageIndex: 1
+                            },
+                            { 
+                                text: "🦁 看舞狮表演", 
+                                result: "锣鼓喧天，醒狮采青，表演者给了小红包",
+                                luck: 20, 
+                                happiness: 20,
+                                money: 80,
+                                collect: "🦁 舞狮纪念章",
+                                type: "文化",
+                                choiceType: "social",
+                                imageIndex: 2
+                            }
+                        ]
+                    }
+                ],
+                endings: [
+                    {
+                        title: "🏮 传统温馨型",
+                        desc: "您选择了传统的春节习俗，注重家庭团聚和传统仪式。您的春节充满了温馨的家庭氛围和浓郁的传统气息。",
+                        condition: (game) => game.choiceTypes.traditional >= 2 && game.choiceTypes.family >= 2,
+                        imageType: "traditional"
+                    },
+                    {
+                        title: "💰 财运亨通型",
+                        desc: "您的春节财运亨通！不仅收到了丰厚的利是钱，还做出了明智的选择。新的一年必将财源广进！",
+                        condition: (game) => game.money >= 300,
+                        imageType: "wealth"
+                    },
+                    {
+                        title: "✨ 好运连连型",
+                        desc: "好运伴随您的整个春节！您的选择带来了满满的好运值，新的一年必将一帆风顺，心想事成！",
+                        condition: (game) => game.luck >= 140,
+                        imageType: "luck"
+                    },
+                    {
+                        title: "🎉 社交达人型",
+                        desc: "您积极参与各种社交活动，体验了丰富多彩的春节氛围。您的春节充满了欢乐和人气！",
+                        condition: (game) => game.choiceTypes.social >= 2,
+                        imageType: "social"
+                    },
+                    {
+                        title: "😊 幸福美满型",
+                        desc: "您的春节幸福度爆棚！家人团聚、美食相伴、快乐无限，这是最完美的春节体验！",
+                        condition: (game) => game.happiness >= 140,
+                        imageType: "happiness"
+                    },
+                    {
+                        title: "🎨 多样体验型",
+                        desc: "您尝试了各种不同的春节体验，既有传统习俗，又有现代元素。您的春节丰富多彩！",
+                        condition: (game) => {
+                            const types = Object.values(game.choiceTypes).filter(count => count > 0);
+                            return types.length >= 3;
+                        },
+                        imageType: "perfect"
+                    }
+                ],
+                achievements: [
                     { 
-                        text: "🧹 帮忙打扫神台", 
-                        result: "认真擦拭祖先牌位，爸爸赞赏给了20元利是",
-                        luck: 10, 
-                        happiness: 5,
-                        money: 20,
-                        collect: "🧧 长辈的赞赏",
-                        type: "传统",
-                        choiceType: "traditional",
-                        imageIndex: 0
+                        id: 1, 
+                        name: "🧹 传统守护者", 
+                        desc: "您恪守传统，选择了多个传统习俗",
+                        icon: "🏮",
+                        condition: (game) => game.choiceTypes.traditional >= 2
                     },
                     { 
-                        text: "🍃 用柚叶水抹门窗", 
-                        result: "柚叶清香满屋，驱除霉运，亲戚给了30元利是",
-                        luck: 15,
-                        money: 30,
-                        collect: "🍃 吉祥柚叶",
-                        type: "传统",
-                        choiceType: "traditional",
-                        imageIndex: 1
+                        id: 2, 
+                        name: "🌸 浪漫主义者", 
+                        desc: "您选择了桃花，期待美好姻缘",
+                        icon: "💕",
+                        condition: (game) => game.selectedOptions.includes('买一株桃花')
                     },
                     { 
-                        text: "🧺 清洗床单被褥", 
-                        result: "将全家的床单被褥洗干净，阳光晒得暖暖的，妈妈给了20元零花钱",
-                        happiness: 15,
-                        money: 20,
-                        collect: "🧺 干净被褥",
-                        type: "家务",
-                        choiceType: "family",
-                        imageIndex: 2
+                        id: 3, 
+                        name: "💰 财富追求者", 
+                        desc: "您获得了丰厚利是，财运亨通",
+                        icon: "💰",
+                        condition: (game) => game.money >= 250
+                    },
+                    { 
+                        id: 4, 
+                        name: "🎯 全能体验家", 
+                        desc: "您尝试了多种不同的春节体验",
+                        icon: "🎨",
+                        condition: (game) => game.collectedItems.length >= 4
+                    },
+                    { 
+                        id: 5, 
+                        name: "✨ 好运之星", 
+                        desc: "您的好运值爆棚，新年必定顺利",
+                        icon: "⭐",
+                        condition: (game) => game.luck >= 130
+                    },
+                    { 
+                        id: 6, 
+                        name: "🎉 幸福达人", 
+                        desc: "您的幸福度满满，春节快乐无比",
+                        icon: "😊",
+                        condition: (game) => game.happiness >= 130
+                    },
+                    { 
+                        id: 7, 
+                        name: "🍲 美食鉴赏家", 
+                        desc: "您参与了多种美食制作，品味春节",
+                        icon: "🍜",
+                        condition: (game) => {
+                            const foodItems = ['自制油角', '盆菜制作经验', '茶楼点心券'];
+                            return game.collectedItems.filter(item => foodItems.includes(item)).length >= 2;
+                        }
+                    },
+                    { 
+                        id: 8, 
+                        name: "🏡 家庭温馨型", 
+                        desc: "您注重家庭团聚，享受天伦之乐",
+                        icon: "👨‍👩‍👧‍👦",
+                        condition: (game) => game.choiceTypes.family >= 2
                     }
                 ]
             },
-            {
-                title: "🏮 行花街买年花",
-                text: "傍晚的花市人潮涌动，霓虹灯映照着各色年花。空气中弥漫着桃花香和年桔的清新气息。",
-                cantonese: "行花街，转大运！买支桃花旺姻缘！",
-                options: [
+            en: {
+                languageTitle: "Guangdong New Year Journey",
+                languageSubtitle: "Experience the Cantonese-style New Year Traditions",
+                days: ["Feb 15", "New Year's Eve", "New Year's Day", "Lantern Festival"],
+                dayLabel: "Current Day",
+                luckLabel: "Luck Points", 
+                moneyLabel: "Red Packets",
+                endingTitle: "🎊 Journey Complete",
+                fortuneTitle: "Year of the Horse Fortune",
+                shareText: "Share Fortune",
+                retryText: "Draw Again",
+                homeText: "Back to Home",
+                qrcodeTitle: "📱 Share with Friends",
+                qrcodeHint: "Scan QR code to play together!",
+                scenes: [
+                    {
+                        title: "🧹 Spring Cleaning Day",
+                        text: "Morning sunlight shines through the traditional windows. It's time for thorough cleaning to welcome the New Year! Mom gives you ¥100 pocket money.",
+                        cantonese: "",
+                        options: [
+                            { 
+                                text: "🧹 Clean the altar", 
+                                result: "Earn praise from elders for cleaning carefully, dad gives ¥20 red packet",
+                                luck: 10, 
+                                happiness: 5,
+                                money: 20,
+                                collect: "🧧 Elders' Praise",
+                                type: "traditional",
+                                choiceType: "traditional",
+                                imageIndex: 0
+                            },
+                            { 
+                                text: "🍃 Wipe with pomelo leaves", 
+                                result: "Fresh scent fills the room, driving away bad luck, relative gives ¥30 red packet",
+                                luck: 15,
+                                money: 30,
+                                collect: "🍃 Lucky Pomelo Leaves",
+                                type: "traditional",
+                                choiceType: "traditional",
+                                imageIndex: 1
+                            },
+                            { 
+                                text: "🧺 Wash bed linens", 
+                                result: "Wash all family bed linens, sun-dried and warm, mom gives ¥20 pocket money",
+                                happiness: 15,
+                                money: 20,
+                                collect: "🧺 Clean Bed Linens",
+                                type: "housework",
+                                choiceType: "family",
+                                imageIndex: 2
+                            }
+                        ]
+                    },
+                    {
+                        title: "🏮 Flower Market Visit",
+                        text: "The flower market is bustling with people under neon lights. Scents of peach blossoms fill the air.",
+                        cantonese: "",
+                        options: [
+                            { 
+                                text: "🌸 Buy peach blossoms", 
+                                result: "The florist smiles: Good luck in love this year!",
+                                luck: 20, 
+                                money: -30,
+                                happiness: 10,
+                                collect: "🌸 Peach Blossom Branch",
+                                type: "romantic",
+                                choiceType: "modern",
+                                imageIndex: 0
+                            },
+                            { 
+                                text: "🍊 Buy a kumquat tree", 
+                                result: "Golden fruits symbolize prosperity and good fortune",
+                                luck: 15, 
+                                money: -15,
+                                happiness: 5,
+                                collect: "🍊 Kumquat Tree",
+                                type: "wealth",
+                                choiceType: "traditional",
+                                imageIndex: 1
+                            },
+                            { 
+                                text: "🚶 Just enjoy the atmosphere", 
+                                result: "Wander through the market, meeting neighbors who give small red packets",
+                                happiness: 10,
+                                money: 15,
+                                collect: "📸 Market Memories",
+                                type: "experience",
+                                choiceType: "social",
+                                imageIndex: 2
+                            }
+                        ]
+                    },
+                    {
+                        title: "🥘 Reunion Dinner Feast",
+                        text: "The whole family gathers around a table filled with Cantonese dishes for the New Year: white cut chicken, roast goose, dried oyster with black moss, steamed fish... Grandma serves hot soup.",
+                        cantonese: "",
+                        options: [
+                            { 
+                                text: "🥢 Set the table", 
+                                result: "Arrange dishes properly, earning approval from elders who give red packet",
+                                luck: 5, 
+                                happiness: 8,
+                                money: 50,
+                                collect: "🥢 Traditional Tableware",
+                                type: "traditional",
+                                choiceType: "family",
+                                imageIndex: 0
+                            },
+                            { 
+                                text: "🎁 Learn to make Yau Gok", 
+                                result: "Mom teaches you traditional recipes and gives you pocket money",
+                                happiness: 15,
+                                money: 30,
+                                collect: "🥟 Homemade Yau Gok",
+                                type: "food",
+                                choiceType: "family",
+                                imageIndex: 1
+                            },
+                            { 
+                                text: "🍲 Prepare Poon Choi", 
+                                result: "Layer abalone, mushrooms and other ingredients, relative gives appreciation red packet",
+                                luck: 10,
+                                money: 40,
+                                collect: "🍲 Poon Choi Experience",
+                                type: "food",
+                                choiceType: "traditional",
+                                imageIndex: 2
+                            }
+                        ]
+                    },
+                    {
+                        title: "🧧 Red Packet Day",
+                        text: "Wearing brand new traditional Tang suit, ready to pay New Year visits. Dad hands you a stack of red packets: Remember to say 'Gong Hei Fat Choy' when you see elders!",
+                        cantonese: "",
+                        options: [
+                            { 
+                                text: "🏡 Visit grandparents", 
+                                result: "Receive big red packets with blessings",
+                                money: 200, 
+                                happiness: 10,
+                                collect: "🧧 Big Red Packet",
+                                type: "family",
+                                choiceType: "family",
+                                imageIndex: 0
+                            },
+                            { 
+                                text: "🏮 Go to the tea house", 
+                                result: "Experience a festive atmosphere with family, meet relatives who give red packets",
+                                money: 100, 
+                                happiness: 15,
+                                collect: "🍵 Tea House Voucher",
+                                type: "social",
+                                choiceType: "social",
+                                imageIndex: 1
+                            },
+                            { 
+                                text: "🦁 Watch lion dance", 
+                                result: "Exciting performance with drums and colors, the performers give small red packets",
+                                luck: 20, 
+                                happiness: 20,
+                                money: 80,
+                                collect: "🦁 Lion Dance Badge",
+                                type: "cultural",
+                                choiceType: "social",
+                                imageIndex: 2
+                            }
+                        ]
+                    }
+                ],
+                endings: [
+                    {
+                        title: "🏮 Traditional & Warm",
+                        desc: "You followed traditional Chinese New Year customs, focusing on family reunions. Your celebration was filled with warmth and tradition.",
+                        condition: (game) => game.choiceTypes.traditional >= 2 && game.choiceTypes.family >= 2,
+                        imageType: "traditional"
+                    },
+                    {
+                        title: "💰 Wealth & Prosperity",
+                        desc: "Your New Year brings great wealth! You received generous red packets and made wise choices. Prosperity awaits!",
+                        condition: (game) => game.money >= 300,
+                        imageType: "wealth"
+                    },
+                    {
+                        title: "✨ Lucky & Fortunate",
+                        desc: "Good luck with your whole celebration! Your choices brought high luck points for a smooth year ahead.",
+                        condition: (game) => game.luck >= 140,
+                        imageType: "luck"
+                    },
+                    {
+                        title: "🎉 Social Butterfly",
+                        desc: "You actively participated in social activities, experiencing a diverse festive atmosphere. Your New Year was joyful!",
+                        condition: (game) => game.choiceTypes.social >= 2,
+                        imageType: "social"
+                    },
+                    {
+                        title: "😊 Happy & Joy",
+                        desc: "Your happiness overflowed! Family gatherings, delicious food, and endless joy made a perfect celebration.",
+                        condition: (game) => game.happiness >= 140,
+                        imageType: "happiness"
+                    },
+                    {
+                        title: "🎨 Diverse Experience",
+                        desc: "You tried various Chinese New Year experiences, blending tradition with modernity. Your celebration was rich and colorful!",
+                        condition: (game) => {
+                            const types = Object.values(game.choiceTypes).filter(count => count > 0);
+                            return types.length >= 3;
+                        },
+                        imageType: "perfect"
+                    }
+                ],
+                achievements: [
                     { 
-                        text: "🌸 买一株桃花 ", 
-                        result: "花农说：后生仔，今年行桃花运啦！",
-                        luck: 20, 
-                        money: -30,
-                        happiness: 10,
-                        collect: "🌸 桃花枝",
-                        type: "浪漫",
-                        choiceType: "modern",
-                        imageIndex: 0
+                        id: 1, 
+                        name: "🧹 Tradition Keeper", 
+                        desc: "You followed multiple traditional customs",
+                        icon: "🏮",
+                        condition: (game) => game.choiceTypes.traditional >= 2
                     },
                     { 
-                        text: "🍊 买盆年桔 ", 
-                        result: "金桔满枝头，寓意大吉大利",
-                        luck: 15, 
-                        money: -15,
-                        happiness: 5,
-                        collect: "🍊 金桔树",
-                        type: "财富",
-                        choiceType: "traditional",
-                        imageIndex: 1
+                        id: 2, 
+                        name: "🌸 Romantic Soul", 
+                        desc: "You chose peach blossoms for love luck",
+                        icon: "💕",
+                        condition: (game) => game.selectedOptions.includes('Buy peach blossoms')
                     },
                     { 
-                        text: "🚶 只看不买，感受气氛", 
-                        result: "在花市里闲逛，遇见邻居给了你一个小红包",
-                        happiness: 10,
-                        money: 15,
-                        collect: "📸 花市回忆",
-                        type: "体验",
-                        choiceType: "social",
-                        imageIndex: 2
+                        id: 3, 
+                        name: "💰 Wealth Seeker", 
+                        desc: "You received generous red packets",
+                        icon: "💰",
+                        condition: (game) => game.money >= 250
+                    },
+                    { 
+                        id: 4, 
+                        name: "🎯 All-Round Experiencer", 
+                        desc: "You tried various Chinese New Year experiences",
+                        icon: "🎨",
+                        condition: (game) => game.collectedItems.length >= 4
+                    },
+                    { 
+                        id: 5, 
+                        name: "✨ Lucky Star", 
+                        desc: "You have exceptional luck for the New Year",
+                        icon: "⭐",
+                        condition: (game) => game.luck >= 130
+                    },
+                    { 
+                        id: 6, 
+                        name: "🎉 Happiness Master", 
+                        desc: "You experienced great joy this New Year",
+                        icon: "😊",
+                        condition: (game) => game.happiness >= 130
+                    },
+                    { 
+                        id: 7, 
+                        name: "🍲 Food Connoisseur", 
+                        desc: "You participated in various food preparations",
+                        icon: "🍜",
+                        condition: (game) => {
+                            const foodItems = ['Homemade Yau Gok', 'Poon Choi Experience', 'Teahouse Voucher'];
+                            return game.collectedItems.filter(item => foodItems.includes(item)).length >= 2;
+                        }
+                    },
+                    { 
+                        id: 8, 
+                        name: "🏡 Family Oriented", 
+                        desc: "You focused on family gatherings and bonding",
+                        icon: "👨‍👩‍👧‍👦",
+                        condition: (game) => game.choiceTypes.family >= 2
                     }
                 ]
-            },
-            {
-                title: "🥘 团年饭盛宴",
-                text: "全家人围坐一堂，桌上摆满了广府特色年菜：白切鸡、烧鹅、发菜蚝豉、清蒸鱼...阿嫲正在盛老火靓汤。",
-                cantonese: "阿嫲话：饮啖汤先，好足料嘎！",
-                options: [
-                    { 
-                        text: "🥢 帮忙摆碗筷", 
-                        result: "按照长幼顺序摆好碗筷，阿公点头赞许给了利是",
-                        luck: 5, 
-                        happiness: 8,
-                        money: 50,
-                        collect: "🥢 传统餐具",
-                        type: "传统",
-                        choiceType: "family",
-                        imageIndex: 0
-                    },
-                    { 
-                        text: "🎁 学包油角", 
-                        result: "阿妈教你包油角，还给了零花钱",
-                        happiness: 15,
-                        money: 30,
-                        collect: "🥟 自制油角",
-                        type: "美食",
-                        choiceType: "family",
-                        imageIndex: 1
-                    },
-                    { 
-                        text: "🍲 帮忙准备盆菜", 
-                        result: "将鲍鱼、鹅掌、花菇等食材一层层铺好，亲戚给了赞赏红包",
-                        luck: 10,
-                        money: 40,
-                        collect: "🍲 盆菜制作经验",
-                        type: "美食",
-                        choiceType: "traditional",
-                        imageIndex: 2
-                    }
-                ]
-            },
-            {
-                title: "🧧 拜年逗利是",
-                text: "穿上全新的唐装衫裤，准备出门拜年。阿爸递给你一叠利是封：见到长辈要讲恭喜发财啊！",
-                cantonese: "细路仔最开心就系逗利是啦！",
-                options: [
-                    { 
-                        text: "🏡 去阿公阿嫲家拜年", 
-                        result: "阿公给你大利是，还准备了瓜子糖果",
-                        money: 200, 
-                        happiness: 10,
-                        collect: "🧧 大红包",
-                        type: "家庭",
-                        choiceType: "family",
-                        imageIndex: 0
-                    },
-                    { 
-                        text: "🏮 跟爸妈去茶楼", 
-                        result: "茶楼人声鼎沸，一盅两件，遇到亲戚给了利是",
-                        money: 100, 
-                        happiness: 15,
-                        collect: "🍵 茶楼点心券",
-                        type: "社交",
-                        choiceType: "social",
-                        imageIndex: 1
-                    },
-                    { 
-                        text: "🦁 看舞狮表演", 
-                        result: "锣鼓喧天，醒狮采青，表演者给了小红包",
-                        luck: 20, 
-                        happiness: 20,
-                        money: 80,
-                        collect: "🦁 舞狮纪念章",
-                        type: "文化",
-                        choiceType: "social",
-                        imageIndex: 2
-                    }
-                ]
-            }
-        ],
-        endings: [
-            {
-                title: "🏮 传统温馨型",
-                desc: "您选择了传统的春节习俗，注重家庭团聚和传统仪式。您的春节充满了温馨的家庭氛围和浓郁的传统气息。",
-                condition: (game) => game.choiceTypes.traditional >= 2 && game.choiceTypes.family >= 2,
-                imageType: "traditional"
-            },
-            {
-                title: "💰 财运亨通型",
-                desc: "您的春节财运亨通！不仅收到了丰厚的利是钱，还做出了明智的选择。新的一年必将财源广进！",
-                condition: (game) => game.money >= 300,
-                imageType: "wealth"
-            },
-            {
-                title: "✨ 好运连连型",
-                desc: "好运伴随您的整个春节！您的选择带来了满满的好运值，新的一年必将一帆风顺，心想事成！",
-                condition: (game) => game.luck >= 140,
-                imageType: "luck"
-            },
-            {
-                title: "🎉 社交达人型",
-                desc: "您积极参与各种社交活动，体验了丰富多彩的春节氛围。您的春节充满了欢乐和人气！",
-                condition: (game) => game.choiceTypes.social >= 2,
-                imageType: "social"
-            },
-            {
-                title: "😊 幸福美满型",
-                desc: "您的春节幸福度爆棚！家人团聚、美食相伴、快乐无限，这是最完美的春节体验！",
-                condition: (game) => game.happiness >= 140,
-                imageType: "happiness"
-            },
-            {
-                title: "🎨 多样体验型",
-                desc: "您尝试了各种不同的春节体验，既有传统习俗，又有现代元素。您的春节丰富多彩！",
-                condition: (game) => {
-                    const types = Object.values(game.choiceTypes).filter(count => count > 0);
-                    return types.length >= 3;
-                },
-                imageType: "perfect"
-            }
-        ],
-        achievements: [
-            { 
-                id: 1, 
-                name: "🧹 传统守护者", 
-                desc: "您恪守传统，选择了多个传统习俗",
-                icon: "🏮",
-                condition: (game) => game.choiceTypes.traditional >= 2
-            },
-            { 
-                id: 2, 
-                name: "🌸 浪漫主义者", 
-                desc: "您选择了桃花，期待美好姻缘",
-                icon: "💕",
-                condition: (game) => game.selectedOptions.includes('买一株桃花')
-            },
-            { 
-                id: 3, 
-                name: "💰 财富追求者", 
-                desc: "您获得了丰厚利是，财运亨通",
-                icon: "💰",
-                condition: (game) => game.money >= 250
-            },
-            { 
-                id: 4, 
-                name: "🎯 全能体验家", 
-                desc: "您尝试了多种不同的春节体验",
-                icon: "🎨",
-                condition: (game) => game.collectedItems.length >= 4
-            },
-            { 
-                id: 5, 
-                name: "✨ 好运之星", 
-                desc: "您的好运值爆棚，新年必定顺利",
-                icon: "⭐",
-                condition: (game) => game.luck >= 130
-            },
-            { 
-                id: 6, 
-                name: "🎉 幸福达人", 
-                desc: "您的幸福度满满，春节快乐无比",
-                icon: "😊",
-                condition: (game) => game.happiness >= 130
-            },
-            { 
-                id: 7, 
-                name: "🍲 美食鉴赏家", 
-                desc: "您参与了多种美食制作，品味春节",
-                icon: "🍜",
-                condition: (game) => {
-                    const foodItems = ['自制油角', '盆菜制作经验', '茶楼点心券'];
-                    return game.collectedItems.filter(item => foodItems.includes(item)).length >= 2;
-                }
-            },
-            { 
-                id: 8, 
-                name: "🏡 家庭温馨型", 
-                desc: "您注重家庭团聚，享受天伦之乐",
-                icon: "👨‍👩‍👧‍👦",
-                condition: (game) => game.choiceTypes.family >= 2
-            }
-        ]
-    },
-    en: {
-        languageTitle: "Guangdong New Year Journey",
-        languageSubtitle: "Experience the Cantonese-style New Year Traditions",
-        days: ["Feb 15", "New Year's Eve", "New Year's Day", "Lantern Festival"],
-        dayLabel: "Current Day",
-        luckLabel: "Luck Points", 
-        moneyLabel: "Red Packets",
-        endingTitle: "🎊 Journey Complete",
-        fortuneTitle: "Year of the Horse Fortune",
-        shareText: "Share Fortune",
-        retryText: "Draw Again",
-        homeText: "Back to Home",
-        qrcodeTitle: "📱 Share with Friends",
-        qrcodeHint: "Scan QR code to play together!",
-        scenes: [
-            {
-                title: "🧹 Spring Cleaning Day",
-                text: "Morning sunlight shines through the traditional windows. It's time for thorough cleaning to welcome the New Year! Mom gives you ¥100 pocket money.",
-                cantonese: "",
-                options: [
-                    { 
-                        text: "🧹 Clean the altar", 
-                        result: "Earn praise from elders for cleaning carefully, dad gives ¥20 red packet",
-                        luck: 10, 
-                        happiness: 5,
-                        money: 20,
-                        collect: "🧧 Elders' Praise",
-                        type: "traditional",
-                        choiceType: "traditional",
-                        imageIndex: 0
-                    },
-                    { 
-                        text: "🍃 Wipe with pomelo leaves", 
-                        result: "Fresh scent fills the room, driving away bad luck, relative gives ¥30 red packet",
-                        luck: 15,
-                        money: 30,
-                        collect: "🍃 Lucky Pomelo Leaves",
-                        type: "traditional",
-                        choiceType: "traditional",
-                        imageIndex: 1
-                    },
-                    { 
-                        text: "🧺 Wash bed linens", 
-                        result: "Wash all family bed linens, sun-dried and warm, mom gives ¥20 pocket money",
-                        happiness: 15,
-                        money: 20,
-                        collect: "🧺 Clean Bed Linens",
-                        type: "housework",
-                        choiceType: "family",
-                        imageIndex: 2
-                    }
-                ]
-            },
-            {
-                title: "🏮 Flower Market Visit",
-                text: "The flower market is bustling with people under neon lights. Scents of peach blossoms fill the air.",
-                cantonese: "",
-                options: [
-                    { 
-                        text: "🌸 Buy peach blossoms", 
-                        result: "The florist smiles: Good luck in love this year!",
-                        luck: 20, 
-                        money: -30,
-                        happiness: 10,
-                        collect: "🌸 Peach Blossom Branch",
-                        type: "romantic",
-                        choiceType: "modern",
-                        imageIndex: 0
-                    },
-                    { 
-                        text: "🍊 Buy a kumquat tree", 
-                        result: "Golden fruits symbolize prosperity and good fortune",
-                        luck: 15, 
-                        money: -15,
-                        happiness: 5,
-                        collect: "🍊 Kumquat Tree",
-                        type: "wealth",
-                        choiceType: "traditional",
-                        imageIndex: 1
-                    },
-                    { 
-                        text: "🚶 Just enjoy the atmosphere", 
-                        result: "Wander through the market, meeting neighbors who give small red packets",
-                        happiness: 10,
-                        money: 15,
-                        collect: "📸 Market Memories",
-                        type: "experience",
-                        choiceType: "social",
-                        imageIndex: 2
-                    }
-                ]
-            },
-            {
-                title: "🥘 Reunion Dinner Feast",
-                text: "The whole family gathers around a table filled with Cantonese dishes for the New Year: white cut chicken, roast goose, dried oyster with black moss, steamed fish... Grandma serves hot soup.",
-                cantonese: "",
-                options: [
-                    { 
-                        text: "🥢 Set the table", 
-                        result: "Arrange dishes properly, earning approval from elders who give red packet",
-                        luck: 5, 
-                        happiness: 8,
-                        money: 50,
-                        collect: "🥢 Traditional Tableware",
-                        type: "traditional",
-                        choiceType: "family",
-                        imageIndex: 0
-                    },
-                    { 
-                        text: "🎁 Learn to make Yau Gok (Crispy Pastry Dumpling)", 
-                        result: "Mom teaches you traditional recipes and gives you pocket money",
-                        happiness: 15,
-                        money: 30,
-                        collect: "🥟 Homemade Yau Gok (Crispy Pastry Dumpling)",
-                        type: "food",
-                        choiceType: "family",
-                        imageIndex: 1
-                    },
-                    { 
-                        text: "🍲 Prepare Poon Choi (Big Bowl Feast)", 
-                        result: "Layer abalone, mushrooms and other ingredients, relative gives appreciation red packet",
-                        luck: 10,
-                        money: 40,
-                        collect: "🍲 Poon Choi (Big Bowl Feast) Experience",
-                        type: "food",
-                        choiceType: "traditional",
-                        imageIndex: 2
-                    }
-                ]
-            },
-            {
-                title: "🧧 Red Packet Day",
-                text: "Wearing brand new traditional Tang suit, ready to pay New Year visits. Dad hands you a stack of red packets: Remember to say 'Gong Hei Fat Choy' when you see elders!",
-                cantonese: "",
-                options: [
-                    { 
-                        text: "🏡 Visit grandparents", 
-                        result: "Receive big red packets with blessings",
-                        money: 200, 
-                        happiness: 10,
-                        collect: "🧧 Big Red Packet",
-                        type: "family",
-                        choiceType: "family",
-                        imageIndex: 0
-                    },
-                    { 
-                        text: "🏮 Go to the tea house", 
-                        result: "Experience a festive atmosphere with family, meet relatives who give red packets",
-                        money: 100, 
-                        happiness: 15,
-                        collect: "🍵 Tea House Voucher",
-                        type: "social",
-                        choiceType: "social",
-                        imageIndex: 1
-                    },
-                    { 
-                        text: "🦁 Watch lion dance", 
-                        result: "Exciting performance with drums and colors, the performers give small red packets",
-                        luck: 20, 
-                        happiness: 20,
-                        money: 80,
-                        collect: "🦁 Lion Dance Badge",
-                        type: "cultural",
-                        choiceType: "social",
-                        imageIndex: 2
-                    }
-                ]
-            }
-        ],
-        endings: [
-            {
-                title: "🏮 Traditional & Warm",
-                desc: "You followed traditional Chinese New Year customs, focusing on family reunions. Your celebration was filled with warmth and tradition.",
-                condition: (game) => game.choiceTypes.traditional >= 2 && game.choiceTypes.family >= 2,
-                imageType: "traditional"
-            },
-            {
-                title: "💰 Wealth & Prosperity",
-                desc: "Your New Year brings great wealth! You received generous red packets and made wise choices. Prosperity awaits!",
-                condition: (game) => game.money >= 300,
-                imageType: "wealth"
-            },
-            {
-                title: "✨ Lucky & Fortunate",
-                desc: "Good luck with your whole celebration! Your choices brought high luck points for a smooth year ahead.",
-                condition: (game) => game.luck >= 140,
-                imageType: "luck"
-            },
-            {
-                title: "🎉 Social Butterfly",
-                desc: "You actively participated in social activities, experiencing  a diverse festive atmosphere. Your New Year was joyful!",
-                condition: (game) => game.choiceTypes.social >= 2,
-                imageType: "social"
-            },
-            {
-                title: "😊 Happy & Joy",
-                desc: "Your happiness overflowed! Family gatherings, delicious food, and endless joy made a perfect celebration.",
-                condition: (game) => game.happiness >= 140,
-                imageType: "happiness"
-            },
-            {
-                title: "🎨 Diverse Experience",
-                desc: "You tried various Chinese New Year experiences, blending tradition with modernity. Your celebration was rich and colorful!",
-                condition: (game) => {
-                    const types = Object.values(game.choiceTypes).filter(count => count > 0);
-                    return types.length >= 3;
-                },
-                imageType: "perfect"
-            }
-        ],
-        achievements: [
-            { 
-                id: 1, 
-                name: "🧹 Tradition Keeper", 
-                desc: "You followed multiple traditional customs",
-                icon: "🏮",
-                condition: (game) => game.choiceTypes.traditional >= 2
-            },
-            { 
-                id: 2, 
-                name: "🌸 Romantic Soul", 
-                desc: "You chose peach blossoms for love luck",
-                icon: "💕",
-                condition: (game) => game.selectedOptions.includes('Buy peach blossoms')
-            },
-            { 
-                id: 3, 
-                name: "💰 Wealth Seeker", 
-                desc: "You received generous red packets",
-                icon: "💰",
-                condition: (game) => game.money >= 250
-            },
-            { 
-                id: 4, 
-                name: "🎯 All-Round Experiencer", 
-                desc: "You tried various Chinese New Year experiences",
-                icon: "🎨",
-                condition: (game) => game.collectedItems.length >= 4
-            },
-            { 
-                id: 5, 
-                name: "✨ Lucky Star", 
-                desc: "You have exceptional luck for the New Year",
-                icon: "⭐",
-                condition: (game) => game.luck >= 130
-            },
-            { 
-                id: 6, 
-                name: "🎉 Happiness Master", 
-                desc: "You experienced great joy this New Year",
-                icon: "😊",
-                condition: (game) => game.happiness >= 130
-            },
-            { 
-                id: 7, 
-                name: "🍲 Food Connoisseur", 
-                desc: "You participated in various food preparations",
-                icon: "🍜",
-                condition: (game) => {
-                    const foodItems = ['Homemade Yau Gok', 'Poon Choi Experience', 'Teahouse Voucher'];
-                    return game.collectedItems.filter(item => foodItems.includes(item)).length >= 2;
-                }
-            },
-            { 
-                id: 8, 
-                name: "🏡 Family Oriented", 
-                desc: "You focused on family gatherings and bonding",
-                icon: "👨‍👩‍👧‍👦",
-                condition: (game) => game.choiceTypes.family >= 2
-            }
-        ]
-    }
-};
-        
-// ==================== 初始化 ====================
-function init() {
-    console.log("游戏初始化...");
-    
-    const bgWrapper = document.getElementById('bgWrapper');
-    const bgImg = document.getElementById('bgImage');
-    const languagePage = document.getElementById('languagePage');
-    
-    // 强制设置父容器为相对定位（确保绝对定位生效）
-    languagePage.style.position = 'relative';
-    
-    // 设置背景图源
-    bgImg.src = gameImages.languageBg;
-    
-    // 图片加载成功 - 强制覆盖，不做任何自适应调整
-    bgImg.onload = function() {
-        bgWrapper.classList.remove('bg-fallback');
-        bgImg.style.display = 'block';
-        
-        // 强制样式，确保覆盖
-        bgWrapper.style.height = '100%';
-        bgWrapper.style.width = '100%';
-        bgImg.style.height = '100%';
-        bgImg.style.width = '100%';
-        bgImg.style.objectFit = 'cover';
-        bgImg.style.objectPosition = 'center';
-        
-        console.log("背景图加载成功，强制100%覆盖");
-    };
-    
-    // 图片加载失败
-    bgImg.onerror = function() {
-        console.log("背景图加载失败，使用纯色纹理背景");
-        bgWrapper.classList.add('bg-fallback');
-        bgImg.style.display = 'none';
-        
-        // 强制备用背景高度
-        bgWrapper.style.height = '100%';
-        bgWrapper.style.width = '100%';
-    };
-    
-    // 超时保护 - 只处理失败情况，不干扰高度
-    setTimeout(() => {
-        if (!bgImg.complete || bgImg.naturalHeight === 0) {
-            bgWrapper.classList.add('bg-fallback');
-            bgImg.style.display = 'none';
-            bgWrapper.style.height = '100%';
-            bgWrapper.style.width = '100%';
-            console.log("背景图超时，启用备用样式");
-        }
-        
-        // 每次页面加载都强制检查并修正样式（终极保险）
-        const enforceBackground = function() {
-            if (bgWrapper) {
-                bgWrapper.style.height = '100%';
-                bgWrapper.style.width = '100%';
-            }
-            if (bgImg && bgImg.style.display !== 'none') {
-                bgImg.style.height = '100%';
-                bgImg.style.width = '100%';
-                bgImg.style.objectFit = 'cover';
-                bgImg.style.objectPosition = 'center';
             }
         };
-        
-        // 立即执行一次
-        enforceBackground();
-        
-        // 延迟再执行几次（应对移动端渲染延迟）
-        setTimeout(enforceBackground, 100);
-        setTimeout(enforceBackground, 300);
-        setTimeout(enforceBackground, 500);
-        
-        // 监听滚动和触摸事件，持续保证背景覆盖
-        languagePage.addEventListener('scroll', enforceBackground);
-        languagePage.addEventListener('touchmove', enforceBackground);
-        languagePage.addEventListener('touchend', enforceBackground);
-        
-        // 监听窗口大小变化
-        window.addEventListener('resize', function() {
-            enforceBackground();
-            setTimeout(enforceBackground, 100);
-        });
-        
-    }, 300);
-    
-    // 其他初始化代码保持不变...
-    const qrImg = document.getElementById('qrcodeImg');
-    qrImg.src = gameImages.qrcode;
-    qrImg.onerror = function() {
-        console.log("二维码加载失败");
-        qrImg.parentNode.innerHTML = '<div style="font-size: 60px; color: #c1272d; text-align:center;">📱</div>';
-    };
-    
-    document.getElementById('chineseBtn').addEventListener('click', function() {
-        startGame('zh');
-    });
-    
-    document.getElementById('englishBtn').addEventListener('click', function() {
-        startGame('en');
-    });
-    
-    document.getElementById('rulesBtn').addEventListener('click', function() {
-        document.getElementById('rulesModal').classList.add('active');
-    });
-    
-    document.getElementById('rulesClose').addEventListener('click', function() {
-        document.getElementById('rulesModal').classList.remove('active');
-    });
-    
-    document.getElementById('shareBtn').addEventListener('click', shareFortune);
-    document.getElementById('retryBtn').addEventListener('click', drawFortune);
-    document.getElementById('homeBtn').addEventListener('click', backToHome);
-    document.getElementById('drawFortuneBtn').addEventListener('click', showFortunePage);
-    
-    document.getElementById('polaroidModal').addEventListener('click', function() {
-        this.classList.remove('active');
-    });
-    // 初始化 BGM
-initBGM();
-    console.log("初始化完成 - 背景图强制覆盖模式已启用");
-}
+
+        // ==================== 初始化 ====================
+        function init() {
+            console.log("游戏初始化...");
+            
+            const bgWrapper = document.getElementById('bgWrapper');
+            const bgImg = document.getElementById('bgImage');
+            const languagePage = document.getElementById('languagePage');
+            
+            // 强制设置父容器为相对定位
+            languagePage.style.position = 'relative';
+            
+            // 设置图片加载失败的处理
+            function setupImageErrorHandling() {
+                // 为所有图片元素添加错误处理
+                const images = document.querySelectorAll('img');
+                images.forEach(img => {
+                    img.addEventListener('error', function() {
+                        console.log(`图片加载失败: ${this.src}`);
+                        // 不替换图片，只显示备用样式
+                        if (this.id === 'bgImage') {
+                            bgWrapper.classList.add('bg-fallback');
+                        }
+                    });
+                });
+            }
+            
+            // 尝试加载背景图
+            bgImg.src = gameImages.languageBg;
+            
+            // 图片加载成功
+            bgImg.onload = function() {
+                bgWrapper.classList.remove('bg-fallback');
+                bgImg.style.display = 'block';
+                console.log("背景图加载成功");
+            };
+            
+            // 图片加载失败
+            bgImg.onerror = function() {
+                console.log("背景图加载失败，使用纯色纹理背景");
+                bgWrapper.classList.add('bg-fallback');
+                bgImg.style.display = 'none';
+            };
+            
+            // 二维码图片
+            const qrImg = document.getElementById('qrcodeImg');
+            qrImg.src = gameImages.qrcode;
+            qrImg.onerror = function() {
+                console.log("二维码加载失败");
+                // 保留默认SVG
+            };
+            
+            // 设置所有图片的错误处理
+            setupImageErrorHandling();
+            
+            // 事件监听
+            document.getElementById('chineseBtn').addEventListener('click', function() {
+                startGame('zh');
+            });
+            
+            document.getElementById('englishBtn').addEventListener('click', function() {
+                startGame('en');
+            });
+            
+            document.getElementById('rulesBtn').addEventListener('click', function() {
+                document.getElementById('rulesModal').classList.add('active');
+            });
+            
+            document.getElementById('rulesClose').addEventListener('click', function() {
+                document.getElementById('rulesModal').classList.remove('active');
+            });
+            
+            document.getElementById('shareBtn').addEventListener('click', shareFortune);
+            document.getElementById('retryBtn').addEventListener('click', drawFortune);
+            document.getElementById('homeBtn').addEventListener('click', backToHome);
+            document.getElementById('drawFortuneBtn').addEventListener('click', showFortunePage);
+            
+            document.getElementById('polaroidModal').addEventListener('click', function() {
+                this.classList.remove('active');
+            });
+            
+            // 初始化 BGM
+            initBGM();
+            
+            console.log("初始化完成");
+        }
 
         // ==================== 开始游戏 ====================
         function startGame(lang) {
@@ -1886,11 +1763,6 @@ initBGM();
             document.getElementById('fortunePage').classList.remove('active');
             
             loadScene();
-            // 确保 BGM 按钮在游戏页面仍然可见
-const bgmBtn = document.getElementById('bgmToggle');
-if (bgmBtn) {
-    bgmBtn.style.zIndex = '1000';
-}
         }
 
         // ==================== 更新界面语言 ====================
@@ -1947,8 +1819,6 @@ if (bgmBtn) {
             const sceneImg = document.getElementById('sceneImage');
             if (game.currentScene < gameImages.scenes.length) {
                 sceneImg.src = gameImages.scenes[game.currentScene];
-                sceneImg.onerror = function() { console.log("场景图加载失败"); sceneImg.style.display = 'none'; };
-                sceneImg.style.display = 'block';
             }
             
             const optionsArea = document.getElementById('optionsArea');
@@ -1974,7 +1844,6 @@ if (bgmBtn) {
                     game.money = Math.max(0, game.money);
                     game.happiness = Math.max(0, game.happiness);
                     updateStatus();
-                    if (navigator.vibrate) navigator.vibrate(50);
                 });
                 optionsArea.appendChild(button);
             });
@@ -1992,17 +1861,7 @@ if (bgmBtn) {
                 const sceneImages = gameImages.optionResults[game.currentScene];
                 if (option.imageIndex !== undefined && option.imageIndex < sceneImages.length) {
                     polaroidImage.src = sceneImages[option.imageIndex];
-                    polaroidImage.onerror = function() {
-                        console.log(`选项图片加载失败: ${sceneImages[option.imageIndex]}`);
-                        if (game.currentScene < gameImages.scenes.length) {
-                            polaroidImage.src = gameImages.scenes[game.currentScene];
-                        }
-                    };
-                } else {
-                    polaroidImage.src = gameImages.scenes[game.currentScene];
                 }
-            } else {
-                polaroidImage.src = gameImages.scenes[game.currentScene];
             }
             
             polaroidDesc.textContent = option.result;
@@ -2103,8 +1962,10 @@ if (bgmBtn) {
             const fortune = fortunes[randomIndex];
             const fortuneImg = document.getElementById('fortuneImage');
             fortuneImg.src = fortune.image;
-            fortuneImg.onerror = function() { console.log("新年签图片加载失败"); fortuneImg.style.display = 'none'; };
-            fortuneImg.style.display = 'block';
+            fortuneImg.onerror = function() { 
+                console.log("新年签图片加载失败"); 
+                // 保留默认SVG
+            };
             const fortuneText = document.getElementById('fortuneText');
             fortuneText.textContent = game.language === 'zh' ? fortune.text.zh : fortune.text.en;
         }
@@ -2141,13 +2002,3 @@ if (bgmBtn) {
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
