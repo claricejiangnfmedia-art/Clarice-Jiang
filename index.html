@@ -1547,21 +1547,21 @@ poster: "images/海报.jpg"
                                 imageIndex: 0
                             },
                             { 
-                                text: "🎁 Learn to make Yau Gok", 
+                                text: "🎁 Learn to make Yau Gok (Crispy Pastry Dumpling)", 
                                 result: "Mom teaches you traditional recipes and gives you pocket money",
                                 happiness: 15,
                                 money: 30,
-                                collect: "🥟 Homemade Yau Gok",
+                                collect: "🥟 Homemade Yau Gok (Crispy Pastry Dumpling)",
                                 type: "food",
                                 choiceType: "family",
                                 imageIndex: 1
                             },
                             { 
-                                text: "🍲 Prepare Poon Choi", 
+                                text: "🍲 Prepare Poon Choi (Big Bowl Feast)", 
                                 result: "Layer abalone, mushrooms and other ingredients, relative gives appreciation red packet",
                                 luck: 10,
                                 money: 40,
-                                collect: "🍲 Poon Choi Experience",
+                                collect: "🍲 Poon Choi (Big Bowl Feast) Experience",
                                 type: "food",
                                 choiceType: "traditional",
                                 imageIndex: 2
@@ -1786,9 +1786,9 @@ poster: "images/海报.jpg"
                 startGame('en');
             });
             
-            document.getElementById('rulesBtn').addEventListener('click', function() {
-                document.getElementById('rulesModal').classList.add('active');
-            });
+           document.getElementById('rulesBtn').addEventListener('click', function() {
+    showRulesModal();
+});
             
             document.getElementById('rulesClose').addEventListener('click', function() {
                 document.getElementById('rulesModal').classList.remove('active');
@@ -1818,29 +1818,43 @@ poster: "images/海报.jpg"
             console.log("初始化完成");
         }
 
-        // ==================== 开始游戏 ====================
-        function startGame(lang) {
-            console.log("开始游戏，语言:", lang);
-            game.language = lang;
-            game.currentScene = 0;
-            game.luck = 88;
-            game.money = 100;
-            game.happiness = 100;
-            game.collectedItems = [];
-            game.achievements = [];
-            game.selectedOptions = [];
-            game.choiceTypes = { traditional: 0, modern: 0, family: 0, social: 0 };
-            
-            updateLanguageUI();
-            
-            document.getElementById('languagePage').classList.remove('active');
-            document.getElementById('gamePage').classList.add('active');
-            document.getElementById('endingPage').classList.remove('active');
-            document.getElementById('fortunePage').classList.remove('active');
-            
-            loadScene();
+       // ==================== 开始游戏 ====================
+function startGame(lang) {
+    console.log("开始游戏，语言:", lang);
+    game.language = lang;
+    game.currentScene = 0;
+    game.luck = 88;
+    game.money = 100;
+    game.happiness = 100;
+    game.collectedItems = [];
+    game.achievements = [];
+    game.selectedOptions = [];
+    game.choiceTypes = { traditional: 0, modern: 0, family: 0, social: 0 };
+    
+    updateLanguageUI();
+    
+    // 显示规则弹窗（首次点击语言选项时）
+    showRulesModal();
+    
+    document.getElementById('languagePage').classList.remove('active');
+    document.getElementById('gamePage').classList.add('active');
+    document.getElementById('endingPage').classList.remove('active');
+    document.getElementById('fortunePage').classList.remove('active');
+    
+    loadScene();
+}
+// ==================== 显示规则弹窗 ====================
+function showRulesModal() {
+    const rulesModal = document.getElementById('rulesModal');
+    rulesModal.classList.add('active');
+    
+    // 可选：3秒后自动关闭（如果不想自动关闭，可以删除这个setTimeout）
+    setTimeout(() => {
+        if (rulesModal.classList.contains('active')) {
+            rulesModal.classList.remove('active');
         }
-
+    }, 8000);
+}
         // ==================== 更新界面语言 ====================
         function updateLanguageUI() {
             const langData = gameData[game.language];
@@ -2246,5 +2260,6 @@ function shareFortune() {
     </script>
 </body>
 </html>
+
 
 
