@@ -2104,7 +2104,7 @@
             fortuneText.textContent = game.language === 'zh' ? fortune.text.zh : fortune.text.en;
         }
 
-       // ==================== 分享海报功能 ====================
+     // ==================== 分享海报功能 ====================
 function shareFortune() {
     // 获取当前屏幕高度
     const windowHeight = window.innerHeight;
@@ -2170,22 +2170,9 @@ function shareFortune() {
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
         border: 4px solid #ffd700;
         object-fit: contain;
-        cursor: pointer;
     `;
     
-    // 添加点击保存功能（替代长按）
-    posterImg.addEventListener('click', function() {
-        // 创建临时链接下载图片
-        const link = document.createElement('a');
-        link.href = this.src;
-        link.download = '新年海报.jpg';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        // 显示保存提示
-        showMessage(game.language === 'zh' ? '海报保存中...' : 'Saving poster...');
-    });
+    // 移除点击保存功能，只保留浏览器默认的长按保存
     
     const currentFortune = document.getElementById('fortuneText')?.textContent || '';
     
@@ -2263,7 +2250,7 @@ function shareFortune() {
         border-top: 1px dashed #ff9a9e;
         padding-top: 10px;
     `;
-    fortuneEnContent.textContent = fortuneEnglish || (game.language === 'zh' ? '点击海报保存分享' : 'Tap poster to save');
+    fortuneEnContent.textContent = fortuneEnglish || '';
     
     // 组装文字
     textContainer.appendChild(fortuneTitle);
@@ -2272,7 +2259,7 @@ function shareFortune() {
         textContainer.appendChild(fortuneEnContent);
     }
     
-    // 创建提示文字（轻触保存）
+    // 创建提示文字（长按保存）
     const hintText = document.createElement('div');
     hintText.style.cssText = `
         color: #ffd700;
@@ -2282,8 +2269,8 @@ function shareFortune() {
         flex-shrink: 0;
     `;
     hintText.innerHTML = game.language === 'zh' ? 
-        '👆 点击海报保存图片 | 点击空白处关闭' : 
-        '👆 Tap poster to save | Tap background to close';
+        '📸 长按海报保存分享 | 点击空白处关闭' : 
+        '📸 Long press poster to save | Tap background to close';
     
     // 组装所有内容
     contentWrapper.appendChild(posterContainer);
@@ -2331,5 +2318,6 @@ function shareFortune() {
     </script>
 </body>
 </html>
+
 
 
