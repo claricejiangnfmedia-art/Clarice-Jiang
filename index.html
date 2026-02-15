@@ -2104,9 +2104,13 @@
             fortuneText.textContent = game.language === 'zh' ? fortune.text.zh : fortune.text.en;
         }
 
-        // ==================== 分享海报功能 ====================
+       // ==================== 分享海报功能 ====================
 function shareFortune() {
-    // 创建弹窗容器 - 修改这里，添加滚动支持
+    // 获取当前屏幕高度
+    const windowHeight = window.innerHeight;
+    const windowWidth = window.innerWidth;
+    
+    // 创建弹窗容器
     const modal = document.createElement('div');
     modal.style.cssText = `
         position: fixed;
@@ -2116,40 +2120,41 @@ function shareFortune() {
         height: 100%;
         background: rgba(0, 0, 0, 0.95);
         display: flex;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: center;
         z-index: 10000;
-        flex-direction: column;
-        padding: 20px;
+        padding: 0;
+        margin: 0;
         box-sizing: border-box;
-        overflow-y: auto;  /* 添加垂直滚动条 */
-        -webkit-overflow-scrolling: touch;  /* iOS 平滑滚动 */
     `;
     
-    // 创建内容容器 - 新增这个容器来包裹所有内容
+    // 创建内容容器 - 使用flex列布局，垂直居中
     const contentWrapper = document.createElement('div');
     contentWrapper.style.cssText = `
         display: flex;
         flex-direction: column;
-        align-items: center;
         justify-content: center;
-        min-height: 100%;
+        align-items: center;
         width: 100%;
+        height: 100%;
         max-width: 400px;
-        margin: auto;
+        padding: 10px;
+        box-sizing: border-box;
     `;
+    
+    // 计算海报的最大高度（留出文字的空间）
+    const posterMaxHeight = Math.min(windowHeight * 0.6, 400); // 最多占60%屏幕高度，不超过400px
     
     // 创建海报容器
     const posterContainer = document.createElement('div');
     posterContainer.style.cssText = `
-        max-width: 100%;
-        max-height: 70vh;
+        width: 100%;
         text-align: center;
-        position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 20px 0;
+        margin-bottom: 15px;
+        flex-shrink: 0;
     `;
     
     // 创建海报图片
@@ -2158,14 +2163,29 @@ function shareFortune() {
     posterImg.alt = "新年海报";
     posterImg.style.cssText = `
         max-width: 100%;
-        max-height: 65vh;
+        max-height: ${posterMaxHeight}px;
         width: auto;
         height: auto;
         border-radius: 20px;
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
         border: 4px solid #ffd700;
         object-fit: contain;
+        cursor: pointer;
     `;
+    
+    // 添加点击保存功能（替代长按）
+    posterImg.addEventListener('click', function() {
+        // 创建临时链接下载图片
+        const link = document.createElement('a');
+        link.href = this.src;
+        link.download = '新年海报.jpg';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // 显示保存提示
+        showMessage(game.language === 'zh' ? '海报保存中...' : 'Saving poster...');
+    });
     
     const currentFortune = document.getElementById('fortuneText')?.textContent || '';
     
@@ -2174,117 +2194,107 @@ function shareFortune() {
         const errorDiv = document.createElement('div');
         errorDiv.style.cssText = `
             color: white;
-            font-size: 20px;
-            padding: 50px 30px;
+            font-size: 18px;
+            padding: 30px 20px;
             background: linear-gradient(135deg, #c1272d, #ff6b6b);
             border-radius: 20px;
             border: 4px solid #ffd700;
             text-align: center;
-            min-width: 280px;
+            width: 100%;
         `;
         errorDiv.innerHTML = game.language === 'zh' ? 
-            `❌ 海报图片加载失败<br><br>
-             🎋 今日好运签：${currentFortune}<br><br>
-             📸 请截图保存分享<br>
-             <span style="font-size: 16px; opacity: 0.9;">分享好友一起体验广府年味！</span>` : 
+            `❌ 海报加载失败<br><br>
+             🎋 ${currentFortune}<br><br>
+             <span style="font-size: 14px;">点击屏幕关闭</span>` : 
             `❌ Poster loading failed<br><br>
-             🎋 Fortune: ${currentFortune}<br><br>
-             📸 Please take a screenshot<br>
-             <span style="font-size: 16px; opacity: 0.9;">Share with friends to experience Cantonese New Year!</span>`;
+             🎋 ${currentFortune}<br><br>
+             <span style="font-size: 14px;">Tap to close</span>`;
         posterContainer.appendChild(errorDiv);
     };
     
     posterContainer.appendChild(posterImg);
     
-    // 创建双语提示文字
-    const hintText = document.createElement('div');
-    hintText.style.cssText = `
-        color: white;
+    // 获取当前新年签文字
+    const fortuneText = document.getElementById('fortuneText')?.textContent || '';
+    const fortuneEnglish = document.getElementById('fortuneEnglish')?.textContent || '';
+    
+    // 创建文字容器
+    const textContainer = document.createElement('div');
+    textContainer.style.cssText = `
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        padding: 15px 20px;
+        max-width: 100%;
+        width: 100%;
         text-align: center;
-        margin: 20px 0;
-        padding: 18px 25px;
-        background: rgba(193, 39, 45, 0.9);
-        border-radius: 50px;
-        border: 2px solid #ffd700;
-        max-width: 90%;
-        font-size: 18px;
-        line-height: 1.8;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        border: 3px solid #ffd700;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        margin-bottom: 10px;
+        flex-shrink: 0;
     `;
     
-    if (game.language === 'zh') {
-        hintText.innerHTML = `
-            🎋 今日好运签：${currentFortune}<br>
-            📸 长按海报保存图片，分享给朋友<br>
-            <span style="font-size: 15px; opacity: 0.9;">Long press to save and share with friends!</span>
-        `;
-    } else {
-        hintText.innerHTML = `
-            🎋 Fortune: ${currentFortune}<br>
-            📸 Long press the poster to save image<br>
-            <span style="font-size: 15px; opacity: 0.9;">长按保存图片，分享好友一起体验！</span>
-        `;
+    // 设置文字样式
+    const fortuneTitle = document.createElement('div');
+    fortuneTitle.style.cssText = `
+        color: #c1272d;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        border-bottom: 2px solid #ffd700;
+        padding-bottom: 8px;
+    `;
+    fortuneTitle.textContent = game.language === 'zh' ? '🎋 新年好运签' : '🎋 New Year Fortune';
+    
+    const fortuneContent = document.createElement('div');
+    fortuneContent.style.cssText = `
+        color: #333;
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 10px;
+    `;
+    fortuneContent.textContent = fortuneText;
+    
+    const fortuneEnContent = document.createElement('div');
+    fortuneEnContent.style.cssText = `
+        color: #666;
+        font-size: 14px;
+        line-height: 1.4;
+        font-style: italic;
+        border-top: 1px dashed #ff9a9e;
+        padding-top: 10px;
+    `;
+    fortuneEnContent.textContent = fortuneEnglish || (game.language === 'zh' ? '点击海报保存分享' : 'Tap poster to save');
+    
+    // 组装文字
+    textContainer.appendChild(fortuneTitle);
+    textContainer.appendChild(fortuneContent);
+    if (fortuneEnglish) {
+        textContainer.appendChild(fortuneEnContent);
     }
     
-    // 创建关闭按钮
-    const closeBtn = document.createElement('button');
-    closeBtn.textContent = game.language === 'zh' ? '✕ 关 闭' : '✕ Close';
-    closeBtn.style.cssText = `
-        background: #ffd700;
-        color: #c1272d;
-        border: none;
-        padding: 14px 40px;
-        border-radius: 30px;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        margin: 20px 0 30px 0;
-        border: 2px solid white;
-        transition: all 0.3s ease;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        flex-shrink: 0;  /* 防止按钮被压缩 */
+    // 创建提示文字（轻触保存）
+    const hintText = document.createElement('div');
+    hintText.style.cssText = `
+        color: #ffd700;
+        font-size: 14px;
+        text-align: center;
+        padding: 8px 0;
+        flex-shrink: 0;
     `;
+    hintText.innerHTML = game.language === 'zh' ? 
+        '👆 点击海报保存图片 | 点击空白处关闭' : 
+        '👆 Tap poster to save | Tap background to close';
     
-    // 添加悬停效果
-    closeBtn.onmouseover = function() {
-        this.style.transform = 'scale(1.05)';
-        this.style.background = '#c1272d';
-        this.style.color = '#ffd700';
-    };
-    
-    closeBtn.onmouseout = function() {
-        this.style.transform = 'scale(1)';
-        this.style.background = '#ffd700';
-        this.style.color = '#c1272d';
-    };
-    
-    // 触摸设备效果
-    closeBtn.ontouchstart = function() {
-        this.style.transform = 'scale(0.95)';
-        this.style.background = '#c1272d';
-        this.style.color = '#ffd700';
-    };
-    
-    closeBtn.ontouchend = function() {
-        this.style.transform = 'scale(1)';
-    };
-    
-    closeBtn.onclick = function() {
-        document.body.removeChild(modal);
-    };
-    
-    // 组装内容 - 把所有内容添加到 contentWrapper
+    // 组装所有内容
     contentWrapper.appendChild(posterContainer);
+    contentWrapper.appendChild(textContainer);
     contentWrapper.appendChild(hintText);
-    contentWrapper.appendChild(closeBtn);
-    
-    // 把 contentWrapper 添加到 modal
     modal.appendChild(contentWrapper);
     
     // 添加到页面
     document.body.appendChild(modal);
     
-    // 点击背景也可以关闭（但只点击 modal 背景时，不点击 contentWrapper）
+    // 点击背景关闭
     modal.addEventListener('click', function(e) {
         if (e.target === modal) {
             document.body.removeChild(modal);
@@ -2296,7 +2306,6 @@ function shareFortune() {
         navigator.vibrate(50);
     }
 }
-
         function showMessage(text) {
             const msg = document.getElementById('message');
             msg.textContent = text;
@@ -2322,4 +2331,5 @@ function shareFortune() {
     </script>
 </body>
 </html>
+
 
